@@ -48,7 +48,7 @@
 
 <p align="center">
 <strong>DETALHES DO PRODUTO</strong> <br>
-Versão : 1.0.0 <br>
+Versão : 1.3.1 <br>
 Plataforma : PrestaShop <br>
 Compatibilidade : v1.7.0.1 <br>
 Requisito do Servidor SOAP Habilitado no PHP <br>
