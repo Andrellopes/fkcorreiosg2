@@ -50,7 +50,7 @@
 <strong>DETALHES DO PRODUTO</strong> <br>
 Versão : 1.3.1 <br>
 Plataforma : PrestaShop <br>
-Compatibilidade : v1.7.0.1 <br>
+Compatibilidade : v1.7 <br>
 Requisito do Servidor SOAP Habilitado no PHP <br>
 </p>
 
