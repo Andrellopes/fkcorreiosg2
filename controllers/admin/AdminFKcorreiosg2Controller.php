@@ -1,5 +1,5 @@
 <?php
-
-class AdminFKcorreiosg2Controller extends ModuleAdminController {
+class AdminFKcorreiosg2Controller extends ModuleAdminController
+{
 
 }

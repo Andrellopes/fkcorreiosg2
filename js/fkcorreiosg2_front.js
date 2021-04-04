@@ -1,15 +1,14 @@
-
-jQuery(function() {
+jQuery(function () {
     $('.fkcorreiosg2-mask-cep').mask('99999-999');
 });
 
 // Recupera o CEP atual
-$(document).ready(function(){
+$(document).ready(function () {
 
     var cepAtual = $('#fkcorreiosg2_cep_adic_carrinho').val();
 
     if (typeof cepAtual != 'undefined') {
-        cepAtual = cepAtual.replace(/[^0-9]/g,'');
+        cepAtual = cepAtual.replace(/[^0-9]/g, '');
 
         if (cepAtual.length == 8) {
 
@@ -24,9 +23,9 @@ $(document).ready(function(){
 });
 
 // Monitoramento automatico de acoes
-$(document).ready(function(){
+$(document).ready(function () {
 
-    $(document).on('keyup', 'input[name=fkcorreiosg2_cep_adic_carrinho]', function(e) {
+    $(document).on('keyup', 'input[name=fkcorreiosg2_cep_adic_carrinho]', function (e) {
 
         var cep = $(this).val();
 
@@ -44,10 +43,9 @@ $(document).ready(function(){
         }
     });
 
-    $('a#fkcorreiosg2-abrir-simulador').on('click', function(e) {
-      e.preventDefault();
-      $('#fkcorreiosg2-simulador').slideToggle(600);
+    $('a#fkcorreiosg2-abrir-simulador').on('click', function (e) {
+        e.preventDefault();
+        $('#fkcorreiosg2-simulador').slideToggle(600);
     });
 
 });
-

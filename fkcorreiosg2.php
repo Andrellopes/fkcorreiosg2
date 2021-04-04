@@ -1,9 +1,10 @@
 <?php
 
-include_once(dirname(__FILE__).'/models/FKcorreiosg2Class.php');
-include_once(dirname(__FILE__).'/models/FKcorreiosg2FreteClass.php');
+include_once dirname(__FILE__) . '/models/FKcorreiosg2Class.php';
+include_once dirname(__FILE__) . '/models/FKcorreiosg2FreteClass.php';
 
-class fkcorreiosg2 extends CarrierModule {
+class fkcorreiosg2 extends CarrierModule
+{
 
     // Contem o id do Carrier em execucao
     public $id_carrier;
@@ -14,12 +15,13 @@ class fkcorreiosg2 extends CarrierModule {
     private $postErrors = array();
     private $tab_select = '';
 
-    public function __construct() {
+    public function __construct()
+    {
 
-        $this->name     = 'fkcorreiosg2';
-        $this->tab      = 'shipping_logistics';
-        $this->version  = '1.3.1';
-        $this->author   = 'módulosFK';
+        $this->name = 'fkcorreiosg2';
+        $this->tab = 'shipping_logistics';
+        $this->version = '1.3.1';
+        $this->author = 'módulosFK';
 
         $this->bootstrap = true;
 
@@ -32,17 +34,17 @@ class fkcorreiosg2 extends CarrierModule {
         $this->_tabClassName['principal'] = array('className' => 'AdminFKcorreiosg2', 'name' => 'FKcorreios-G2');
 
         // URL/URI que variam conforme endereco do dominio
-        Configuration::updateValue('FKCORREIOSG2_URL_IMG', Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->name.'/img/');
-        Configuration::updateValue('FKCORREIOSG2_URL_FUNCOES', Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->name.'/funcoes.php');
-        Configuration::updateValue('FKCORREIOSG2_URL_FUNCOES_RASTREIO', __PS_BASE_URI__.'modules/'.$this->name.'/funcoes.php');
-        Configuration::updateValue('FKCORREIOSG2_URL_LOGO_PS', Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'img/s/');
+        Configuration::updateValue('FKCORREIOSG2_URL_IMG', Tools::getShopDomainSsl(true, true) . __PS_BASE_URI__ . 'modules/' . $this->name . '/img/');
+        Configuration::updateValue('FKCORREIOSG2_URL_FUNCOES', Tools::getShopDomainSsl(true, true) . __PS_BASE_URI__ . 'modules/' . $this->name . '/funcoes.php');
+        Configuration::updateValue('FKCORREIOSG2_URL_FUNCOES_RASTREIO', __PS_BASE_URI__ . 'modules/' . $this->name . '/funcoes.php');
+        Configuration::updateValue('FKCORREIOSG2_URL_LOGO_PS', Tools::getShopDomainSsl(true, true) . __PS_BASE_URI__ . 'img/s/');
         Configuration::updateValue('FKCORREIOSG2_URI_LOGO_PS', _PS_SHIP_IMG_DIR_);
-        Configuration::updateValue('FKCORREIOSG2_URI_LOGO_PS_TMP', _PS_TMP_IMG_DIR_.'carrier_mini_');
+        Configuration::updateValue('FKCORREIOSG2_URI_LOGO_PS_TMP', _PS_TMP_IMG_DIR_ . 'carrier_mini_');
 
         // Atualiza cookie do CEP
         if (Tools::getValue('origem') == 'adicCarrinho') {
             $this->context->cookie->fkcorreiosg2_cep_destino = Tools::getValue('cep');
-        }else {
+        } else {
             if (Tools::isSubmit('btnSubmit')) {
                 $this->context->cookie->fkcorreiosg2_cep_destino = Tools::getValue('fkcorreiosg2_cep');
             }
@@ -50,23 +52,24 @@ class fkcorreiosg2 extends CarrierModule {
 
     }
 
-    public function install() {
+    public function install()
+    {
 
         if (!parent::install()
-            Or !$this->criaMenus()
-            Or !$this->criaTabelas()
-            Or !$this->registerHook('displayHeader')
-            Or !$this->registerHook('actionCarrierUpdate')
-            Or !$this->registerHook('displayBeforeCarrier')
-            Or !$this->registerHook('displayRightColumnProduct')
-            Or !$this->registerHook('displayProductButtons')
-            Or !$this->registerHook('displayFooterProduct')
-            Or !$this->registerHook('displayShoppingCart')
+            or !$this->criaMenus()
+            or !$this->criaTabelas()
+            or !$this->registerHook('displayHeader')
+            or !$this->registerHook('actionCarrierUpdate')
+            or !$this->registerHook('displayBeforeCarrier')
+            or !$this->registerHook('displayRightColumnProduct')
+            or !$this->registerHook('displayProductButtons')
+            or !$this->registerHook('displayFooterProduct')
+            or !$this->registerHook('displayShoppingCart')
             //Or !$this->registerHook('displayShoppingCartFooter')
-            Or !$this->registerHook('displayLeftColumn')
-            Or !$this->registerHook('displayRightColumn')
-            Or !$this->registerHook('displayFooter')
-            Or !$this->registerHook('displayCustomerAccount')) {
+             or !$this->registerHook('displayLeftColumn')
+            or !$this->registerHook('displayRightColumn')
+            or !$this->registerHook('displayFooter')
+            or !$this->registerHook('displayCustomerAccount')) {
 
             return false;
         }
@@ -197,7 +200,8 @@ class fkcorreiosg2 extends CarrierModule {
 
     }
 
-    public function uninstall() {
+    public function uninstall()
+    {
 
         // Desinstala Complementos
         $complementos = $this->recuperaComplementosInstalados();
@@ -217,20 +221,20 @@ class fkcorreiosg2 extends CarrierModule {
         $fkclass = new FKcorreiosg2Class();
 
         if (!parent::uninstall()
-            Or !$this->excluiMenus()
-            Or !$fkclass->desinstalaCarrier($servicos)
-            Or !$this->unregisterHook('displayHeader')
-            Or !$this->unregisterHook('actionCarrierUpdate')
-            Or !$this->unregisterHook('displayBeforeCarrier')
-            Or !$this->unregisterHook('displayRightColumnProduct')
-            Or !$this->unregisterHook('displayProductButtons')
-            Or !$this->unregisterHook('displayFooterProduct')
-            Or !$this->unregisterHook('displayShoppingCart')
+            or !$this->excluiMenus()
+            or !$fkclass->desinstalaCarrier($servicos)
+            or !$this->unregisterHook('displayHeader')
+            or !$this->unregisterHook('actionCarrierUpdate')
+            or !$this->unregisterHook('displayBeforeCarrier')
+            or !$this->unregisterHook('displayRightColumnProduct')
+            or !$this->unregisterHook('displayProductButtons')
+            or !$this->unregisterHook('displayFooterProduct')
+            or !$this->unregisterHook('displayShoppingCart')
             //Or !$this->unregisterHook('displayShoppingCartFooter')
-            Or !$this->unregisterHook('displayLeftColumn')
-            Or !$this->unregisterHook('displayRightColumn')
-            Or !$this->unregisterHook('displayFooter')
-            Or !$this->unregisterHook('displayCustomerAccount')) {
+             or !$this->unregisterHook('displayLeftColumn')
+            or !$this->unregisterHook('displayRightColumn')
+            or !$this->unregisterHook('displayFooter')
+            or !$this->unregisterHook('displayCustomerAccount')) {
 
             return false;
         }
@@ -250,25 +254,27 @@ class fkcorreiosg2 extends CarrierModule {
 
     }
 
-    public function hookdisplayHeader($params) {
+    public function hookdisplayHeader($params)
+    {
         // CSS
-        $this->context->controller->registerStylesheet('fkcorreiosg2_front_css', $this->_path.'css/fkcorreiosg2_front.css');
+        $this->context->controller->registerStylesheet('fkcorreiosg2_front_css', $this->_path . 'css/fkcorreiosg2_front.css');
 
         // JS
-        $this->context->controller->registerJavascript('fkcorreiosg2_fancybox_js', _PS_JS_DIR_.'jquery/plugins/fancybox/jquery.fancybox.js');
+        $this->context->controller->registerJavascript('fkcorreiosg2_fancybox_js', _PS_JS_DIR_ . 'jquery/plugins/fancybox/jquery.fancybox.js');
 
         // Adiciona Fancybox caso QuickView esteja desativado
         if (!Configuration::get('PS_QUICK_VIEW')) {
             $this->context->controller->addjqueryPlugin('fancybox');
         }
 
-        $this->context->controller->registerJavascript('fkcorreiosg2_fancybox_js', $this->_path.'js/fkcorreiosg2_fancybox.js');
-        $this->context->controller->registerJavascript('fkcorreiosg2_front_js', $this->_path.'js/fkcorreiosg2_front.js');
-        $this->context->controller->registerJavascript('fkcorreiosg2_maskedinput_js', $this->_path.'js/jquery.maskedinput.js');
+        $this->context->controller->registerJavascript('fkcorreiosg2_fancybox_js', $this->_path . 'js/fkcorreiosg2_fancybox.js');
+        $this->context->controller->registerJavascript('fkcorreiosg2_front_js', $this->_path . 'js/fkcorreiosg2_front.js');
+        $this->context->controller->registerJavascript('fkcorreiosg2_maskedinput_js', $this->_path . 'js/jquery.maskedinput.js');
 
     }
 
-    public function hookdisplayBeforeCarrier($params) {
+    public function hookdisplayBeforeCarrier($params)
+    {
 
         if (!isset($this->context->smarty->tpl_vars['delivery_option_list'])) {
             return;
@@ -288,14 +294,14 @@ class fkcorreiosg2 extends CarrierModule {
 
                             if ($this->prazoEntrega[$id_carrier['instance']->id] == 0) {
                                 $msg = $this->l('entrega no mesmo dia');
-                            }else {
+                            } else {
                                 if ($this->prazoEntrega[$id_carrier['instance']->id] > 1) {
-                                    $msg = 'entrega em até '.$this->prazoEntrega[$id_carrier['instance']->id].$this->l(' dias úteis');
-                                }else {
-                                    $msg = 'entrega em '.$this->prazoEntrega[$id_carrier['instance']->id].$this->l(' dia útil');
+                                    $msg = 'entrega em até ' . $this->prazoEntrega[$id_carrier['instance']->id] . $this->l(' dias úteis');
+                                } else {
+                                    $msg = 'entrega em ' . $this->prazoEntrega[$id_carrier['instance']->id] . $this->l(' dia útil');
                                 }
                             }
-                        }else {
+                        } else {
                             $msg = $this->prazoEntrega[$id_carrier['instance']->id];
                         }
 
@@ -307,30 +313,31 @@ class fkcorreiosg2 extends CarrierModule {
 
     }
 
-    public function hookactionCarrierUpdate($params) {
+    public function hookactionCarrierUpdate($params)
+    {
 
         $atualizado = false;
 
         // Recupera dados da tabela
         $sql = 'SELECT *
-                FROM '._DB_PREFIX_.'fkcorreiosg2_servicos
-                WHERE id_carrier = '.(int)$params['id_carrier'];
+                FROM ' . _DB_PREFIX_ . 'fkcorreiosg2_servicos
+                WHERE id_carrier = ' . (int) $params['id_carrier'];
 
         $servicos = Db::getInstance()->getRow($sql);
 
         // Verifica se houve alteracao no id
-        if ((int)$servicos['id_carrier'] != (int)$params['carrier']->id) {
+        if ((int) $servicos['id_carrier'] != (int) $params['carrier']->id) {
             $novoId = $params['carrier']->id;
             $atualizado = true;
-        }else {
+        } else {
             $novoId = $servicos['id_carrier'];
         }
 
         // Verifica se houve alteracao na grade
-        if ((int)$servicos['grade'] != (int)$params['carrier']->grade) {
+        if ((int) $servicos['grade'] != (int) $params['carrier']->grade) {
             $novaGrade = $params['carrier']->grade;
             $atualizado = true;
-        }else {
+        } else {
             $novaGrade = $servicos['grade'];
         }
 
@@ -338,7 +345,7 @@ class fkcorreiosg2 extends CarrierModule {
         if ($servicos['ativo'] != $params['carrier']->active) {
             $novoAtivo = $params['carrier']->active;
             $atualizado = true;
-        }else {
+        } else {
             $novoAtivo = $servicos['ativo'];
         }
 
@@ -346,24 +353,25 @@ class fkcorreiosg2 extends CarrierModule {
 
             // Atualiza dados da tabela de servicos
             $dados = array(
-                'id_carrier'    => $novoId,
-                'grade'         => $novaGrade,
-                'ativo'         => $novoAtivo
+                'id_carrier' => $novoId,
+                'grade' => $novaGrade,
+                'ativo' => $novoAtivo,
             );
 
-            Db::getInstance()->update('fkcorreiosg2_servicos', $dados, 'id_carrier = '.(int)$servicos['id_carrier']);
+            Db::getInstance()->update('fkcorreiosg2_servicos', $dados, 'id_carrier = ' . (int) $servicos['id_carrier']);
 
             // Atualiza dados da tabela de frete gratis
             $dados = array(
-                'id_carrier'    => $novoId,
+                'id_carrier' => $novoId,
             );
 
-            Db::getInstance()->update('fkcorreiosg2_frete_gratis', $dados, 'id_carrier = '.(int)$servicos['id_carrier']);
+            Db::getInstance()->update('fkcorreiosg2_frete_gratis', $dados, 'id_carrier = ' . (int) $servicos['id_carrier']);
         }
 
     }
 
-    public function hookdisplayRightColumnProduct($params) {
+    public function hookdisplayRightColumnProduct($params)
+    {
 
         if (!$this->processaSimulador('produto', '0', $params)) {
             return false;
@@ -373,7 +381,8 @@ class fkcorreiosg2 extends CarrierModule {
         return $this->context->smarty->fetch('module:fkcorreiosg2/views/front/simuladorAposDescResumida.tpl');
     }
 
-    public function hookdisplayProductButtons($params) {
+    public function hookdisplayProductButtons($params)
+    {
 
         if (!$this->processaSimulador('produto', '2', $params)) {
             return false;
@@ -382,7 +391,8 @@ class fkcorreiosg2 extends CarrierModule {
         return $this->context->smarty->fetch('module:fkcorreiosg2/views/front/simuladorBoxAdicCarrinho.tpl');
     }
 
-    public function hookdisplayFooterProduct($params) {
+    public function hookdisplayFooterProduct($params)
+    {
 
         if (!$this->processaSimulador('produto', '1', $params)) {
             return false;
@@ -392,7 +402,8 @@ class fkcorreiosg2 extends CarrierModule {
 
     }
 
-    public function hookdisplayShoppingCart($params) {
+    public function hookdisplayShoppingCart($params)
+    {
         if (!$this->processaSimulador('carrinho', '', $params)) {
             return false;
         }
@@ -400,7 +411,8 @@ class fkcorreiosg2 extends CarrierModule {
         return $this->context->smarty->fetch('module:fkcorreiosg2/views/front/simuladorCarrinho.tpl');
     }
 
-    public function hookdisplayLeftColumn($params) {
+    public function hookdisplayLeftColumn($params)
+    {
 
         // Retorna se nao for para mostrar na coluna esquerda
         if (Configuration::get('FKCORREIOSG2_RASTREIO_LEFT') != 'on') {
@@ -413,7 +425,8 @@ class fkcorreiosg2 extends CarrierModule {
         return $this->context->smarty->fetch('module:fkcorreiosg2/views/front/rastreioColLeft.tpl');
     }
 
-    public function hookdisplayRightColumn($params) {
+    public function hookdisplayRightColumn($params)
+    {
 
         // Retorna se nao for para mostrar na coluna direita
         if (Configuration::get('FKCORREIOSG2_RASTREIO_RIGHT') != 'on') {
@@ -426,7 +439,8 @@ class fkcorreiosg2 extends CarrierModule {
         return $this->context->smarty->fetch('module:fkcorreiosg2/views/front/rastreioColRight.tpl');
     }
 
-    public function hookdisplayFooter($params) {
+    public function hookdisplayFooter($params)
+    {
 
         // Retorna se nao for para mostrar no footer
         if (Configuration::get('FKCORREIOSG2_RASTREIO_FOOTER') != 'on') {
@@ -439,7 +453,8 @@ class fkcorreiosg2 extends CarrierModule {
         return $this->context->smarty->fetch('module:fkcorreiosg2/views/front/rastreioFooter.tpl');
     }
 
-    public function hookdisplayCustomerAccount($params) {
+    public function hookdisplayCustomerAccount($params)
+    {
 
         // Retorna se nao for para mostrar no account
         if (Configuration::get('FKCORREIOSG2_RASTREIO_ACCOUNT') != 'on') {
@@ -452,14 +467,15 @@ class fkcorreiosg2 extends CarrierModule {
         return $this->context->smarty->fetch('module:fkcorreiosg2/views/front/rastreioAccount.tpl');
     }
 
-    public function getContent() {
+    public function getContent()
+    {
 
         if (!empty($_POST)) {
 
             $this->postValidation();
 
             if (sizeof($this->postErrors)) {
-                foreach ($this->postErrors AS $err) {
+                foreach ($this->postErrors as $err) {
                     $this->html .= $this->displayError($err);
                 }
             }
@@ -471,15 +487,16 @@ class fkcorreiosg2 extends CarrierModule {
 
     }
 
-    private function renderForm() {
+    private function renderForm()
+    {
 
         // CSS
-        $this->context->controller->addCSS($this->_path.'css/fkcorreiosg2_admin.css');
+        $this->context->controller->addCSS($this->_path . 'css/fkcorreiosg2_admin.css');
 
         // JS
-        $this->context->controller->addJS($this->_path.'js/fkcorreiosg2_admin.js');
-        $this->context->controller->addJS($this->_path.'js/ajaxq.js');
-        $this->context->controller->addJS($this->_path.'js/jquery.maskedinput.js');
+        $this->context->controller->addJS($this->_path . 'js/fkcorreiosg2_admin.js');
+        $this->context->controller->addJS($this->_path . 'js/ajaxq.js');
+        $this->context->controller->addJS($this->_path . 'js/jquery.maskedinput.js');
 
         $this->configGeral();
         $this->cadastroCep();
@@ -493,61 +510,63 @@ class fkcorreiosg2 extends CarrierModule {
 
         $this->context->smarty->assign(array(
             'fkcorreiosg2' => array(
-                'pathInclude'   => _PS_MODULE_DIR_.$this->name.'/views/config/',
-                'tabSelect'     => $this->tab_select,
-            )
+                'pathInclude' => _PS_MODULE_DIR_ . $this->name . '/views/config/',
+                'tabSelect' => $this->tab_select,
+            ),
 
         ));
 
         return $this->display(__FILE__, 'views/config/mainConfig.tpl');
     }
 
-    private function configGeral() {
+    private function configGeral()
+    {
 
         // TPL a ser utilizado
-        $name_tpl ='configGeral.tpl';
+        $name_tpl = 'configGeral.tpl';
 
         $this->smarty->assign(array(
             'tab_2' => array(
-                'nameTpl'                                   => $name_tpl,
-                'formAction'                                => Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']),
-                'fkcorreiosg2_meu_cep'                      => Tools::getValue('fkcorreiosg2_meu_cep', Configuration::get('FKCORREIOSG2_MEU_CEP')),
-                'fkcorreiosg2_cep_cidade'                   => Tools::getValue('fkcorreiosg2_cep_cidade', Configuration::get('FKCORREIOSG2_CEP_CIDADE')),
-                'fkcorreiosg2_mao_propria'                  => Tools::getValue('fkcorreiosg2_mao_propria', Configuration::get('FKCORREIOSG2_MAO_PROPRIA')),
-                'fkcorreiosg2_valor_declarado'              => Tools::getValue('fkcorreiosg2_valor_declarado', Configuration::get('FKCORREIOSG2_VALOR_DECLARADO')),
-                'fkcorreiosg2_aviso_recebimento'            => Tools::getValue('fkcorreiosg2_aviso_recebimento', Configuration::get('FKCORREIOSG2_AVISO_RECEBIMENTO')),
-                'fkcorreiosg2_tempo_preparacao'             => Tools::getValue('fkcorreiosg2_tempo_preparacao', Configuration::get('FKCORREIOSG2_TEMPO_PREPARACAO')),
-                'fkcorreiosg2_embalagem'                    => Tools::getValue('fkcorreiosg2_embalagem', Configuration::get('FKCORREIOSG2_EMBALAGEM')),
-                'fkcorreiosg2_offline'                      => Tools::getValue('fkcorreiosg2_offline', Configuration::get('FKCORREIOSG2_OFFLINE')),
-                'fkcorreiosg2_frete_gratis_demais_transp'   => Tools::getValue('fkcorreiosg2_frete_gratis_demais_transp', Configuration::get('FKCORREIOSG2_FRETE_GRATIS_DEMAIS_TRANSP')),
-                'fkcorreiosg2_bloco_produto'                => Tools::getValue('fkcorreiosg2_bloco_produto', Configuration::get('FKCORREIOSG2_BLOCO_PRODUTO')),
-                'fkcorreiosg2_bloco_produto_posicao'        => Tools::getValue('fkcorreiosg2_bloco_produto_posicao', Configuration::get('FKCORREIOSG2_BLOCO_PRODUTO_POSICAO')),
-                'fkcorreiosg2_bloco_produto_lightbox'       => Tools::getValue('fkcorreiosg2_bloco_produto_lightbox', Configuration::get('FKCORREIOSG2_BLOCO_PRODUTO_LIGHTBOX')),
-                'fkcorreiosg2_bloco_carrinho'               => Tools::getValue('fkcorreiosg2_bloco_carrinho', Configuration::get('FKCORREIOSG2_BLOCO_CARRINHO')),
-                'fkcorreiosg2_msg_correios'                 => Tools::getValue('fkcorreiosg2_msg_correios', Configuration::get('FKCORREIOSG2_MSG_CORREIOS')),
-                'fkcorreiosg2_borda'                        => Tools::getValue('fkcorreiosg2_borda', Configuration::get('FKCORREIOSG2_BORDA')),
-                'fkcorreiosg2_raio_borda'                   => Tools::getValue('fkcorreiosg2_raio_borda', Configuration::get('FKCORREIOSG2_RAIO_BORDA')),
-                'fkcorreiosg2_cor_fundo'                    => Tools::getValue('fkcorreiosg2_cor_fundo', Configuration::get('FKCORREIOSG2_COR_FUNDO')),
-                'fkcorreiosg2_cor_fonte_titulo'             => Tools::getValue('fkcorreiosg2_cor_fonte_titulo', Configuration::get('FKCORREIOSG2_COR_FONTE_TITULO')),
-                'fkcorreiosg2_cor_botao'                    => Tools::getValue('fkcorreiosg2_cor_botao', Configuration::get('FKCORREIOSG2_COR_BOTAO')),
-                'fkcorreiosg2_cor_fonte_botao'              => Tools::getValue('fkcorreiosg2_cor_fonte_botao', Configuration::get('FKCORREIOSG2_COR_FONTE_BOTAO')),
-                'fkcorreiosg2_cor_faixa_msg'                => Tools::getValue('fkcorreiosg2_cor_faixa_msg', Configuration::get('FKCORREIOSG2_COR_FAIXA_MSG')),
-                'fkcorreiosg2_cor_fonte_msg'                => Tools::getValue('fkcorreiosg2_cor_fonte_msg', Configuration::get('FKCORREIOSG2_COR_FONTE_MSG')),
-                'fkcorreiosg2_largura'                      => Tools::getValue('fkcorreiosg2_largura', Configuration::get('FKCORREIOSG2_LARGURA')),
-                'fkcorreiosg2_bloco_rastreio_left'          => Tools::getValue('fkcorreiosg2_bloco_rastreio_left', Configuration::get('FKCORREIOSG2_RASTREIO_LEFT')),
-                'fkcorreiosg2_bloco_rastreio_right'         => Tools::getValue('fkcorreiosg2_bloco_rastreio_right', Configuration::get('FKCORREIOSG2_RASTREIO_RIGHT')),
-                'fkcorreiosg2_bloco_rastreio_footer'        => Tools::getValue('fkcorreiosg2_bloco_rastreio_footer', Configuration::get('FKCORREIOSG2_RASTREIO_FOOTER')),
-                'fkcorreiosg2_bloco_rastreio_account'       => Tools::getValue('fkcorreiosg2_bloco_rastreio_account', Configuration::get('FKCORREIOSG2_RASTREIO_ACCOUNT')),
-                'fkcorreiosg2_excluir_config'               => Tools::getValue('fkcorreiosg2_excluir_config', Configuration::get('FKCORREIOSG2_EXCLUIR_CONFIG')),
-            )
+                'nameTpl' => $name_tpl,
+                'formAction' => Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']),
+                'fkcorreiosg2_meu_cep' => Tools::getValue('fkcorreiosg2_meu_cep', Configuration::get('FKCORREIOSG2_MEU_CEP')),
+                'fkcorreiosg2_cep_cidade' => Tools::getValue('fkcorreiosg2_cep_cidade', Configuration::get('FKCORREIOSG2_CEP_CIDADE')),
+                'fkcorreiosg2_mao_propria' => Tools::getValue('fkcorreiosg2_mao_propria', Configuration::get('FKCORREIOSG2_MAO_PROPRIA')),
+                'fkcorreiosg2_valor_declarado' => Tools::getValue('fkcorreiosg2_valor_declarado', Configuration::get('FKCORREIOSG2_VALOR_DECLARADO')),
+                'fkcorreiosg2_aviso_recebimento' => Tools::getValue('fkcorreiosg2_aviso_recebimento', Configuration::get('FKCORREIOSG2_AVISO_RECEBIMENTO')),
+                'fkcorreiosg2_tempo_preparacao' => Tools::getValue('fkcorreiosg2_tempo_preparacao', Configuration::get('FKCORREIOSG2_TEMPO_PREPARACAO')),
+                'fkcorreiosg2_embalagem' => Tools::getValue('fkcorreiosg2_embalagem', Configuration::get('FKCORREIOSG2_EMBALAGEM')),
+                'fkcorreiosg2_offline' => Tools::getValue('fkcorreiosg2_offline', Configuration::get('FKCORREIOSG2_OFFLINE')),
+                'fkcorreiosg2_frete_gratis_demais_transp' => Tools::getValue('fkcorreiosg2_frete_gratis_demais_transp', Configuration::get('FKCORREIOSG2_FRETE_GRATIS_DEMAIS_TRANSP')),
+                'fkcorreiosg2_bloco_produto' => Tools::getValue('fkcorreiosg2_bloco_produto', Configuration::get('FKCORREIOSG2_BLOCO_PRODUTO')),
+                'fkcorreiosg2_bloco_produto_posicao' => Tools::getValue('fkcorreiosg2_bloco_produto_posicao', Configuration::get('FKCORREIOSG2_BLOCO_PRODUTO_POSICAO')),
+                'fkcorreiosg2_bloco_produto_lightbox' => Tools::getValue('fkcorreiosg2_bloco_produto_lightbox', Configuration::get('FKCORREIOSG2_BLOCO_PRODUTO_LIGHTBOX')),
+                'fkcorreiosg2_bloco_carrinho' => Tools::getValue('fkcorreiosg2_bloco_carrinho', Configuration::get('FKCORREIOSG2_BLOCO_CARRINHO')),
+                'fkcorreiosg2_msg_correios' => Tools::getValue('fkcorreiosg2_msg_correios', Configuration::get('FKCORREIOSG2_MSG_CORREIOS')),
+                'fkcorreiosg2_borda' => Tools::getValue('fkcorreiosg2_borda', Configuration::get('FKCORREIOSG2_BORDA')),
+                'fkcorreiosg2_raio_borda' => Tools::getValue('fkcorreiosg2_raio_borda', Configuration::get('FKCORREIOSG2_RAIO_BORDA')),
+                'fkcorreiosg2_cor_fundo' => Tools::getValue('fkcorreiosg2_cor_fundo', Configuration::get('FKCORREIOSG2_COR_FUNDO')),
+                'fkcorreiosg2_cor_fonte_titulo' => Tools::getValue('fkcorreiosg2_cor_fonte_titulo', Configuration::get('FKCORREIOSG2_COR_FONTE_TITULO')),
+                'fkcorreiosg2_cor_botao' => Tools::getValue('fkcorreiosg2_cor_botao', Configuration::get('FKCORREIOSG2_COR_BOTAO')),
+                'fkcorreiosg2_cor_fonte_botao' => Tools::getValue('fkcorreiosg2_cor_fonte_botao', Configuration::get('FKCORREIOSG2_COR_FONTE_BOTAO')),
+                'fkcorreiosg2_cor_faixa_msg' => Tools::getValue('fkcorreiosg2_cor_faixa_msg', Configuration::get('FKCORREIOSG2_COR_FAIXA_MSG')),
+                'fkcorreiosg2_cor_fonte_msg' => Tools::getValue('fkcorreiosg2_cor_fonte_msg', Configuration::get('FKCORREIOSG2_COR_FONTE_MSG')),
+                'fkcorreiosg2_largura' => Tools::getValue('fkcorreiosg2_largura', Configuration::get('FKCORREIOSG2_LARGURA')),
+                'fkcorreiosg2_bloco_rastreio_left' => Tools::getValue('fkcorreiosg2_bloco_rastreio_left', Configuration::get('FKCORREIOSG2_RASTREIO_LEFT')),
+                'fkcorreiosg2_bloco_rastreio_right' => Tools::getValue('fkcorreiosg2_bloco_rastreio_right', Configuration::get('FKCORREIOSG2_RASTREIO_RIGHT')),
+                'fkcorreiosg2_bloco_rastreio_footer' => Tools::getValue('fkcorreiosg2_bloco_rastreio_footer', Configuration::get('FKCORREIOSG2_RASTREIO_FOOTER')),
+                'fkcorreiosg2_bloco_rastreio_account' => Tools::getValue('fkcorreiosg2_bloco_rastreio_account', Configuration::get('FKCORREIOSG2_RASTREIO_ACCOUNT')),
+                'fkcorreiosg2_excluir_config' => Tools::getValue('fkcorreiosg2_excluir_config', Configuration::get('FKCORREIOSG2_EXCLUIR_CONFIG')),
+            ),
         ));
 
     }
 
-    private function cadastroCep() {
+    private function cadastroCep()
+    {
 
         // TPL a ser utilizado
-        $name_tpl ='cadastroCep.tpl';
+        $name_tpl = 'cadastroCep.tpl';
 
         // Recupera dados da tabela
         $cadCep = $this->recuperaCadastroCep();
@@ -562,18 +581,19 @@ class fkcorreiosg2 extends CarrierModule {
 
         $this->smarty->assign(array(
             'tab_3' => array(
-                'nameTpl'       => $name_tpl,
-                'formAction'    => Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']),
-                'cadastro_cep'  => $cadCep,
-            )
+                'nameTpl' => $name_tpl,
+                'formAction' => Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']),
+                'cadastro_cep' => $cadCep,
+            ),
         ));
 
     }
 
-    private function cadastroEmbalagens() {
+    private function cadastroEmbalagens()
+    {
 
         // TPL a ser utilizado
-        $name_tpl ='cadastroEmbalagens.tpl';
+        $name_tpl = 'cadastroEmbalagens.tpl';
 
         // Recupera dados da tabela
         $cadEmbalagens = $this->recuperaCadastroEmbalagens();
@@ -587,18 +607,19 @@ class fkcorreiosg2 extends CarrierModule {
 
         $this->smarty->assign(array(
             'tab_4' => array(
-                'nameTpl'       => $name_tpl,
-                'formAction'    => Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']),
-                'cadastro_embalagens'  => $cadEmbalagens,
-            )
+                'nameTpl' => $name_tpl,
+                'formAction' => Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']),
+                'cadastro_embalagens' => $cadEmbalagens,
+            ),
         ));
 
     }
 
-    private function especificacoesCorreios() {
+    private function especificacoesCorreios()
+    {
 
         // TPL a ser utilizado
-        $name_tpl ='especificacoesCorreios.tpl';
+        $name_tpl = 'especificacoesCorreios.tpl';
 
         // Recupera dados da tabela
         $espCorreios = $this->recuperaEspCorreios();
@@ -613,18 +634,19 @@ class fkcorreiosg2 extends CarrierModule {
 
         $this->smarty->assign(array(
             'tab_5' => array(
-                'nameTpl'                   => $name_tpl,
-                'formAction'                => Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']),
-                'especificacoes_correios'   => $espCorreios,
-            )
+                'nameTpl' => $name_tpl,
+                'formAction' => Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']),
+                'especificacoes_correios' => $espCorreios,
+            ),
         ));
 
     }
 
-    private function servicosCorreios() {
+    private function servicosCorreios()
+    {
 
         // TPL a ser utilizado
-        $name_tpl ='servicosCorreios.tpl';
+        $name_tpl = 'servicosCorreios.tpl';
 
         // Recupera dados da tabela
         $servicos = $this->recuperaServicosCorreios();
@@ -635,7 +657,7 @@ class fkcorreiosg2 extends CarrierModule {
 
             // Recupera dados incluidos na tabela
             $servicos = $this->recuperaServicosCorreios();
-        }else {
+        } else {
             // Verifica e recupera carrier excluidos manualmente via opcao do Prestashop
             $fkClass = new FKcorreiosg2Class();
             $fkClass->recuperaCarrierExcluido($servicos);
@@ -646,22 +668,23 @@ class fkcorreiosg2 extends CarrierModule {
 
         $this->smarty->assign(array(
             'tab_6' => array(
-                'nameTpl'       => $name_tpl,
-                'formAction'    => Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']),
-                'servicos'      => $servicos,
-                'arrayUF'       => $fkClass->criaArrayUF($servicos),
-                'urlLogoPS'     => Configuration::get('FKCORREIOSG2_URL_LOGO_PS'),
-                'uriLogoPS'     => Configuration::get('FKCORREIOSG2_URI_LOGO_PS'),
-                'urlImg'        => Configuration::get('FKCORREIOSG2_URL_IMG'),
-            )
+                'nameTpl' => $name_tpl,
+                'formAction' => Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']),
+                'servicos' => $servicos,
+                'arrayUF' => $fkClass->criaArrayUF($servicos),
+                'urlLogoPS' => Configuration::get('FKCORREIOSG2_URL_LOGO_PS'),
+                'uriLogoPS' => Configuration::get('FKCORREIOSG2_URI_LOGO_PS'),
+                'urlImg' => Configuration::get('FKCORREIOSG2_URL_IMG'),
+            ),
         ));
 
     }
 
-    private function freteGratis() {
+    private function freteGratis()
+    {
 
         // TPL a ser utilizado
-        $name_tpl ='freteGratis.tpl';
+        $name_tpl = 'freteGratis.tpl';
 
         // Recupera dados da tabela de Frete Gratis
         $regioes = $this->recuperaRegioesFreteGratis();
@@ -674,20 +697,21 @@ class fkcorreiosg2 extends CarrierModule {
 
         $this->smarty->assign(array(
             'tab_7' => array(
-                'nameTpl'           => $name_tpl,
-                'formAction'        => Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']),
-                'regioes'           => $regioes,
-                'arrayUF'           => $fkClass->criaArrayUF($regioes),
-                'transportadoras'   => $transp,
-            )
+                'nameTpl' => $name_tpl,
+                'formAction' => Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']),
+                'regioes' => $regioes,
+                'arrayUF' => $fkClass->criaArrayUF($regioes),
+                'transportadoras' => $transp,
+            ),
         ));
 
     }
 
-    private function tabOffline() {
+    private function tabOffline()
+    {
 
         // TPL a ser utilizado
-        $name_tpl ='tabOffline.tpl';
+        $name_tpl = 'tabOffline.tpl';
 
         // Recupera dados da tabela de Especificacao dos Correios que devem gerar Tabelas Offline
         $espCorreios = $this->recuperaEspCorreiosTabOffline();
@@ -708,39 +732,41 @@ class fkcorreiosg2 extends CarrierModule {
 
         $this->smarty->assign(array(
             'tab_8' => array(
-                'nameTpl'                   => $name_tpl,
-                'formAction'                => Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']),
-                'urlImg'                    => Configuration::get('FKCORREIOSG2_URL_IMG'),
-                'urlFuncoes'                => Configuration::get('FKCORREIOSG2_URL_FUNCOES'),
-                'especificacoesCorreios'    => $espCorreios,
-                'tabOfflineEstados'         => $tabOfflineEstados,
-                'tabOfflineCidade'          => $tabOfflineCidade,
-            )
+                'nameTpl' => $name_tpl,
+                'formAction' => Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']),
+                'urlImg' => Configuration::get('FKCORREIOSG2_URL_IMG'),
+                'urlFuncoes' => Configuration::get('FKCORREIOSG2_URL_FUNCOES'),
+                'especificacoesCorreios' => $espCorreios,
+                'tabOfflineEstados' => $tabOfflineEstados,
+                'tabOfflineCidade' => $tabOfflineCidade,
+            ),
         ));
 
     }
 
-    private function compInstalados() {
+    private function compInstalados()
+    {
 
         // TPL a ser utilizado
-        $name_tpl ='compInstalados.tpl';
+        $name_tpl = 'compInstalados.tpl';
 
         // Recupera complementos instalados
         $complementos = $this->recuperaComplementosInstalados();
 
         $this->smarty->assign(array(
             'tab_9' => array(
-                'nameTpl'       => $name_tpl,
-                'complementos'  => $complementos,
-            )
+                'nameTpl' => $name_tpl,
+                'complementos' => $complementos,
+            ),
         ));
 
     }
 
-    private function infConfiguracao() {
+    private function infConfiguracao()
+    {
 
         // TPL a ser utilizado
-        $name_tpl ='infConfiguracao.tpl';
+        $name_tpl = 'infConfiguracao.tpl';
 
         // Verifica SOAP
         $soap = true;
@@ -796,45 +822,45 @@ class fkcorreiosg2 extends CarrierModule {
         $msgRegioes = 'Existem problemas no relacionamento das Regiões entre País, Estados e Transportadoras ou a Região em uso está inativa';
 
         $sql = "SELECT id_country, id_zone
-                FROM "._DB_PREFIX_."country
+                FROM " . _DB_PREFIX_ . "country
                 WHERE iso_code = 'BR' OR iso_code = 'br'";
 
         $pais = Db::getInstance()->getRow($sql);
 
         $sql = "SELECT id_state
-                FROM "._DB_PREFIX_."state
-                WHERE id_country = ".(int)$pais['id_country']." AND id_zone <> ".(int)$pais['id_zone'];
+                FROM " . _DB_PREFIX_ . "state
+                WHERE id_country = " . (int) $pais['id_country'] . " AND id_zone <> " . (int) $pais['id_zone'];
 
         $dados = Db::getInstance()->executeS($sql);
 
         if ($dados) {
             // Se os Estados estiverem com Regiao diferente do Pais
             $regioes = false;
-        }else {
+        } else {
             // Verifica se existem Servicos Ativos
             $sql = "SELECT id
-                    FROM "._DB_PREFIX_."fkcorreiosg2_servicos
+                    FROM " . _DB_PREFIX_ . "fkcorreiosg2_servicos
                     WHERE ativo = 1";
 
             $dados = Db::getInstance()->executeS($sql);
 
             if ($dados) {
 
-                $sql = "SELECT  "._DB_PREFIX_."carrier.id_carrier
-                    FROM "._DB_PREFIX_."carrier
-                        INNER JOIN "._DB_PREFIX_."carrier_zone
-                            ON "._DB_PREFIX_."carrier.id_carrier = "._DB_PREFIX_."carrier_zone.id_carrier
-                    WHERE "._DB_PREFIX_."carrier.active = 1 AND "._DB_PREFIX_."carrier.deleted = 0 AND "._DB_PREFIX_."carrier_zone.id_zone = ".(int)$pais['id_zone'];
+                $sql = "SELECT  " . _DB_PREFIX_ . "carrier.id_carrier
+                    FROM " . _DB_PREFIX_ . "carrier
+                        INNER JOIN " . _DB_PREFIX_ . "carrier_zone
+                            ON " . _DB_PREFIX_ . "carrier.id_carrier = " . _DB_PREFIX_ . "carrier_zone.id_carrier
+                    WHERE " . _DB_PREFIX_ . "carrier.active = 1 AND " . _DB_PREFIX_ . "carrier.deleted = 0 AND " . _DB_PREFIX_ . "carrier_zone.id_zone = " . (int) $pais['id_zone'];
 
                 $dados = Db::getInstance()->executeS($sql);
 
                 if (!$dados) {
                     // Se nao tiver transportadoras ativas definidas para a Regiao
                     $regioes = false;
-                }else {
+                } else {
                     $sql = "SELECT id_zone
-                        FROM "._DB_PREFIX_."zone
-                        WHERE active = 1 AND id_zone = ".(int)$pais['id_zone'];
+                        FROM " . _DB_PREFIX_ . "zone
+                        WHERE active = 1 AND id_zone = " . (int) $pais['id_zone'];
 
                     $dados = Db::getInstance()->executeS($sql);
 
@@ -852,7 +878,7 @@ class fkcorreiosg2 extends CarrierModule {
         $msgDimPesoZero = 'Existem produtos cadastrados sem dimensões ou peso';
 
         $sql = "SELECT id_product
-                FROM "._DB_PREFIX_."product
+                FROM " . _DB_PREFIX_ . "product
                 WHERE width = 0 OR height = 0 OR depth = 0 OR weight = 0";
 
         $dados = Db::getInstance()->executeS($sql);
@@ -866,25 +892,25 @@ class fkcorreiosg2 extends CarrierModule {
         $msgDimPesoMaior = 'Existem produtos com dimensões ou peso acima do permitido pelos Serviços dos Correios. Considere normal se utilizar outra transportadora para envio destes produtos';
 
         $sql = "SELECT
-                  MAX("._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.comprimento_max) AS comprimento_max,
-                  MAX("._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.largura_max) AS largura_max,
-                  MAX("._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.altura_max) AS altura_max,
-                  MAX("._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.peso_estadual_max) AS peso_max
-                FROM "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios
-                  INNER JOIN "._DB_PREFIX_."fkcorreiosg2_servicos
-                    ON "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.id = "._DB_PREFIX_."fkcorreiosg2_servicos.id_especificacao
-                WHERE "._DB_PREFIX_."fkcorreiosg2_servicos.ativo = 1";
+                  MAX(" . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.comprimento_max) AS comprimento_max,
+                  MAX(" . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.largura_max) AS largura_max,
+                  MAX(" . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.altura_max) AS altura_max,
+                  MAX(" . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.peso_estadual_max) AS peso_max
+                FROM " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios
+                  INNER JOIN " . _DB_PREFIX_ . "fkcorreiosg2_servicos
+                    ON " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.id = " . _DB_PREFIX_ . "fkcorreiosg2_servicos.id_especificacao
+                WHERE " . _DB_PREFIX_ . "fkcorreiosg2_servicos.ativo = 1";
 
         $dimPeso = Db::getInstance()->getRow($sql);
 
         if ($dimPeso['largura_max'] and $dimPeso['altura_max'] and $dimPeso['comprimento_max'] and $dimPeso['peso_max']) {
 
             $sql = "SELECT id_product
-                    FROM "._DB_PREFIX_."product
-                    WHERE width > ".$dimPeso['largura_max']." OR
-                          height > ".$dimPeso['altura_max']." OR
-                          depth > ".$dimPeso['comprimento_max']." OR
-                          weight > ".$dimPeso['peso_max'];
+                    FROM " . _DB_PREFIX_ . "product
+                    WHERE width > " . $dimPeso['largura_max'] . " OR
+                          height > " . $dimPeso['altura_max'] . " OR
+                          depth > " . $dimPeso['comprimento_max'] . " OR
+                          weight > " . $dimPeso['peso_max'];
 
             $dados = Db::getInstance()->executeS($sql);
 
@@ -922,7 +948,7 @@ class fkcorreiosg2 extends CarrierModule {
         $msgServicos = 'Todos os Serviços dos Correios estão inativos. Considere correto caso esteja utilizando Módulo Complemento de Outras Transportadoras e não deseje utilizar os Serviços dos Correios';
 
         $sql = "SELECT id
-                FROM "._DB_PREFIX_."fkcorreiosg2_servicos
+                FROM " . _DB_PREFIX_ . "fkcorreiosg2_servicos
                 WHERE ativo = 1";
 
         $dados = Db::getInstance()->executeS($sql);
@@ -936,19 +962,19 @@ class fkcorreiosg2 extends CarrierModule {
         $msgTabOffline = 'Tabelas Offline não geradas';
 
         $sql = "SELECT id
-                FROM "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios
+                FROM " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios
                 WHERE tabela_offline = 1";
 
         $espCorreios = Db::getInstance()->executeS($sql);
 
         if (!$espCorreios) {
             $tabOffline = false;
-        }else {
+        } else {
             foreach ($espCorreios as $reg) {
 
                 $sql = "SELECT id
-                        FROM "._DB_PREFIX_."fkcorreiosg2_tabelas_offline
-                        WHERE (tabela_cidade is not null OR tabela_capital is not null OR tabela_interior is not null) AND id_especificacao = ".(int)$reg['id'];
+                        FROM " . _DB_PREFIX_ . "fkcorreiosg2_tabelas_offline
+                        WHERE (tabela_cidade is not null OR tabela_capital is not null OR tabela_interior is not null) AND id_especificacao = " . (int) $reg['id'];
 
                 $dados = Db::getInstance()->executeS($sql);
 
@@ -961,46 +987,47 @@ class fkcorreiosg2 extends CarrierModule {
 
         $this->smarty->assign(array(
             'tab_10' => array(
-                'nameTpl'                   => $name_tpl,
-                'urlImg'                    => Configuration::get('FKCORREIOSG2_URL_IMG'),
-                'soap'                      => $soap,
-                'msgSoap'                   => $msgSoap,
-                'modulosNativos'            => $modulosNativos,
-                'msgModulosNativos'         => $msgModulosNativos,
-                'overrides'                 => $overrides,
-                'msgOverrides'              => $msgOverrides,
-                'custosEnvio'               => $custosEnvio,
-                'msgCustosEnvio'            => $msgCustosEnvio,
-                'freteGratisValor'          => $freteGratisValor,
-                'msgFreteGratisValor'       => $msgFreteGratisValor,
-                'freteGratisPeso'           => $freteGratisPeso,
-                'msgFreteGratisPeso'        => $msgFreteGratisPeso,
-                'regioes'                   => $regioes,
-                'msgRegioes'                => $msgRegioes,
-                'dimPesoZero'               => $dimPesoZero,
-                'msgDimPesoZero'            => $msgDimPesoZero,
-                'dimPesoMaior'              => $dimPesoMaior,
-                'msgDimPesoMaior'           => $msgDimPesoMaior,
-                'gestaoAvancadaEstoque'     => $gestaoAvancadaEstoque,
-                'msgGestaoAvancadaEstoque'  => $msgGestaoAvancadaEstoque,
-                'meuCep'                    => $meuCep,
-                'msgMeuCep'                 => $msgMeuCep,
-                'minhaCidade'               => $minhaCidade,
-                'msgMinhaCidade'            => $msgMinhaCidade,
-                'servicos'                  => $servicos,
-                'msgServicos'               => $msgServicos,
-                'tabOffline'                => $tabOffline,
-                'msgTabOffline'             => $msgTabOffline,
+                'nameTpl' => $name_tpl,
+                'urlImg' => Configuration::get('FKCORREIOSG2_URL_IMG'),
+                'soap' => $soap,
+                'msgSoap' => $msgSoap,
+                'modulosNativos' => $modulosNativos,
+                'msgModulosNativos' => $msgModulosNativos,
+                'overrides' => $overrides,
+                'msgOverrides' => $msgOverrides,
+                'custosEnvio' => $custosEnvio,
+                'msgCustosEnvio' => $msgCustosEnvio,
+                'freteGratisValor' => $freteGratisValor,
+                'msgFreteGratisValor' => $msgFreteGratisValor,
+                'freteGratisPeso' => $freteGratisPeso,
+                'msgFreteGratisPeso' => $msgFreteGratisPeso,
+                'regioes' => $regioes,
+                'msgRegioes' => $msgRegioes,
+                'dimPesoZero' => $dimPesoZero,
+                'msgDimPesoZero' => $msgDimPesoZero,
+                'dimPesoMaior' => $dimPesoMaior,
+                'msgDimPesoMaior' => $msgDimPesoMaior,
+                'gestaoAvancadaEstoque' => $gestaoAvancadaEstoque,
+                'msgGestaoAvancadaEstoque' => $msgGestaoAvancadaEstoque,
+                'meuCep' => $meuCep,
+                'msgMeuCep' => $msgMeuCep,
+                'minhaCidade' => $minhaCidade,
+                'msgMinhaCidade' => $msgMinhaCidade,
+                'servicos' => $servicos,
+                'msgServicos' => $msgServicos,
+                'tabOffline' => $tabOffline,
+                'msgTabOffline' => $msgTabOffline,
 
-            )
+            ),
         ));
     }
 
-    private function postValidation() {
+    private function postValidation()
+    {
 
         $origem = Tools::getValue('origem');
 
-        switch($origem) {
+        switch ($origem) {
 
             case 'configGeral':
 
@@ -1017,10 +1044,10 @@ class fkcorreiosg2 extends CarrierModule {
 
                 if (Trim(Tools::getValue('fkcorreiosg2_tempo_preparacao')) == '') {
                     $this->postErrors[] = $this->l('Campo "Preparação em dias" não preenchido');
-                }else {
+                } else {
                     if (!is_numeric(Tools::getValue('fkcorreiosg2_tempo_preparacao'))) {
                         $this->postErrors[] = $this->l('O campo "Preparação em dias" não é numérico');
-                    }else {
+                    } else {
                         if (Tools::getValue('fkcorreiosg2_tempo_preparacao') < 0) {
                             $this->postErrors[] = $this->l('O campo "Preparação em dias" não pode ser menor que 0 (zero)');
                         }
@@ -1043,55 +1070,55 @@ class fkcorreiosg2 extends CarrierModule {
 
                 foreach ($cadCep as $reg) {
 
-                    if (trim(Tools::getValue('fkcorreiosg2_cep_estado_'.$reg['id'])) == '') {
-                        $this->postErrors[] = $this->l('Intervalo de CEP dos Estados não preenchido. Estado').': '.$reg['estado'];
-                    }else {
-                        $intervalos = explode("/", Tools::getValue('fkcorreiosg2_cep_estado_'.$reg['id']));
+                    if (trim(Tools::getValue('fkcorreiosg2_cep_estado_' . $reg['id'])) == '') {
+                        $this->postErrors[] = $this->l('Intervalo de CEP dos Estados não preenchido. Estado') . ': ' . $reg['estado'];
+                    } else {
+                        $intervalos = explode("/", Tools::getValue('fkcorreiosg2_cep_estado_' . $reg['id']));
 
                         foreach ($intervalos as $intervalo) {
-                            if ($intervalo == ''){
+                            if ($intervalo == '') {
                                 continue;
                             }
 
                             if (strlen($intervalo) < 17) {
-                                $this->postErrors[] = $this->l('"Intervalo de CEP dos Estados" com erro. Estado').': '.$reg['estado'];
+                                $this->postErrors[] = $this->l('"Intervalo de CEP dos Estados" com erro. Estado') . ': ' . $reg['estado'];
                             }
                         }
                     }
 
-                    if (trim(Tools::getValue('fkcorreiosg2_cep_capital_'.$reg['id'])) == '') {
-                        $this->postErrors[] = $this->l('Intervalo de CEP das Capitais não preenchido. Estado').': '.$reg['estado'];
-                    }else {
-                        $intervalos = explode("/", Tools::getValue('fkcorreiosg2_cep_capital_'.$reg['id']));
+                    if (trim(Tools::getValue('fkcorreiosg2_cep_capital_' . $reg['id'])) == '') {
+                        $this->postErrors[] = $this->l('Intervalo de CEP das Capitais não preenchido. Estado') . ': ' . $reg['estado'];
+                    } else {
+                        $intervalos = explode("/", Tools::getValue('fkcorreiosg2_cep_capital_' . $reg['id']));
 
                         foreach ($intervalos as $intervalo) {
-                            if ($intervalo == ''){
+                            if ($intervalo == '') {
                                 continue;
                             }
 
                             if (strlen($intervalo) < 17) {
-                                $this->postErrors[] = $this->l('"Intervalo de CEP das Capitais" com erro. Estado').': '.$reg['estado'];
+                                $this->postErrors[] = $this->l('"Intervalo de CEP das Capitais" com erro. Estado') . ': ' . $reg['estado'];
                             }
                         }
                     }
 
-                    if (trim(Tools::getValue('fkcorreiosg2_cep_base_capital_'.$reg['id'])) == '') {
-                        $this->postErrors[] = $this->l('CEP base - Capital não preenchido. Estado').': '.$reg['estado'];
-                    }else {
-                        $valor = str_replace('-', '', Tools::getValue('fkcorreiosg2_cep_base_capital_'.$reg['id']));
+                    if (trim(Tools::getValue('fkcorreiosg2_cep_base_capital_' . $reg['id'])) == '') {
+                        $this->postErrors[] = $this->l('CEP base - Capital não preenchido. Estado') . ': ' . $reg['estado'];
+                    } else {
+                        $valor = str_replace('-', '', Tools::getValue('fkcorreiosg2_cep_base_capital_' . $reg['id']));
 
                         if (!is_numeric($valor)) {
-                            $this->postErrors[] = $this->l('O campo "CEP base - Capital é inválido. Estado').': '.$reg['estado'];
+                            $this->postErrors[] = $this->l('O campo "CEP base - Capital é inválido. Estado') . ': ' . $reg['estado'];
                         }
                     }
 
-                    if (trim(Tools::getValue('fkcorreiosg2_cep_base_interior_'.$reg['id'])) == '') {
-                        $this->postErrors[] = $this->l('CEP base - Interior não preenchido. Estado').': '.$reg['estado'];
-                    }else {
-                        $valor = str_replace('-', '', Tools::getValue('fkcorreiosg2_cep_base_interior_'.$reg['id']));
+                    if (trim(Tools::getValue('fkcorreiosg2_cep_base_interior_' . $reg['id'])) == '') {
+                        $this->postErrors[] = $this->l('CEP base - Interior não preenchido. Estado') . ': ' . $reg['estado'];
+                    } else {
+                        $valor = str_replace('-', '', Tools::getValue('fkcorreiosg2_cep_base_interior_' . $reg['id']));
 
                         if (!is_numeric($valor)) {
-                            $this->postErrors[] = $this->l('O campo "CEP base - Interior é inválido. Estado').': '.$reg['estado'];
+                            $this->postErrors[] = $this->l('O campo "CEP base - Interior é inválido. Estado') . ': ' . $reg['estado'];
                         }
                     }
 
@@ -1126,74 +1153,74 @@ class fkcorreiosg2 extends CarrierModule {
 
                 foreach ($embalagens as $reg) {
 
-                    if (trim(Tools::getValue('fkcorreiosg2_emb_descricao_'.$reg['id'])) == '') {
+                    if (trim(Tools::getValue('fkcorreiosg2_emb_descricao_' . $reg['id'])) == '') {
                         $this->postErrors[] = $this->l('O campo "Descrição" não está preenchido');
                     }
 
-                    if (trim(Tools::getValue('fkcorreiosg2_emb_comprimento_'.$reg['id'])) == '') {
+                    if (trim(Tools::getValue('fkcorreiosg2_emb_comprimento_' . $reg['id'])) == '') {
                         $this->postErrors[] = $this->l('O campo "Comprimento" não está preenchido');
-                    }else {
-                        $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_emb_comprimento_'.$reg['id']));
+                    } else {
+                        $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_emb_comprimento_' . $reg['id']));
 
                         if (!is_numeric($valor)) {
                             $this->postErrors[] = $this->l('O campo "Comprimento" não é numérico');
-                        }else {
+                        } else {
                             if ($valor <= 0) {
                                 $this->postErrors[] = $this->l('O campo "Comprimento" não pode ser menor ou igual a 0 (zero)');
                             }
                         }
                     }
 
-                    if (trim(Tools::getValue('fkcorreiosg2_emb_altura_'.$reg['id'])) == '') {
+                    if (trim(Tools::getValue('fkcorreiosg2_emb_altura_' . $reg['id'])) == '') {
                         $this->postErrors[] = $this->l('O campo "Altura" não está preenchido');
-                    }else {
-                        $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_emb_altura_'.$reg['id']));
+                    } else {
+                        $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_emb_altura_' . $reg['id']));
 
                         if (!is_numeric($valor)) {
                             $this->postErrors[] = $this->l('O campo "Altura" não é numérico');
-                        }else {
+                        } else {
                             if ($valor <= 0) {
                                 $this->postErrors[] = $this->l('O campo "Altura" não pode ser menor ou igua a 0 (zero)');
                             }
                         }
                     }
 
-                    if (trim(Tools::getValue('fkcorreiosg2_emb_largura_'.$reg['id'])) == '') {
+                    if (trim(Tools::getValue('fkcorreiosg2_emb_largura_' . $reg['id'])) == '') {
                         $this->postErrors[] = $this->l('O campo "Largura" não está preenchido');
-                    }else {
-                        $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_emb_largura_'.$reg['id']));
+                    } else {
+                        $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_emb_largura_' . $reg['id']));
 
                         if (!is_numeric($valor)) {
                             $this->postErrors[] = $this->l('O campo "Largura" não é numérico');
-                        }else {
+                        } else {
                             if ($valor <= 0) {
                                 $this->postErrors[] = $this->l('O campo "Largura" não pode ser menor ou igual a 0 (zero)');
                             }
                         }
                     }
 
-                    if (trim(Tools::getValue('fkcorreiosg2_emb_peso_'.$reg['id'])) == '') {
+                    if (trim(Tools::getValue('fkcorreiosg2_emb_peso_' . $reg['id'])) == '') {
                         $this->postErrors[] = $this->l('O campo "Peso" não está preenchido');
-                    }else {
-                        $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_emb_peso_'.$reg['id']));
+                    } else {
+                        $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_emb_peso_' . $reg['id']));
 
                         if (!is_numeric($valor)) {
                             $this->postErrors[] = $this->l('O campo "Peso" não é numérico');
-                        }else {
+                        } else {
                             if ($valor < 0) {
                                 $this->postErrors[] = $this->l('O campo "Peso" não pode ser menor que 0 (zero)');
                             }
                         }
                     }
 
-                    if (trim(Tools::getValue('fkcorreiosg2_emb_custo_'.$reg['id'])) == '') {
+                    if (trim(Tools::getValue('fkcorreiosg2_emb_custo_' . $reg['id'])) == '') {
                         $this->postErrors[] = $this->l('O campo "Custo" não está preenchido');
-                    }else {
-                        $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_emb_custo_'.$reg['id']));
+                    } else {
+                        $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_emb_custo_' . $reg['id']));
 
                         if (!is_numeric($valor)) {
                             $this->postErrors[] = $this->l('O campo "Custo" não é numérico');
-                        }else {
+                        } else {
                             if ($valor < 0) {
                                 $this->postErrors[] = $this->l('O campo "Custo" não pode ser menor que 0 (zero)');
                             }
@@ -1215,236 +1242,236 @@ class fkcorreiosg2 extends CarrierModule {
                 // Recupera id das especificacoes dos Correios
                 $id = Tools::getValue('id');
 
-                if (trim(Tools::getValue('fkcorreiosg2_cod_servico_'.$id)) == '') {
+                if (trim(Tools::getValue('fkcorreiosg2_cod_servico_' . $id)) == '') {
                     $this->postErrors[] = $this->l('O campo "Código serviço" não está preenchido');
                 }
 
-                if (trim(Tools::getValue('fkcorreiosg2_comprimento_min_'.$id)) == '') {
+                if (trim(Tools::getValue('fkcorreiosg2_comprimento_min_' . $id)) == '') {
                     $this->postErrors[] = $this->l('O campo "Comprimento mínimo" não está preenchido');
-                }else {
-                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_comprimento_min_'.$id));
+                } else {
+                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_comprimento_min_' . $id));
 
                     if (!is_numeric($valor)) {
                         $this->postErrors[] = $this->l('O campo "Comprimento mínimo" não é numérico');
-                    }else {
+                    } else {
                         if ($valor < 0) {
                             $this->postErrors[] = $this->l('O campo "Comprimento mínimo" não pode ser menor que 0 (zero)');
                         }
                     }
                 }
 
-                if (trim(Tools::getValue('fkcorreiosg2_comprimento_max_'.$id)) == '') {
+                if (trim(Tools::getValue('fkcorreiosg2_comprimento_max_' . $id)) == '') {
                     $this->postErrors[] = $this->l('O campo "Comprimento máximo" não está preenchido');
-                }else {
-                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_comprimento_max_'.$id));
+                } else {
+                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_comprimento_max_' . $id));
 
                     if (!is_numeric($valor)) {
                         $this->postErrors[] = $this->l('O campo "Comprimento máximo" não é numérico');
-                    }else {
+                    } else {
                         if ($valor < 0) {
                             $this->postErrors[] = $this->l('O campo "Comprimento máximo" não pode ser menor que 0 (zero)');
                         }
                     }
                 }
 
-                if (trim(Tools::getValue('fkcorreiosg2_largura_min_'.$id)) == '') {
+                if (trim(Tools::getValue('fkcorreiosg2_largura_min_' . $id)) == '') {
                     $this->postErrors[] = $this->l('O campo "Largura mínima" não está preenchido');
-                }else {
-                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_largura_min_'.$id));
+                } else {
+                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_largura_min_' . $id));
 
                     if (!is_numeric($valor)) {
                         $this->postErrors[] = $this->l('O campo "Largura mínima" não é numérico');
-                    }else {
+                    } else {
                         if ($valor < 0) {
                             $this->postErrors[] = $this->l('O campo "Largura mínima" não pode ser menor que 0 (zero)');
                         }
                     }
                 }
 
-                if (trim(Tools::getValue('fkcorreiosg2_largura_max_'.$id)) == '') {
+                if (trim(Tools::getValue('fkcorreiosg2_largura_max_' . $id)) == '') {
                     $this->postErrors[] = $this->l('O campo "Largura máxima" não está preenchido');
-                }else {
-                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_largura_max_'.$id));
+                } else {
+                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_largura_max_' . $id));
 
                     if (!is_numeric($valor)) {
                         $this->postErrors[] = $this->l('O campo "Largura máxima" não é numérico');
-                    }else {
+                    } else {
                         if ($valor < 0) {
                             $this->postErrors[] = $this->l('O campo "Largura máxima" não pode ser menor que 0 (zero)');
                         }
                     }
                 }
 
-                if (trim(Tools::getValue('fkcorreiosg2_altura_min_'.$id)) == '') {
+                if (trim(Tools::getValue('fkcorreiosg2_altura_min_' . $id)) == '') {
                     $this->postErrors[] = $this->l('O campo "Altura mínima" não está preenchido');
-                }else {
-                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_altura_min_'.$id));
+                } else {
+                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_altura_min_' . $id));
 
                     if (!is_numeric($valor)) {
                         $this->postErrors[] = $this->l('O campo "Altura mínima" não é numérico');
-                    }else {
+                    } else {
                         if ($valor < 0) {
                             $this->postErrors[] = $this->l('O campo "Altura mínima" não pode ser menor que 0 (zero)');
                         }
                     }
                 }
 
-                if (trim(Tools::getValue('fkcorreiosg2_altura_max_'.$id)) == '') {
+                if (trim(Tools::getValue('fkcorreiosg2_altura_max_' . $id)) == '') {
                     $this->postErrors[] = $this->l('O campo "Altura máxima" não está preenchido');
-                }else {
-                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_altura_max_'.$id));
+                } else {
+                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_altura_max_' . $id));
 
                     if (!is_numeric($valor)) {
                         $this->postErrors[] = $this->l('O campo "Altura máxima" não é numérico');
-                    }else {
+                    } else {
                         if ($valor < 0) {
                             $this->postErrors[] = $this->l('O campo "Altura máxima" não pode ser menor que 0 (zero)');
                         }
                     }
                 }
 
-                if (trim(Tools::getValue('fkcorreiosg2_somatoria_dimensoes_max_'.$id)) == '') {
+                if (trim(Tools::getValue('fkcorreiosg2_somatoria_dimensoes_max_' . $id)) == '') {
                     $this->postErrors[] = $this->l('O campo "Somatória dimensões" não está preenchido');
-                }else {
-                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_somatoria_dimensoes_max_'.$id));
+                } else {
+                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_somatoria_dimensoes_max_' . $id));
 
                     if (!is_numeric($valor)) {
                         $this->postErrors[] = $this->l('O campo "Somatória dimensões" não é numérico');
-                    }else {
+                    } else {
                         if ($valor < 0) {
                             $this->postErrors[] = $this->l('O campo "Somatória dimensões" não pode ser menor que 0 (zero)');
                         }
                     }
                 }
 
-                if (trim(Tools::getValue('fkcorreiosg2_peso_estadual_max_'.$id)) == '') {
+                if (trim(Tools::getValue('fkcorreiosg2_peso_estadual_max_' . $id)) == '') {
                     $this->postErrors[] = $this->l('O campo "Peso máximo - Estadual" não está preenchido');
-                }else {
-                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_peso_estadual_max_'.$id));
+                } else {
+                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_peso_estadual_max_' . $id));
 
                     if (!is_numeric($valor)) {
                         $this->postErrors[] = $this->l('O campo "Peso máximo - Estadual" não é numérico');
-                    }else {
+                    } else {
                         if ($valor < 0) {
                             $this->postErrors[] = $this->l('O campo "Peso máximo - Estadual" não pode ser menor que 0 (zero)');
                         }
                     }
                 }
 
-                if (trim(Tools::getValue('fkcorreiosg2_peso_nacional_max_'.$id)) == '') {
+                if (trim(Tools::getValue('fkcorreiosg2_peso_nacional_max_' . $id)) == '') {
                     $this->postErrors[] = $this->l('O campo "Peso máximo - Nacional" não está preenchido');
-                }else {
-                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_peso_nacional_max_'.$id));
+                } else {
+                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_peso_nacional_max_' . $id));
 
                     if (!is_numeric($valor)) {
                         $this->postErrors[] = $this->l('O campo "Peso máximo - Nacional" não é numérico');
-                    }else {
+                    } else {
                         if ($valor < 0) {
                             $this->postErrors[] = $this->l('O campo "Peso máximo - Nacional" não pode ser menor que 0 (zero)');
                         }
                     }
                 }
 
-                if (trim(Tools::getValue('fkcorreiosg2_intervalo_pesos_estadual_'.$id)) == '') {
+                if (trim(Tools::getValue('fkcorreiosg2_intervalo_pesos_estadual_' . $id)) == '') {
                     $this->postErrors[] = $this->l('O campo "Intervalo de pesos - Estadual" não está preenchido');
                 }
 
-                if (trim(Tools::getValue('fkcorreiosg2_intervalo_pesos_nacional_'.$id)) == '') {
+                if (trim(Tools::getValue('fkcorreiosg2_intervalo_pesos_nacional_' . $id)) == '') {
                     $this->postErrors[] = $this->l('O campo "Intervalo de pesos - Nacional" não está preenchido');
                 }
 
-                if (trim(Tools::getValue('fkcorreiosg2_cubagem_max_isenta_'.$id)) == '') {
+                if (trim(Tools::getValue('fkcorreiosg2_cubagem_max_isenta_' . $id)) == '') {
                     $this->postErrors[] = $this->l('O campo "Cubagem max isenta" não está preenchido');
-                }else {
-                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_cubagem_max_isenta_'.$id));
+                } else {
+                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_cubagem_max_isenta_' . $id));
 
                     if (!is_numeric($valor)) {
                         $this->postErrors[] = $this->l('O campo "Cubagem max isenta" não é numérico');
-                    }else {
+                    } else {
                         if ($valor < 0) {
                             $this->postErrors[] = $this->l('O campo "Cubagem max isenta" não pode ser menor que 0 (zero)');
                         }
                     }
                 }
 
-                if (trim(Tools::getValue('fkcorreiosg2_cubagem_base_calculo_'.$id)) == '') {
+                if (trim(Tools::getValue('fkcorreiosg2_cubagem_base_calculo_' . $id)) == '') {
                     $this->postErrors[] = $this->l('O campo "Cubagem base cálculo" não está preenchido');
-                }else {
-                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_cubagem_base_calculo_'.$id));
+                } else {
+                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_cubagem_base_calculo_' . $id));
 
                     if (!is_numeric($valor)) {
                         $this->postErrors[] = $this->l('O campo "Cubagem base cálculo" não é numérico');
-                    }else {
+                    } else {
                         if ($valor < 0) {
                             $this->postErrors[] = $this->l('O campo "Cubagem base cálculo" não pode ser menor que 0 (zero)');
                         }
                     }
                 }
 
-                if (trim(Tools::getValue('fkcorreiosg2_mao_propria_valor_'.$id)) == '') {
+                if (trim(Tools::getValue('fkcorreiosg2_mao_propria_valor_' . $id)) == '') {
                     $this->postErrors[] = $this->l('O campo "Valor Mão Própria" não está preenchido');
-                }else {
-                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_mao_propria_valor_'.$id));
+                } else {
+                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_mao_propria_valor_' . $id));
 
                     if (!is_numeric($valor)) {
                         $this->postErrors[] = $this->l('O campo "Valor mão própria" não é numérico');
-                    }else {
+                    } else {
                         if ($valor < 0) {
                             $this->postErrors[] = $this->l('O campo "Valor mão própria" não pode ser menor que 0 (zero)');
                         }
                     }
                 }
 
-                if (trim(Tools::getValue('fkcorreiosg2_aviso_recebimento_valor_'.$id)) == '') {
+                if (trim(Tools::getValue('fkcorreiosg2_aviso_recebimento_valor_' . $id)) == '') {
                     $this->postErrors[] = $this->l('O campo "Valor Aviso Recebimento" não está preenchido');
-                }else {
-                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_aviso_recebimento_valor_'.$id));
+                } else {
+                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_aviso_recebimento_valor_' . $id));
 
                     if (!is_numeric($valor)) {
                         $this->postErrors[] = $this->l('O campo "Valor Aviso Recebimento" não é numérico');
-                    }else {
+                    } else {
                         if ($valor < 0) {
                             $this->postErrors[] = $this->l('O campo "Valor Aviso Recebimento" não pode ser menor que 0 (zero)');
                         }
                     }
                 }
 
-                if (trim(Tools::getValue('fkcorreiosg2_valor_declarado_percentual_'.$id)) == '') {
+                if (trim(Tools::getValue('fkcorreiosg2_valor_declarado_percentual_' . $id)) == '') {
                     $this->postErrors[] = $this->l('O campo "Percentual Valor Declarado" não está preenchido');
-                }else {
-                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_valor_declarado_percentual_'.$id));
+                } else {
+                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_valor_declarado_percentual_' . $id));
 
                     if (!is_numeric($valor)) {
                         $this->postErrors[] = $this->l('O campo "Percentual Valor Declarado" não é numérico');
-                    }else {
+                    } else {
                         if ($valor < 0) {
                             $this->postErrors[] = $this->l('O campo "Percentual Valor Declarado" não pode ser menor que 0 (zero)');
                         }
                     }
                 }
 
-                if (trim(Tools::getValue('fkcorreiosg2_valor_declarado_max_'.$id)) == '') {
+                if (trim(Tools::getValue('fkcorreiosg2_valor_declarado_max_' . $id)) == '') {
                     $this->postErrors[] = $this->l('O campo "Máximo Valor Declarado" não está preenchido');
-                }else {
-                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_valor_declarado_max_'.$id));
+                } else {
+                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_valor_declarado_max_' . $id));
 
                     if (!is_numeric($valor)) {
                         $this->postErrors[] = $this->l('O campo "Máximo Valor Declarado" não é numérico');
-                    }else {
+                    } else {
                         if ($valor < 0) {
                             $this->postErrors[] = $this->l('O campo "Máximo Valor Declarado" não pode ser menor que 0 (zero)');
                         }
                     }
                 }
 
-                if (trim(Tools::getValue('fkcorreiosg2_seguro_automatico_valor_'.$id)) == '') {
+                if (trim(Tools::getValue('fkcorreiosg2_seguro_automatico_valor_' . $id)) == '') {
                     $this->postErrors[] = $this->l('O campo "Seguro automático" não está preenchido');
-                }else {
-                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_seguro_automatico_valor_'.$id));
+                } else {
+                    $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_seguro_automatico_valor_' . $id));
 
                     if (!is_numeric($valor)) {
                         $this->postErrors[] = $this->l('O campo "Seguro automático" não é numérico');
-                    }else {
+                    } else {
                         if ($valor < 0) {
                             $this->postErrors[] = $this->l('O campo "Seguro automático" não pode ser menor que 0 (zero)');
                         }
@@ -1466,35 +1493,35 @@ class fkcorreiosg2 extends CarrierModule {
                 $id = Tools::getValue('id');
 
                 // Verifica se o servico esta ativo
-                if (Tools::getValue('fkcorreiosg2_servicos_ativo_'.$id)) {
+                if (Tools::getValue('fkcorreiosg2_servicos_ativo_' . $id)) {
 
                     // Verifica o campo Grade
-                    if (trim(Tools::getValue('fkcorreiosg2_servicos_grade_'.$id)) == '') {
+                    if (trim(Tools::getValue('fkcorreiosg2_servicos_grade_' . $id)) == '') {
                         $this->postErrors[] = $this->l('O campo "Grade" não está preenchido');
-                    }else {
-                        if (!is_numeric(Tools::getValue('fkcorreiosg2_servicos_grade_'.$id))) {
+                    } else {
+                        if (!is_numeric(Tools::getValue('fkcorreiosg2_servicos_grade_' . $id))) {
                             $this->postErrors[] = $this->l('O campo "Grade" não é numérico');
-                        }else {
-                            if (Tools::getValue('fkcorreiosg2_servicos_grade_'.$id) < 0) {
+                        } else {
+                            if (Tools::getValue('fkcorreiosg2_servicos_grade_' . $id) < 0) {
                                 $this->postErrors[] = $this->l('O campo "Grade" não pode ser menor que 0 (zero)');
                             }
                         }
                     }
 
                     // Verifica os campo "Estados atendidos" e "Intervalo de CEPs atendidos"
-                    if (!Tools::getValue('fkcorreiosg2_servicos_uf_'.$id) and !Tools::getValue('fkcorreiosg2_servicos_cep_'.$id)) {
+                    if (!Tools::getValue('fkcorreiosg2_servicos_uf_' . $id) and !Tools::getValue('fkcorreiosg2_servicos_cep_' . $id)) {
                         $this->postErrors[] = $this->l('O campo "Estados atendidos" ou "Intervalo CEPs atendidos" devem ser preenchidos');
                     }
 
                     // Verifica o campo Percentual de Desconto
-                    if (trim(Tools::getValue('fkcorreiosg2_servicos_percentual_desc_'.$id)) == '') {
+                    if (trim(Tools::getValue('fkcorreiosg2_servicos_percentual_desc_' . $id)) == '') {
                         $this->postErrors[] = $this->l('O campo "Percentual de Desconto" não está preenchido');
-                    }else {
-                        $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_servicos_percentual_desc_'.$id));
+                    } else {
+                        $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_servicos_percentual_desc_' . $id));
 
                         if (!is_numeric($valor)) {
                             $this->postErrors[] = $this->l('O campo "Percentual de Desconto" não é numérico');
-                        }else {
+                        } else {
                             if ($valor < 0) {
                                 $this->postErrors[] = $this->l('O campo "Percentual de Desconto" não pode ser menor que 0 (zero)');
                             }
@@ -1502,14 +1529,14 @@ class fkcorreiosg2 extends CarrierModule {
                     }
 
                     // Verifica o campo Valor do Pedido
-                    if (trim(Tools::getValue('fkcorreiosg2_servicos_valor_pedido_desc_'.$id)) == '') {
+                    if (trim(Tools::getValue('fkcorreiosg2_servicos_valor_pedido_desc_' . $id)) == '') {
                         $this->postErrors[] = $this->l('O campo "Valor do Pedido" não está preenchido');
-                    }else {
-                        $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_servicos_valor_pedido_desc_'.$id));
+                    } else {
+                        $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_servicos_valor_pedido_desc_' . $id));
 
                         if (!is_numeric($valor)) {
                             $this->postErrors[] = $this->l('O campo "Valor do Pedido" não é numérico');
-                        }else {
+                        } else {
                             if ($valor < 0) {
                                 $this->postErrors[] = $this->l('O campo "Valor do Pedido" não pode ser menor que 0 (zero)');
                             }
@@ -1543,27 +1570,27 @@ class fkcorreiosg2 extends CarrierModule {
                 }
 
                 // Verifica se regiao esta ativa
-                if (Tools::getValue('fkcorreiosg2_frete_gratis_ativo_'.$id)) {
+                if (Tools::getValue('fkcorreiosg2_frete_gratis_ativo_' . $id)) {
 
                     // Nome da regiao
-                    if (trim(Tools::getValue('fkcorreiosg2_frete_gratis_nome_regiao_'.$id)) == '') {
+                    if (trim(Tools::getValue('fkcorreiosg2_frete_gratis_nome_regiao_' . $id)) == '') {
                         $this->postErrors[] = $this->l('O campo "Nome da Região" não está preenchido');
                     }
 
                     // Campo "Estados atendidos" e "Intervalo de CEPs atendidos"
-                    if (!Tools::getValue('fkcorreiosg2_frete_gratis_uf_'.$id) and !Tools::getValue('fkcorreiosg2_frete_gratis_cep_'.$id)) {
+                    if (!Tools::getValue('fkcorreiosg2_frete_gratis_uf_' . $id) and !Tools::getValue('fkcorreiosg2_frete_gratis_cep_' . $id)) {
                         $this->postErrors[] = $this->l('O campo "Estados Atendidos" ou "Intervalo CEPs Atendidos" devem ser preenchidos');
                     }
 
                     // Valor do pedido
-                    if (trim(Tools::getValue('fkcorreiosg2_frete_gratis_valor_pedido_'.$id)) == '') {
+                    if (trim(Tools::getValue('fkcorreiosg2_frete_gratis_valor_pedido_' . $id)) == '') {
                         $this->postErrors[] = $this->l('O campo "Valor do Pedido" não está preenchido');
-                    }else {
-                        $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_frete_gratis_valor_pedido_'.$id));
+                    } else {
+                        $valor = str_replace(',', '.', Tools::getValue('fkcorreiosg2_frete_gratis_valor_pedido_' . $id));
 
                         if (!is_numeric($valor)) {
                             $this->postErrors[] = $this->l('O campo "Valor do Pedido" não é numérico');
-                        }else {
+                        } else {
                             if ($valor < 0) {
                                 $this->postErrors[] = $this->l('O campo "Valor do Pedido" não pode ser menor que 0 (zero)');
                             }
@@ -1571,7 +1598,7 @@ class fkcorreiosg2 extends CarrierModule {
                     }
 
                     // Transportadoras
-                    if (!Tools::getValue('fkcorreiosg2_frete_gratis_transp_'.$id)) {
+                    if (!Tools::getValue('fkcorreiosg2_frete_gratis_transp_' . $id)) {
                         $this->postErrors[] = $this->l('Transportadora não selecionada');
                     }
 
@@ -1592,8 +1619,8 @@ class fkcorreiosg2 extends CarrierModule {
                 $id = Tools::getValue('id');
 
                 $sql = 'SELECT id, minha_cidade
-                        FROM '._DB_PREFIX_.'fkcorreiosg2_tabelas_offline
-                        WHERE id_especificacao = '.(int)$id;
+                        FROM ' . _DB_PREFIX_ . 'fkcorreiosg2_tabelas_offline
+                        WHERE id_especificacao = ' . (int) $id;
 
                 $tabOffline = Db::getInstance()->executeS($sql);
 
@@ -1603,24 +1630,24 @@ class fkcorreiosg2 extends CarrierModule {
                     $msgPrazo = 'Existem Prazos de Entrega não preenchidos. Favor verificar e regerar as tabelas envolvidas';
 
                     if ($reg['minha_cidade'] == 1) {
-                        if (trim(Tools::getValue('fkcorreiosg2_tab_offline_cidade_'.$reg['id'])) == '') {
+                        if (trim(Tools::getValue('fkcorreiosg2_tab_offline_cidade_' . $reg['id'])) == '') {
                             $this->postErrors[] = $msgTab;
                             break;
                         }
 
-                        if (trim(Tools::getValue('fkcorreiosg2_tab_offline_prazo_cidade_'.$reg['id'])) == '') {
+                        if (trim(Tools::getValue('fkcorreiosg2_tab_offline_prazo_cidade_' . $reg['id'])) == '') {
                             $this->postErrors[] = $msgPrazo;
                             break;
                         }
-                    }else {
-                        if (trim(Tools::getValue('fkcorreiosg2_tab_offline_capital_'.$reg['id'])) == '' Or
-                            trim(Tools::getValue('fkcorreiosg2_tab_offline_interior_'.$reg['id'])) == '') {
+                    } else {
+                        if (trim(Tools::getValue('fkcorreiosg2_tab_offline_capital_' . $reg['id'])) == '' or
+                            trim(Tools::getValue('fkcorreiosg2_tab_offline_interior_' . $reg['id'])) == '') {
                             $this->postErrors[] = $msgTab;
                             break;
                         }
 
-                        if (trim(Tools::getValue('fkcorreiosg2_tab_offline_prazo_capital_'.$reg['id'])) == '' Or
-                            trim(Tools::getValue('fkcorreiosg2_tab_offline_prazo_interior_'.$reg['id'])) == '') {
+                        if (trim(Tools::getValue('fkcorreiosg2_tab_offline_prazo_capital_' . $reg['id'])) == '' or
+                            trim(Tools::getValue('fkcorreiosg2_tab_offline_prazo_interior_' . $reg['id'])) == '') {
                             $this->postErrors[] = $msgPrazo;
                             break;
                         }
@@ -1635,7 +1662,8 @@ class fkcorreiosg2 extends CarrierModule {
         }
     }
 
-    private function postProcess($origem) {
+    private function postProcess($origem)
+    {
 
         // Exclui cache
         $this->excluiCache();
@@ -1684,13 +1712,13 @@ class fkcorreiosg2 extends CarrierModule {
                 foreach ($cadCep as $reg) {
 
                     $dados = array(
-                        'cep_estado'        => Tools::getValue('fkcorreiosg2_cep_estado_'.$reg['id']),
-                        'cep_capital'       => Tools::getValue('fkcorreiosg2_cep_capital_'.$reg['id']),
-                        'cep_base_capital'  => Tools::getValue('fkcorreiosg2_cep_base_capital_'.$reg['id']),
-                        'cep_base_interior' => Tools::getValue('fkcorreiosg2_cep_base_interior_'.$reg['id'])
+                        'cep_estado' => Tools::getValue('fkcorreiosg2_cep_estado_' . $reg['id']),
+                        'cep_capital' => Tools::getValue('fkcorreiosg2_cep_capital_' . $reg['id']),
+                        'cep_base_capital' => Tools::getValue('fkcorreiosg2_cep_base_capital_' . $reg['id']),
+                        'cep_base_interior' => Tools::getValue('fkcorreiosg2_cep_base_interior_' . $reg['id']),
                     );
 
-                    Db::getInstance()->update('fkcorreiosg2_cadastro_cep', $dados, 'id = ' . (int)$reg['id']);
+                    Db::getInstance()->update('fkcorreiosg2_cadastro_cep', $dados, 'id = ' . (int) $reg['id']);
                 }
 
                 break;
@@ -1706,11 +1734,11 @@ class fkcorreiosg2 extends CarrierModule {
                 // Atualiza os dados das embalagens
                 foreach ($embalagens as $reg) {
 
-                    $comprimento = str_replace(',', '.', Tools::getValue('fkcorreiosg2_emb_comprimento_'.$reg['id']));
-                    $altura = str_replace(',', '.', Tools::getValue('fkcorreiosg2_emb_altura_'.$reg['id']));
-                    $largura = str_replace(',', '.', Tools::getValue('fkcorreiosg2_emb_largura_'.$reg['id']));
-                    $peso = str_replace(',', '.', Tools::getValue('fkcorreiosg2_emb_peso_'.$reg['id']));
-                    $custo = str_replace(',', '.', Tools::getValue('fkcorreiosg2_emb_custo_'.$reg['id']));
+                    $comprimento = str_replace(',', '.', Tools::getValue('fkcorreiosg2_emb_comprimento_' . $reg['id']));
+                    $altura = str_replace(',', '.', Tools::getValue('fkcorreiosg2_emb_altura_' . $reg['id']));
+                    $largura = str_replace(',', '.', Tools::getValue('fkcorreiosg2_emb_largura_' . $reg['id']));
+                    $peso = str_replace(',', '.', Tools::getValue('fkcorreiosg2_emb_peso_' . $reg['id']));
+                    $custo = str_replace(',', '.', Tools::getValue('fkcorreiosg2_emb_custo_' . $reg['id']));
 
                     // Calcula cubagem da caixa
                     $cubagem = ($comprimento * $altura * $largura);
@@ -1725,17 +1753,17 @@ class fkcorreiosg2 extends CarrierModule {
                     }
 
                     $dados = array(
-                        'descricao'     => Tools::getValue('fkcorreiosg2_emb_descricao_'.$reg['id']),
-                        'comprimento'   => $comprimento,
-                        'altura'        => $altura,
-                        'largura'       => $largura,
-                        'peso'          => $peso,
-                        'cubagem'       => $cubagem,
-                        'custo'         => $custo,
-                        'ativo'         => $ativo
+                        'descricao' => Tools::getValue('fkcorreiosg2_emb_descricao_' . $reg['id']),
+                        'comprimento' => $comprimento,
+                        'altura' => $altura,
+                        'largura' => $largura,
+                        'peso' => $peso,
+                        'cubagem' => $cubagem,
+                        'custo' => $custo,
+                        'ativo' => $ativo,
                     );
 
-                    Db::getInstance()->update('fkcorreiosg2_embalagens', $dados, 'id = ' . (int)$reg['id']);
+                    Db::getInstance()->update('fkcorreiosg2_embalagens', $dados, 'id = ' . (int) $reg['id']);
                 }
 
                 break;
@@ -1746,29 +1774,29 @@ class fkcorreiosg2 extends CarrierModule {
                 $id = Tools::getValue('id');
 
                 $dados = array(
-                    'cod_servico'                   => Tools::getValue('fkcorreiosg2_cod_servico_'.$id),
-                    'cod_administrativo'            => Tools::getValue('fkcorreiosg2_cod_administrativo_'.$id),
-                    'senha'                         => Tools::getValue('fkcorreiosg2_senha_'.$id),
-                    'comprimento_min'               => str_replace(',', '.', Tools::getValue('fkcorreiosg2_comprimento_min_'.$id)),
-                    'comprimento_max'               => str_replace(',', '.', Tools::getValue('fkcorreiosg2_comprimento_max_'.$id)),
-                    'largura_min'                   => str_replace(',', '.', Tools::getValue('fkcorreiosg2_largura_min_'.$id)),
-                    'largura_max'                   => str_replace(',', '.', Tools::getValue('fkcorreiosg2_largura_max_'.$id)),
-                    'altura_min'                    => str_replace(',', '.', Tools::getValue('fkcorreiosg2_altura_min_'.$id)),
-                    'somatoria_dimensoes_max'       => str_replace(',', '.', Tools::getValue('fkcorreiosg2_somatoria_dimensoes_max_'.$id)),
-                    'peso_estadual_max'             => str_replace(',', '.', Tools::getValue('fkcorreiosg2_peso_estadual_max_'.$id)),
-                    'peso_nacional_max'             => str_replace(',', '.', Tools::getValue('fkcorreiosg2_peso_nacional_max_'.$id)),
-                    'intervalo_pesos_estadual'      => Tools::getValue('fkcorreiosg2_intervalo_pesos_estadual_'.$id),
-                    'intervalo_pesos_nacional'      => Tools::getValue('fkcorreiosg2_intervalo_pesos_nacional_'.$id),
-                    'cubagem_max_isenta'            => str_replace(',', '.', Tools::getValue('fkcorreiosg2_cubagem_max_isenta_'.$id)),
-                    'cubagem_base_calculo'          => str_replace(',', '.', Tools::getValue('fkcorreiosg2_cubagem_base_calculo_'.$id)),
-                    'mao_propria_valor'             => str_replace(',', '.', Tools::getValue('fkcorreiosg2_mao_propria_valor_'.$id)),
-                    'aviso_recebimento_valor'       => str_replace(',', '.', Tools::getValue('fkcorreiosg2_aviso_recebimento_valor_'.$id)),
-                    'valor_declarado_percentual'    => str_replace(',', '.', Tools::getValue('fkcorreiosg2_valor_declarado_percentual_'.$id)),
-                    'valor_declarado_max'           => str_replace(',', '.', Tools::getValue('fkcorreiosg2_valor_declarado_max_'.$id)),
-                    'seguro_automatico_valor'       => str_replace(',', '.', Tools::getValue('fkcorreiosg2_seguro_automatico_valor_'.$id))
+                    'cod_servico' => Tools::getValue('fkcorreiosg2_cod_servico_' . $id),
+                    'cod_administrativo' => Tools::getValue('fkcorreiosg2_cod_administrativo_' . $id),
+                    'senha' => Tools::getValue('fkcorreiosg2_senha_' . $id),
+                    'comprimento_min' => str_replace(',', '.', Tools::getValue('fkcorreiosg2_comprimento_min_' . $id)),
+                    'comprimento_max' => str_replace(',', '.', Tools::getValue('fkcorreiosg2_comprimento_max_' . $id)),
+                    'largura_min' => str_replace(',', '.', Tools::getValue('fkcorreiosg2_largura_min_' . $id)),
+                    'largura_max' => str_replace(',', '.', Tools::getValue('fkcorreiosg2_largura_max_' . $id)),
+                    'altura_min' => str_replace(',', '.', Tools::getValue('fkcorreiosg2_altura_min_' . $id)),
+                    'somatoria_dimensoes_max' => str_replace(',', '.', Tools::getValue('fkcorreiosg2_somatoria_dimensoes_max_' . $id)),
+                    'peso_estadual_max' => str_replace(',', '.', Tools::getValue('fkcorreiosg2_peso_estadual_max_' . $id)),
+                    'peso_nacional_max' => str_replace(',', '.', Tools::getValue('fkcorreiosg2_peso_nacional_max_' . $id)),
+                    'intervalo_pesos_estadual' => Tools::getValue('fkcorreiosg2_intervalo_pesos_estadual_' . $id),
+                    'intervalo_pesos_nacional' => Tools::getValue('fkcorreiosg2_intervalo_pesos_nacional_' . $id),
+                    'cubagem_max_isenta' => str_replace(',', '.', Tools::getValue('fkcorreiosg2_cubagem_max_isenta_' . $id)),
+                    'cubagem_base_calculo' => str_replace(',', '.', Tools::getValue('fkcorreiosg2_cubagem_base_calculo_' . $id)),
+                    'mao_propria_valor' => str_replace(',', '.', Tools::getValue('fkcorreiosg2_mao_propria_valor_' . $id)),
+                    'aviso_recebimento_valor' => str_replace(',', '.', Tools::getValue('fkcorreiosg2_aviso_recebimento_valor_' . $id)),
+                    'valor_declarado_percentual' => str_replace(',', '.', Tools::getValue('fkcorreiosg2_valor_declarado_percentual_' . $id)),
+                    'valor_declarado_max' => str_replace(',', '.', Tools::getValue('fkcorreiosg2_valor_declarado_max_' . $id)),
+                    'seguro_automatico_valor' => str_replace(',', '.', Tools::getValue('fkcorreiosg2_seguro_automatico_valor_' . $id)),
                 );
 
-                Db::getInstance()->update('fkcorreiosg2_especificacoes_correios', $dados, 'id = ' . (int)$id);
+                Db::getInstance()->update('fkcorreiosg2_especificacoes_correios', $dados, 'id = ' . (int) $id);
 
                 break;
 
@@ -1781,36 +1809,36 @@ class fkcorreiosg2 extends CarrierModule {
                 $fkClass = new FKcorreiosg2Class();
 
                 // Formata UFs
-                $regiaoUF = $fkClass->formataGravacaoUF(Tools::getValue('fkcorreiosg2_servicos_uf_'.$id));
+                $regiaoUF = $fkClass->formataGravacaoUF(Tools::getValue('fkcorreiosg2_servicos_uf_' . $id));
 
                 // Altera fkcorreiosg2_servicos
                 $dados = array(
-                    'filtro_regiao_uf'      => Tools::getValue('fkcorreiosg2_servicos_filtro_uf_'.$id),
-                    'regiao_uf'             => $regiaoUF,
-                    'regiao_cep'            => Tools::getValue('fkcorreiosg2_servicos_cep_'.$id),
-                    'regiao_cep_excluido'   => Tools::getValue('fkcorreiosg2_servicos_cep_excluido_'.$id),
-                    'grade'                 => Tools::getValue('fkcorreiosg2_servicos_grade_'.$id),
-                    'percentual_desconto'   => str_replace(',', '.', Tools::getValue('fkcorreiosg2_servicos_percentual_desc_'.$id)),
-                    'valor_pedido_desconto' => str_replace(',', '.', Tools::getValue('fkcorreiosg2_servicos_valor_pedido_desc_'.$id)),
-                    'ativo'                 => (!Tools::getValue('fkcorreiosg2_servicos_ativo_'.$id) ? '0' : '1')
+                    'filtro_regiao_uf' => Tools::getValue('fkcorreiosg2_servicos_filtro_uf_' . $id),
+                    'regiao_uf' => $regiaoUF,
+                    'regiao_cep' => Tools::getValue('fkcorreiosg2_servicos_cep_' . $id),
+                    'regiao_cep_excluido' => Tools::getValue('fkcorreiosg2_servicos_cep_excluido_' . $id),
+                    'grade' => Tools::getValue('fkcorreiosg2_servicos_grade_' . $id),
+                    'percentual_desconto' => str_replace(',', '.', Tools::getValue('fkcorreiosg2_servicos_percentual_desc_' . $id)),
+                    'valor_pedido_desconto' => str_replace(',', '.', Tools::getValue('fkcorreiosg2_servicos_valor_pedido_desc_' . $id)),
+                    'ativo' => (!Tools::getValue('fkcorreiosg2_servicos_ativo_' . $id) ? '0' : '1'),
                 );
 
-                Db::getInstance()->update('fkcorreiosg2_servicos', $dados, 'id = '.(int)$id);
+                Db::getInstance()->update('fkcorreiosg2_servicos', $dados, 'id = ' . (int) $id);
 
                 // Altera Carrier
                 $sql = 'SELECT *
-                        FROM '._DB_PREFIX_.'fkcorreiosg2_servicos
-                        WHERE id = '.$id;
+                        FROM ' . _DB_PREFIX_ . 'fkcorreiosg2_servicos
+                        WHERE id = ' . $id;
 
                 $servicos = Db::getInstance()->getRow($sql);
 
                 $parm = array(
-                    'nomeCarrier'   => '',
-                    'idCarrier'     => $servicos['id_carrier'],
-                    'ativo'         => $servicos['ativo'],
-                    'grade'         => $servicos['grade'],
-                    'arrayLogo'     => $_FILES,
-                    'campoLogo'     => 'fkcorreiosg2_servicos_logo_'.$id,
+                    'nomeCarrier' => '',
+                    'idCarrier' => $servicos['id_carrier'],
+                    'ativo' => $servicos['ativo'],
+                    'grade' => $servicos['grade'],
+                    'arrayLogo' => $_FILES,
+                    'campoLogo' => 'fkcorreiosg2_servicos_logo_' . $id,
                 );
 
                 if (!$fkClass->alteraCarrier($parm)) {
@@ -1828,22 +1856,22 @@ class fkcorreiosg2 extends CarrierModule {
                 $fkClass = new FKcorreiosg2Class();
 
                 // Formata UFs
-                $regiaoUF = $fkClass->formataGravacaoUF(Tools::getValue('fkcorreiosg2_frete_gratis_uf_'.$id));
+                $regiaoUF = $fkClass->formataGravacaoUF(Tools::getValue('fkcorreiosg2_frete_gratis_uf_' . $id));
 
                 // Altera fkcorreiosg2_frete_gratis
                 $dados = array(
-                    'id_carrier'            => Tools::getValue('fkcorreiosg2_frete_gratis_transp_'.$id),
-                    'nome_regiao'           => Tools::getValue('fkcorreiosg2_frete_gratis_nome_regiao_'.$id),
-                    'filtro_regiao_uf'      => Tools::getValue('fkcorreiosg2_frete_gratis_filtro_uf_'.$id),
-                    'regiao_uf'             => $regiaoUF,
-                    'regiao_cep'            => Tools::getValue('fkcorreiosg2_frete_gratis_cep_'.$id),
-                    'regiao_cep_excluido'   => Tools::getValue('fkcorreiosg2_frete_gratis_cep_excluido_'.$id),
-                    'valor_pedido'          => str_replace(',', '.', Tools::getValue('fkcorreiosg2_frete_gratis_valor_pedido_'.$id)),
-                    'id_produtos'           => Tools::getValue('fkcorreiosg2_frete_gratis_produtos_'.$id),
-                    'ativo'                 => (!Tools::getValue('fkcorreiosg2_frete_gratis_ativo_'.$id) ? '0' : '1'),
+                    'id_carrier' => Tools::getValue('fkcorreiosg2_frete_gratis_transp_' . $id),
+                    'nome_regiao' => Tools::getValue('fkcorreiosg2_frete_gratis_nome_regiao_' . $id),
+                    'filtro_regiao_uf' => Tools::getValue('fkcorreiosg2_frete_gratis_filtro_uf_' . $id),
+                    'regiao_uf' => $regiaoUF,
+                    'regiao_cep' => Tools::getValue('fkcorreiosg2_frete_gratis_cep_' . $id),
+                    'regiao_cep_excluido' => Tools::getValue('fkcorreiosg2_frete_gratis_cep_excluido_' . $id),
+                    'valor_pedido' => str_replace(',', '.', Tools::getValue('fkcorreiosg2_frete_gratis_valor_pedido_' . $id)),
+                    'id_produtos' => Tools::getValue('fkcorreiosg2_frete_gratis_produtos_' . $id),
+                    'ativo' => (!Tools::getValue('fkcorreiosg2_frete_gratis_ativo_' . $id) ? '0' : '1'),
                 );
 
-                Db::getInstance()->update('fkcorreiosg2_frete_gratis', $dados, 'id = '.(int)$id);
+                Db::getInstance()->update('fkcorreiosg2_frete_gratis', $dados, 'id = ' . (int) $id);
 
                 break;
 
@@ -1853,8 +1881,8 @@ class fkcorreiosg2 extends CarrierModule {
                 $id = Tools::getValue('id');
 
                 $sql = 'SELECT id, minha_cidade
-                        FROM '._DB_PREFIX_.'fkcorreiosg2_tabelas_offline
-                        WHERE id_especificacao = '.(int)$id;
+                        FROM ' . _DB_PREFIX_ . 'fkcorreiosg2_tabelas_offline
+                        WHERE id_especificacao = ' . (int) $id;
 
                 $tabOffline = Db::getInstance()->executeS($sql);
 
@@ -1868,32 +1896,33 @@ class fkcorreiosg2 extends CarrierModule {
                     $tabelaInterior = '';
 
                     if ($reg['minha_cidade']) {
-                        $prazoCidade = Tools::getValue('fkcorreiosg2_tab_offline_prazo_cidade_'.$reg['id']);
-                        $tabelaCidade = Tools::getValue('fkcorreiosg2_tab_offline_cidade_'.$reg['id']);
-                    }else {
-                        $prazoCapital = Tools::getValue('fkcorreiosg2_tab_offline_prazo_capital_'.$reg['id']);
-                        $prazoInterior = Tools::getValue('fkcorreiosg2_tab_offline_prazo_interior_'.$reg['id']);
-                        $tabelaCapital = Tools::getValue('fkcorreiosg2_tab_offline_capital_'.$reg['id']);
-                        $tabelaInterior = Tools::getValue('fkcorreiosg2_tab_offline_interior_'.$reg['id']);
+                        $prazoCidade = Tools::getValue('fkcorreiosg2_tab_offline_prazo_cidade_' . $reg['id']);
+                        $tabelaCidade = Tools::getValue('fkcorreiosg2_tab_offline_cidade_' . $reg['id']);
+                    } else {
+                        $prazoCapital = Tools::getValue('fkcorreiosg2_tab_offline_prazo_capital_' . $reg['id']);
+                        $prazoInterior = Tools::getValue('fkcorreiosg2_tab_offline_prazo_interior_' . $reg['id']);
+                        $tabelaCapital = Tools::getValue('fkcorreiosg2_tab_offline_capital_' . $reg['id']);
+                        $tabelaInterior = Tools::getValue('fkcorreiosg2_tab_offline_interior_' . $reg['id']);
                     }
 
                     $dados = array(
-                        'prazo_entrega_cidade'      => $prazoCidade,
-                        'prazo_entrega_capital'     => $prazoCapital,
-                        'prazo_entrega_interior'    => $prazoInterior,
-                        'tabela_cidade'             => $tabelaCidade,
-                        'tabela_capital'            => $tabelaCapital,
-                        'tabela_interior'           => $tabelaInterior
+                        'prazo_entrega_cidade' => $prazoCidade,
+                        'prazo_entrega_capital' => $prazoCapital,
+                        'prazo_entrega_interior' => $prazoInterior,
+                        'tabela_cidade' => $tabelaCidade,
+                        'tabela_capital' => $tabelaCapital,
+                        'tabela_interior' => $tabelaInterior,
                     );
 
-                    Db::getInstance()->update('fkcorreiosg2_tabelas_offline', $dados, 'id = '.(int)$reg['id']);
+                    Db::getInstance()->update('fkcorreiosg2_tabelas_offline', $dados, 'id = ' . (int) $reg['id']);
                 }
 
                 break;
         }
     }
 
-    public function getOrderShippingCost($params, $shipping_cost) {
+    public function getOrderShippingCost($params, $shipping_cost)
+    {
 
         // Instacia FKcorreiosg2FreteClass
         $freteClass = new FKcorreiosg2FreteClass();
@@ -1910,26 +1939,29 @@ class fkcorreiosg2 extends CarrierModule {
         $this->prazoEntrega[$this->id_carrier] = $frete['prazoEntrega'];
 
         // Retorna Valor do Frete
-        return (float)$frete['valorFrete'];
+        return (float) $frete['valorFrete'];
     }
 
-    public function getOrderShippingCostExternal($params) {
+    public function getOrderShippingCostExternal($params)
+    {
         return $this->getOrderShippingCost($params, 0);
     }
 
-    private function recuperaCadastroCep() {
+    private function recuperaCadastroCep()
+    {
 
         $sql = 'SELECT *
-                FROM '._DB_PREFIX_.'fkcorreiosg2_cadastro_cep
+                FROM ' . _DB_PREFIX_ . 'fkcorreiosg2_cadastro_cep
                 ORDER BY estado';
 
         return Db::getInstance()->executeS($sql);
     }
 
-    private function incluiCadastroCep() {
+    private function incluiCadastroCep()
+    {
 
         // Insere intervalo de cep dos estados e capitais
-        $sql = "INSERT INTO `"._DB_PREFIX_."fkcorreiosg2_cadastro_cep` (`estado`, `capital`, `cep_estado`, `cep_capital`, `cep_base_capital`, `cep_base_interior`) VALUES
+        $sql = "INSERT INTO `" . _DB_PREFIX_ . "fkcorreiosg2_cadastro_cep` (`estado`, `capital`, `cep_estado`, `cep_capital`, `cep_base_capital`, `cep_base_interior`) VALUES
             ('AC', 'Rio Branco', 		'69900000:69999999', 						'69900001:69923999',                    '69900-001', '69985-000'),
             ('AL', 'Maceió', 			'57000000:57999999', 						'57000001:57099999',                    '57000-001', '57770-000'),
             ('AM', 'Manaus', 			'69000000:69299999/69400000:69899999', 		'69000001:69099999',                    '69000-001', '69158-000'),
@@ -1962,97 +1994,105 @@ class fkcorreiosg2 extends CarrierModule {
 
     }
 
-    private function recuperaCadastroEmbalagens() {
+    private function recuperaCadastroEmbalagens()
+    {
 
         $sql = 'SELECT *
-                FROM '._DB_PREFIX_.'fkcorreiosg2_embalagens
-                WHERE id_shop = '.(int)$this->context->shop->id.'
+                FROM ' . _DB_PREFIX_ . 'fkcorreiosg2_embalagens
+                WHERE id_shop = ' . (int) $this->context->shop->id . '
                 Order By cubagem';
 
         return Db::getInstance()->ExecuteS($sql);
     }
 
-    private function incluiEmbalagensIniciais() {
+    private function incluiEmbalagensIniciais()
+    {
 
-        $sql = "INSERT INTO "._DB_PREFIX_."fkcorreiosg2_embalagens(id_shop, descricao, comprimento, altura, largura, peso, cubagem, custo, ativo) VALUES
-            (".$this->context->shop->id.", 'Caixa 1', 16.00, 2.00,  11.00, 0.20, 352.000000,  0.00, 1),
-            (".$this->context->shop->id.", 'Caixa 2', 16.00, 4.00,  11.00, 0.25, 704.000000,  0.00, 1),
-            (".$this->context->shop->id.", 'Caixa 3', 16.00, 6.00,  11.00, 0.30, 1056.000000, 0.00, 1),
-            (".$this->context->shop->id.", 'Caixa 4', 16.00, 8.00,  11.00, 0.35, 1408.000000, 0.00, 1),
-            (".$this->context->shop->id.", 'Caixa 5', 16.00, 10.00, 11.00, 0.40, 1760.000000, 0.00, 1);";
+        $sql = "INSERT INTO " . _DB_PREFIX_ . "fkcorreiosg2_embalagens(id_shop, descricao, comprimento, altura, largura, peso, cubagem, custo, ativo) VALUES
+            (" . $this->context->shop->id . ", 'Caixa 1', 16.00, 2.00,  11.00, 0.20, 352.000000,  0.00, 1),
+            (" . $this->context->shop->id . ", 'Caixa 2', 16.00, 4.00,  11.00, 0.25, 704.000000,  0.00, 1),
+            (" . $this->context->shop->id . ", 'Caixa 3', 16.00, 6.00,  11.00, 0.30, 1056.000000, 0.00, 1),
+            (" . $this->context->shop->id . ", 'Caixa 4', 16.00, 8.00,  11.00, 0.35, 1408.000000, 0.00, 1),
+            (" . $this->context->shop->id . ", 'Caixa 5', 16.00, 10.00, 11.00, 0.40, 1760.000000, 0.00, 1);";
 
         Db::getInstance()->execute($sql);
     }
 
-    private function incluiEmbalagem() {
+    private function incluiEmbalagem()
+    {
 
         $dados = array(
-            'id_shop'		=> $this->context->shop->id,
-            'descricao' 	=> 'Nova Caixa',
-            'peso'          => '0',
-            'custo'     	=> '0',
-            'ativo' 		=> '1'
+            'id_shop' => $this->context->shop->id,
+            'descricao' => 'Nova Caixa',
+            'peso' => '0',
+            'custo' => '0',
+            'ativo' => '1',
         );
 
         Db::getInstance()->insert('fkcorreiosg2_embalagens', $dados);
     }
 
-    private function excluiEmbalagem($embalagens) {
+    private function excluiEmbalagem($embalagens)
+    {
 
         if ($embalagens) {
             foreach ($embalagens as $embalagem) {
-                Db::getInstance()->delete('fkcorreiosg2_embalagens', 'id = '.(int)$embalagem);
+                Db::getInstance()->delete('fkcorreiosg2_embalagens', 'id = ' . (int) $embalagem);
             }
         }
     }
 
-    private function recuperaEspCorreios() {
+    private function recuperaEspCorreios()
+    {
 
         $sql = 'SELECT *
-                FROM '._DB_PREFIX_.'fkcorreiosg2_especificacoes_correios
-                WHERE id_shop = '.(int)$this->context->shop->id;
+                FROM ' . _DB_PREFIX_ . 'fkcorreiosg2_especificacoes_correios
+                WHERE id_shop = ' . (int) $this->context->shop->id;
 
         return Db::getInstance()->ExecuteS($sql);
     }
 
-    private function incluiEspecificacoesCorreios() {
+    private function incluiEspecificacoesCorreios()
+    {
 
-        $sql = "INSERT INTO `"._DB_PREFIX_."fkcorreiosg2_especificacoes_correios` (`id_shop`, `tabela_offline`, `servico`, `cod_servico`, `cod_administrativo`, `senha`, `comprimento_min`, `comprimento_max`, `largura_min`, `largura_max`, `altura_min`, `altura_max`, `somatoria_dimensoes_max`, `peso_estadual_max`, `peso_nacional_max`, `intervalo_pesos_estadual`, `intervalo_pesos_nacional`, `cubagem_max_isenta`, `cubagem_base_calculo`, `mao_propria_valor`, `aviso_recebimento_valor`, `valor_declarado_percentual`, `valor_declarado_max`, `seguro_automatico_valor`) VALUES
-			('".$this->context->shop->id."', '0', 'E-SEDEX', 	'81019', '', '', '16', '105', '11', '105', '2', '105', '200', '15', '15', '0.3/1/2/3/4/5/6/7/8/9/10/11/12/13/14/15', 												'0.3/1/2/3/4/5/6/7/8/9/10/11/12/13/14/15', 												'60000',    '6000', 	'4.30', '3.20', '1.5', '10000', '50'),
-			('".$this->context->shop->id."', '1', 'PAC', 		'41106', '', '', '16', '105', '11', '105', '2', '105', '200', '30', '30', '1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22/23/24/25/26/27/28/29/30', 	    '1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22/23/24/25/26/27/28/29/30',     '0',        '6000',		'4.30', '3.20', '1.5', '10000', '50'),
-			('".$this->context->shop->id."', '0', 'PAC-GF',		'41300', '', '', '16', '150', '11', '150', '2', '150', '300', '30', '30', '1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22/23/24/25/26/27/28/29/30', 	    '1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22/23/24/25/26/27/28/29/30',     '0',        '6000',		'4.30', '3.20', '1.5', '10000', '50'),
-			('".$this->context->shop->id."', '1', 'SEDEX', 		'40010', '', '', '16', '105', '11', '105', '2', '105', '200', '30', '30', '0.3/1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22/23/24/25/26/27/28/29/30', 	'0.3/1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22/23/24/25/26/27/28/29/30', '60000',    '6000', 	'4.30', '3.20', '1.5', '10000', '50'),
-			('".$this->context->shop->id."', '0', 'SEDEX 10', 	'40215', '', '', '16', '105', '11', '105', '2', '105', '200', '10', '10', '0.3/1/2/3/4/5/6/7/8/9/10', 																'0.3/1/2/3/4/5/6/7/8/9/10', 															'60000',    '6000', 	'4.30', '3.20', '1.5', '10000', '75'),
-			('".$this->context->shop->id."', '0', 'SEDEX 12', 	'40169', '', '', '16', '105', '11', '105', '2', '105', '200', '10', '10', '0.3/1/2/3/4/5/6/7/8/9/10', 																'0.3/1/2/3/4/5/6/7/8/9/10', 															'60000',    '6000', 	'4.30', '3.20', '1.5', '10000', '75'),
-			('".$this->context->shop->id."', '0', 'SEDEX HOJE',	'40290', '', '', '16', '105', '11', '105', '2', '105', '200', '10', '10', '0.3/1/2/3/4/5/6/7/8/9/10', 																'0.3/1/2/3/4/5/6/7/8/9/10', 															'60000',    '6000', 	'4.30', '3.20', '1.5', '10000', '75');";
+        $sql = "INSERT INTO `" . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios` (`id_shop`, `tabela_offline`, `servico`, `cod_servico`, `cod_administrativo`, `senha`, `comprimento_min`, `comprimento_max`, `largura_min`, `largura_max`, `altura_min`, `altura_max`, `somatoria_dimensoes_max`, `peso_estadual_max`, `peso_nacional_max`, `intervalo_pesos_estadual`, `intervalo_pesos_nacional`, `cubagem_max_isenta`, `cubagem_base_calculo`, `mao_propria_valor`, `aviso_recebimento_valor`, `valor_declarado_percentual`, `valor_declarado_max`, `seguro_automatico_valor`) VALUES
+			('" . $this->context->shop->id . "', '0', 'E-SEDEX', 	'81019', '', '', '16', '105', '11', '105', '2', '105', '200', '15', '15', '0.3/1/2/3/4/5/6/7/8/9/10/11/12/13/14/15', 												'0.3/1/2/3/4/5/6/7/8/9/10/11/12/13/14/15', 												'60000',    '6000', 	'4.30', '3.20', '1.5', '10000', '50'),
+			('" . $this->context->shop->id . "', '1', 'PAC', 		'41106', '', '', '16', '105', '11', '105', '2', '105', '200', '30', '30', '1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22/23/24/25/26/27/28/29/30', 	    '1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22/23/24/25/26/27/28/29/30',     '0',        '6000',		'4.30', '3.20', '1.5', '10000', '50'),
+			('" . $this->context->shop->id . "', '0', 'PAC-GF',		'41300', '', '', '16', '150', '11', '150', '2', '150', '300', '30', '30', '1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22/23/24/25/26/27/28/29/30', 	    '1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22/23/24/25/26/27/28/29/30',     '0',        '6000',		'4.30', '3.20', '1.5', '10000', '50'),
+			('" . $this->context->shop->id . "', '1', 'SEDEX', 		'40010', '', '', '16', '105', '11', '105', '2', '105', '200', '30', '30', '0.3/1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22/23/24/25/26/27/28/29/30', 	'0.3/1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22/23/24/25/26/27/28/29/30', '60000',    '6000', 	'4.30', '3.20', '1.5', '10000', '50'),
+			('" . $this->context->shop->id . "', '0', 'SEDEX 10', 	'40215', '', '', '16', '105', '11', '105', '2', '105', '200', '10', '10', '0.3/1/2/3/4/5/6/7/8/9/10', 																'0.3/1/2/3/4/5/6/7/8/9/10', 															'60000',    '6000', 	'4.30', '3.20', '1.5', '10000', '75'),
+			('" . $this->context->shop->id . "', '0', 'SEDEX 12', 	'40169', '', '', '16', '105', '11', '105', '2', '105', '200', '10', '10', '0.3/1/2/3/4/5/6/7/8/9/10', 																'0.3/1/2/3/4/5/6/7/8/9/10', 															'60000',    '6000', 	'4.30', '3.20', '1.5', '10000', '75'),
+			('" . $this->context->shop->id . "', '0', 'SEDEX HOJE',	'40290', '', '', '16', '105', '11', '105', '2', '105', '200', '10', '10', '0.3/1/2/3/4/5/6/7/8/9/10', 																'0.3/1/2/3/4/5/6/7/8/9/10', 															'60000',    '6000', 	'4.30', '3.20', '1.5', '10000', '75');";
 
         Db::getInstance()->execute($sql);
 
     }
 
-    private function recuperaServicosCorreios() {
+    private function recuperaServicosCorreios()
+    {
 
         // Servicos dos Correios
         $sql = 'SELECT
-                  '._DB_PREFIX_.'fkcorreiosg2_servicos.*,
-                  '._DB_PREFIX_.'fkcorreiosg2_especificacoes_correios.servico
-                FROM '._DB_PREFIX_.'fkcorreiosg2_servicos
-                  INNER JOIN '._DB_PREFIX_.'fkcorreiosg2_especificacoes_correios
-                    ON '._DB_PREFIX_.'fkcorreiosg2_servicos.id_especificacao = '._DB_PREFIX_.'fkcorreiosg2_especificacoes_correios.id
-                WHERE '._DB_PREFIX_.'fkcorreiosg2_servicos.id_shop = '.(int)$this->context->shop->id;
+                  ' . _DB_PREFIX_ . 'fkcorreiosg2_servicos.*,
+                  ' . _DB_PREFIX_ . 'fkcorreiosg2_especificacoes_correios.servico
+                FROM ' . _DB_PREFIX_ . 'fkcorreiosg2_servicos
+                  INNER JOIN ' . _DB_PREFIX_ . 'fkcorreiosg2_especificacoes_correios
+                    ON ' . _DB_PREFIX_ . 'fkcorreiosg2_servicos.id_especificacao = ' . _DB_PREFIX_ . 'fkcorreiosg2_especificacoes_correios.id
+                WHERE ' . _DB_PREFIX_ . 'fkcorreiosg2_servicos.id_shop = ' . (int) $this->context->shop->id;
 
         return Db::getInstance()->ExecuteS($sql);
     }
 
-    private function incluiServicos() {
+    private function incluiServicos()
+    {
 
         // Instacia FKcorreiosClass
         $fkclass = new FKcorreiosg2Class();
 
         // Recupera dados da tabela de especificacoes dos Correios
         $sql = 'SELECT id, servico
-                FROM '._DB_PREFIX_.'fkcorreiosg2_especificacoes_correios
-                WHERE id_shop = '.(int)$this->context->shop->id;
+                FROM ' . _DB_PREFIX_ . 'fkcorreiosg2_especificacoes_correios
+                WHERE id_shop = ' . (int) $this->context->shop->id;
 
         $espCorreios = Db::getInstance()->ExecuteS($sql);
 
@@ -2060,34 +2100,34 @@ class fkcorreiosg2 extends CarrierModule {
 
             // Inclui Carrier no Prestashop
             $parm = array(
-                'name' 					=> $reg['servico'],
-                'id_tax_rules_group' 	=> 0,
-                'active' 				=> false,
-                'deleted' 				=> false,
-                'shipping_handling' 	=> false,
-                'range_behavior' 		=> true,
-                'is_module' 			=> true,
-                'shipping_external' 	=> true,
-                'shipping_method' 		=> 0,
-                'external_module_name' 	=> $this->name,
-                'need_range' 			=> true,
-                'url' 					=> Configuration::get('FKCORREIOSG2_URL_RASTREIO_CORREIOS'),
-                'is_free' 				=> false,
-                'grade' 				=> 0,
+                'name' => $reg['servico'],
+                'id_tax_rules_group' => 0,
+                'active' => false,
+                'deleted' => false,
+                'shipping_handling' => false,
+                'range_behavior' => true,
+                'is_module' => true,
+                'shipping_external' => true,
+                'shipping_method' => 0,
+                'external_module_name' => $this->name,
+                'need_range' => true,
+                'url' => Configuration::get('FKCORREIOSG2_URL_RASTREIO_CORREIOS'),
+                'is_free' => false,
+                'grade' => 0,
             );
 
             $idCarrier = $fkclass->instalaCarrier($parm);
 
             // Insere os registros na tabela de servicos
             $dados = array(
-                'id_shop' 		        => $this->context->shop->id,
-                'id_especificacao'      => $reg['id'],
-                'id_carrier' 	        => $idCarrier,
-                'filtro_regiao_uf'      => 1,
-                'grade' 		        => 0,
-                'ativo' 		        => 0,
-                'percentual_desconto'   => 0,
-                'valor_pedido_desconto' => 0
+                'id_shop' => $this->context->shop->id,
+                'id_especificacao' => $reg['id'],
+                'id_carrier' => $idCarrier,
+                'filtro_regiao_uf' => 1,
+                'grade' => 0,
+                'ativo' => 0,
+                'percentual_desconto' => 0,
+                'valor_pedido_desconto' => 0,
             );
 
             Db::getInstance()->insert('fkcorreiosg2_servicos', $dados);
@@ -2095,27 +2135,29 @@ class fkcorreiosg2 extends CarrierModule {
 
     }
 
-    private function recuperaRegioesFreteGratis() {
+    private function recuperaRegioesFreteGratis()
+    {
 
         $sql = 'SELECT *
-                FROM '._DB_PREFIX_.'fkcorreiosg2_frete_gratis
-                WHERE id_shop = '.(int)$this->context->shop->id;
+                FROM ' . _DB_PREFIX_ . 'fkcorreiosg2_frete_gratis
+                WHERE id_shop = ' . (int) $this->context->shop->id;
 
         return Db::getInstance()->ExecuteS($sql);
     }
 
-    private function recuperaTranspFreteGratis() {
+    private function recuperaTranspFreteGratis()
+    {
 
         $transportadoras = array();
 
         // Servicos dos Correios
         $sql = "SELECT
-                    "._DB_PREFIX_."fkcorreiosg2_servicos.id_carrier,
-                    "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.servico AS transportadora
-                FROM "._DB_PREFIX_."fkcorreiosg2_servicos
-                  INNER JOIN "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios
-                    ON "._DB_PREFIX_."fkcorreiosg2_servicos.id_especificacao = "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.id
-                WHERE "._DB_PREFIX_."fkcorreiosg2_servicos.id_shop = ".(int)$this->context->shop->id;
+                    " . _DB_PREFIX_ . "fkcorreiosg2_servicos.id_carrier,
+                    " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.servico AS transportadora
+                FROM " . _DB_PREFIX_ . "fkcorreiosg2_servicos
+                  INNER JOIN " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios
+                    ON " . _DB_PREFIX_ . "fkcorreiosg2_servicos.id_especificacao = " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.id
+                WHERE " . _DB_PREFIX_ . "fkcorreiosg2_servicos.id_shop = " . (int) $this->context->shop->id;
 
         $transpCorreios = Db::getInstance()->ExecuteS($sql);
 
@@ -2127,16 +2169,16 @@ class fkcorreiosg2 extends CarrierModule {
         foreach ($complementos as $reg) {
 
             // Cria path da classe do Complemento
-            $path = _PS_MODULE_DIR_.$reg['modulo'].'/models/'.strtoupper(substr($reg['modulo'],0,2)).substr($reg['modulo'],2).'FreteClass.php';
+            $path = _PS_MODULE_DIR_ . $reg['modulo'] . '/models/' . strtoupper(substr($reg['modulo'], 0, 2)) . substr($reg['modulo'], 2) . 'FreteClass.php';
 
             // Verifica se a classe existe
             if (file_exists($path)) {
 
                 // Include da classe
-                include_once($path);
+                include_once $path;
 
                 // Instancia a classe de frete do complemento
-                $funcao = strtoupper(substr($reg['modulo'],0,2)).substr($reg['modulo'],2).'FreteClass';
+                $funcao = strtoupper(substr($reg['modulo'], 0, 2)) . substr($reg['modulo'], 2) . 'FreteClass';
                 $freteClass = new $funcao;
 
                 $transp = $freteClass->recuperaTranspFreteGratis();
@@ -2152,53 +2194,58 @@ class fkcorreiosg2 extends CarrierModule {
         return $transportadoras;
     }
 
-    private function incluiFreteGratis() {
+    private function incluiFreteGratis()
+    {
 
         $dados = array(
-            'id_shop'		    => $this->context->shop->id,
-            'nome_regiao' 	    => 'Nova Região',
-            'filtro_regiao_uf'  => '1',
-            'valor_pedido'      => '0',
-            'ativo' 		    => '0'
+            'id_shop' => $this->context->shop->id,
+            'nome_regiao' => 'Nova Região',
+            'filtro_regiao_uf' => '1',
+            'valor_pedido' => '0',
+            'ativo' => '0',
         );
 
         Db::getInstance()->insert('fkcorreiosg2_frete_gratis', $dados);
     }
 
-    private function excluiFreteGratis($id) {
-        Db::getInstance()->delete('fkcorreiosg2_frete_gratis', '`id` = '.(int)$id);
+    private function excluiFreteGratis($id)
+    {
+        Db::getInstance()->delete('fkcorreiosg2_frete_gratis', '`id` = ' . (int) $id);
     }
 
-    private function recuperaEspCorreiosTabOffline() {
+    private function recuperaEspCorreiosTabOffline()
+    {
 
         $sql = "SELECT id, servico
-                FROM "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios
-                WHERE tabela_offline = '1' AND id_shop = ".(int)$this->context->shop->id;
+                FROM " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios
+                WHERE tabela_offline = '1' AND id_shop = " . (int) $this->context->shop->id;
 
         return Db::getInstance()->ExecuteS($sql);
     }
 
-    private function recuperaTabOffline($minhaCidade = false) {
+    private function recuperaTabOffline($minhaCidade = false)
+    {
 
         if ($minhaCidade) {
             $sql = "SELECT *
-                    FROM "._DB_PREFIX_."fkcorreiosg2_tabelas_offline
-                    WHERE minha_cidade = '1' AND id_shop = ".(int)$this->context->shop->id;
-        }else {
+                    FROM " . _DB_PREFIX_ . "fkcorreiosg2_tabelas_offline
+                    WHERE minha_cidade = '1' AND id_shop = " . (int) $this->context->shop->id;
+        } else {
             $sql = "SELECT
-                        "._DB_PREFIX_."fkcorreiosg2_tabelas_offline.*,
-                        "._DB_PREFIX_."fkcorreiosg2_cadastro_cep.estado,
-                        "._DB_PREFIX_."fkcorreiosg2_cadastro_cep.capital
-                    FROM "._DB_PREFIX_."fkcorreiosg2_tabelas_offline
-                        INNER JOIN "._DB_PREFIX_."fkcorreiosg2_cadastro_cep
-                            ON "._DB_PREFIX_."fkcorreiosg2_tabelas_offline.id_cadastro_cep = "._DB_PREFIX_."fkcorreiosg2_cadastro_cep.id
-                    WHERE "._DB_PREFIX_."fkcorreiosg2_tabelas_offline.id_shop = ".(int)$this->context->shop->id;
+                        " . _DB_PREFIX_ . "fkcorreiosg2_tabelas_offline.*,
+                        " . _DB_PREFIX_ . "fkcorreiosg2_cadastro_cep.estado,
+                        " . _DB_PREFIX_ . "fkcorreiosg2_cadastro_cep.capital
+                    FROM " . _DB_PREFIX_ . "fkcorreiosg2_tabelas_offline
+                        INNER JOIN " . _DB_PREFIX_ . "fkcorreiosg2_cadastro_cep
+                            ON " . _DB_PREFIX_ . "fkcorreiosg2_tabelas_offline.id_cadastro_cep = " . _DB_PREFIX_ . "fkcorreiosg2_cadastro_cep.id
+                    WHERE " . _DB_PREFIX_ . "fkcorreiosg2_tabelas_offline.id_shop = " . (int) $this->context->shop->id;
         }
 
         return Db::getInstance()->ExecuteS($sql);
     }
 
-    private function incluiTabOffline() {
+    private function incluiTabOffline()
+    {
 
         // Recupera dados das Especificacoes dos Correios para as Tabelas Offline
         $espCorreios = $this->recuperaEspCorreiosTabOffline();
@@ -2210,10 +2257,10 @@ class fkcorreiosg2 extends CarrierModule {
 
             // Grava tabela Minha Cidade
             $dados = array(
-                'id_shop'           => $this->context->shop->id,
-                'id_especificacao'  => $especificacao['id'],
-                'id_cadastro_cep'   => '0',
-                'minha_cidade'      => '1'
+                'id_shop' => $this->context->shop->id,
+                'id_especificacao' => $especificacao['id'],
+                'id_cadastro_cep' => '0',
+                'minha_cidade' => '1',
             );
 
             Db::getInstance()->insert('fkcorreiosg2_tabelas_offline', $dados);
@@ -2222,10 +2269,10 @@ class fkcorreiosg2 extends CarrierModule {
             foreach ($cadCep as $estado) {
 
                 $dados = array(
-                    'id_shop'           => $this->context->shop->id,
-                    'id_especificacao'  => $especificacao['id'],
-                    'id_cadastro_cep'   => $estado['id'],
-                    'minha_cidade'      => '0'
+                    'id_shop' => $this->context->shop->id,
+                    'id_especificacao' => $especificacao['id'],
+                    'id_cadastro_cep' => $estado['id'],
+                    'minha_cidade' => '0',
                 );
 
                 Db::getInstance()->insert('fkcorreiosg2_tabelas_offline', $dados);
@@ -2234,30 +2281,33 @@ class fkcorreiosg2 extends CarrierModule {
 
     }
 
-    private function recuperaComplementosInstalados() {
+    private function recuperaComplementosInstalados()
+    {
 
         $sql = "SELECT *
-                FROM "._DB_PREFIX_."fkcorreiosg2_complementos
-                WHERE id_shop = ".(int)$this->context->shop->id;
+                FROM " . _DB_PREFIX_ . "fkcorreiosg2_complementos
+                WHERE id_shop = " . (int) $this->context->shop->id;
 
         return Db::getInstance()->executeS($sql);
     }
 
-    private function recuperaComplementosFrete() {
+    private function recuperaComplementosFrete()
+    {
 
         $sql = "SELECT *
-                FROM "._DB_PREFIX_."fkcorreiosg2_complementos
+                FROM " . _DB_PREFIX_ . "fkcorreiosg2_complementos
                 WHERE frete = 1 AND
-                      id_shop =".(int)$this->context->shop->id;
+                      id_shop =" . (int) $this->context->shop->id;
 
         return Db::getInstance()->executeS($sql);
     }
 
-    private function verificaModuloInstalado($modulo) {
+    private function verificaModuloInstalado($modulo)
+    {
 
         $sql = "SELECT *
-                FROM "._DB_PREFIX_."module
-                WHERE name = '".$modulo."'";
+                FROM " . _DB_PREFIX_ . "module
+                WHERE name = '" . $modulo . "'";
 
         $moduloInstalado = Db::getInstance()->getRow($sql);
 
@@ -2268,11 +2318,13 @@ class fkcorreiosg2 extends CarrierModule {
         return false;
     }
 
-    private function excluiCache() {
+    private function excluiCache()
+    {
         Db::getInstance()->delete('fkcorreiosg2_cache');
     }
 
-    private function gravaDadosSmartyFrete($msgStatus, $idProduto = null, $transportadoras, $lightBox) {
+    private function gravaDadosSmartyFrete($msgStatus, $idProduto = null, $transportadoras, $lightBox)
+    {
 
         // Verifica mensagem das transportadoras
         $msgTransp = '';
@@ -2287,35 +2339,37 @@ class fkcorreiosg2 extends CarrierModule {
 
         $this->context->smarty->assign(array(
             'fkcorreiosg2' => array(
-                'borda'             => Configuration::get('FKCORREIOSG2_BORDA'),
-                'raioBorda'         => Configuration::get('FKCORREIOSG2_RAIO_BORDA'),
-                'corFundo'          => Configuration::get('FKCORREIOSG2_COR_FUNDO'),
-                'corFonteTitulo'    => Configuration::get('FKCORREIOSG2_COR_FONTE_TITULO'),
-                'corBotao'          => Configuration::get('FKCORREIOSG2_COR_BOTAO'),
-                'corFonteBotao'     => Configuration::get('FKCORREIOSG2_COR_FONTE_BOTAO'),
-                'corFaixaMsg'       => Configuration::get('FKCORREIOSG2_COR_FAIXA_MSG'),
-                'corFonteMsg'       => Configuration::get('FKCORREIOSG2_COR_FONTE_MSG'),
-                'largura'           => Configuration::get('FKCORREIOSG2_LARGURA'),
-                'lightBox'          => $lightBox,
-                'msgStatus'         => $msgStatus,
-                'cepCookie'         => $this->context->cookie->fkcorreiosg2_cep_destino,
-                'msgTransp'         => $msgTransp,
-                'idProduto'         => $idProduto,
-                'transportadoras'   => $transportadoras,
-            )
+                'borda' => Configuration::get('FKCORREIOSG2_BORDA'),
+                'raioBorda' => Configuration::get('FKCORREIOSG2_RAIO_BORDA'),
+                'corFundo' => Configuration::get('FKCORREIOSG2_COR_FUNDO'),
+                'corFonteTitulo' => Configuration::get('FKCORREIOSG2_COR_FONTE_TITULO'),
+                'corBotao' => Configuration::get('FKCORREIOSG2_COR_BOTAO'),
+                'corFonteBotao' => Configuration::get('FKCORREIOSG2_COR_FONTE_BOTAO'),
+                'corFaixaMsg' => Configuration::get('FKCORREIOSG2_COR_FAIXA_MSG'),
+                'corFonteMsg' => Configuration::get('FKCORREIOSG2_COR_FONTE_MSG'),
+                'largura' => Configuration::get('FKCORREIOSG2_LARGURA'),
+                'lightBox' => $lightBox,
+                'msgStatus' => $msgStatus,
+                'cepCookie' => $this->context->cookie->fkcorreiosg2_cep_destino,
+                'msgTransp' => $msgTransp,
+                'idProduto' => $idProduto,
+                'transportadoras' => $transportadoras,
+            ),
         ));
     }
 
-    private function gravaDadosSmartyRastreio() {
+    private function gravaDadosSmartyRastreio()
+    {
 
         $this->context->smarty->assign(array(
             'fkcorreiosg2_rastreio' => array(
-                'urlFuncoesRastreio'   => Configuration::get('FKCORREIOSG2_URL_FUNCOES_RASTREIO'),
-            )
+                'urlFuncoesRastreio' => Configuration::get('FKCORREIOSG2_URL_FUNCOES_RASTREIO'),
+            ),
         ));
     }
 
-    private function processaSimulador($origem, $bloco, $params) {
+    private function processaSimulador($origem, $bloco, $params)
+    {
 
         if ($origem == 'produto') {
             // Retorna se nao for para mostrar em produtos
@@ -2326,9 +2380,9 @@ class fkcorreiosg2 extends CarrierModule {
             // Retorna se o bloco e Apos Descricao Resumida e nao for para mostrar
             if ($bloco == '0' and Configuration::get('FKCORREIOSG2_BLOCO_PRODUTO_POSICAO') != '0') {
                 return false;
-            }elseif ($bloco == '1' and Configuration::get('FKCORREIOSG2_BLOCO_PRODUTO_POSICAO') != '1') {
+            } elseif ($bloco == '1' and Configuration::get('FKCORREIOSG2_BLOCO_PRODUTO_POSICAO') != '1') {
                 return false;
-            }elseif ($bloco == '2' and Configuration::get('FKCORREIOSG2_BLOCO_PRODUTO_POSICAO') != '2') {
+            } elseif ($bloco == '2' and Configuration::get('FKCORREIOSG2_BLOCO_PRODUTO_POSICAO') != '2') {
                 return false;
             }
 
@@ -2347,7 +2401,7 @@ class fkcorreiosg2 extends CarrierModule {
                     return false;
                 }
             }
-        }else {
+        } else {
             // Retorna se nao for para mostrar no carrinho
             if (Configuration::get('FKCORREIOSG2_BLOCO_CARRINHO') != 'on') {
                 return false;
@@ -2395,7 +2449,7 @@ class fkcorreiosg2 extends CarrierModule {
 
             if (!$dadosBasicos['status']) {
                 $msgStatus = $dadosBasicos['msgErro'];
-            }else {
+            } else {
                 // Instancia CalculoFreteClass do módulo FKcorreiosg2
                 $freteClass = new FKcorreiosg2FreteClass();
 
@@ -2415,7 +2469,7 @@ class fkcorreiosg2 extends CarrierModule {
                     usort($transportadoras, array($this, 'ordenaValor'));
 
                     $msgStatus = 'Frete Calculado';
-                }else {
+                } else {
                     $msgStatus = $this->l('Não existem transportadoras disponíveis para o CEP de Destino. Favor entrar em contato com o Atendimento ao Cliente');
                 }
             }
@@ -2424,14 +2478,15 @@ class fkcorreiosg2 extends CarrierModule {
         if ($origem == 'produto') {
             $id_product = is_array($params['product']) ? $params['product']['id'] : $params['product']->id;
             $this->gravaDadosSmartyFrete($msgStatus, $id_product, $transportadoras, $lightBox);
-        }else {
+        } else {
             $this->gravaDadosSmartyFrete($msgStatus, null, $transportadoras, false);
         }
 
         return true;
     }
 
-    private function recuperaDadosBasicosSimulador($origem, $params) {
+    private function recuperaDadosBasicosSimulador($origem, $params)
+    {
 
         // Inicializa variaveis gerais
         $cepOrigem = trim(preg_replace("/[^0-9]/", "", Configuration::get('FKCORREIOSG2_MEU_CEP')));
@@ -2445,16 +2500,16 @@ class fkcorreiosg2 extends CarrierModule {
         // Recupera CEP destino
         if (Tools::getValue('origem') == 'adicCarrinho') {
             $cepDestino = Tools::getValue('cep');
-        }else {
-            if (Tools::isSubmit('btnSubmit')){
+        } else {
+            if (Tools::isSubmit('btnSubmit')) {
                 $cepDestino = Tools::getValue('fkcorreiosg2_cep');
-            }else {
+            } else {
                 if ($origem == 'carrinho') {
                     // Se o cliente esta logado
                     if ($this->context->customer->isLogged()) {
                         $delivery_address = new Address($params['cart']->id_address_delivery);
                         $cepDestino = $delivery_address->postcode;
-                    }else {
+                    } else {
                         // Recupera CEP do cookie
                         if ($this->context->cookie->fkcorreiosg2_cep_destino) {
                             $cepDestino = $this->context->cookie->fkcorreiosg2_cep_destino;
@@ -2468,10 +2523,10 @@ class fkcorreiosg2 extends CarrierModule {
         $cepDestino = trim(preg_replace("/[^0-9]/", "", $cepDestino));
 
         // Retorna erro se o CEP for invalido
-        if (strlen($cepDestino) <> 8) {
+        if (strlen($cepDestino) != 8) {
             return array(
-                'status'    => false,
-                'msgErro'   => 'CEP Destino inválido',
+                'status' => false,
+                'msgErro' => 'CEP Destino inválido',
             );
         }
 
@@ -2484,8 +2539,8 @@ class fkcorreiosg2 extends CarrierModule {
         // Retorna erro se nao localizada a UF
         if (!$ufDestino) {
             return array(
-                'status'    => false,
-                'msgErro'   => 'UF Destino não localizada',
+                'status' => false,
+                'msgErro' => 'UF Destino não localizada',
             );
         }
 
@@ -2495,8 +2550,8 @@ class fkcorreiosg2 extends CarrierModule {
         // Retorna erro se nao localizada a UF
         if (!$ufOrigem) {
             return array(
-                'status'    => false,
-                'msgErro'   => 'UF Origem não localizada',
+                'status' => false,
+                'msgErro' => 'UF Origem não localizada',
             );
         }
 
@@ -2506,7 +2561,7 @@ class fkcorreiosg2 extends CarrierModule {
             $preco = $params['product']['price'];
             $impostos = $params['product']['rate'];
             $valorPedido = $preco * (1 + ($impostos / 100));
-        }else {
+        } else {
             // Recupera o valor do pedido
             $valorPedido = $this->context->cart->getOrderTotal(true, Cart::BOTH_WITHOUT_SHIPPING);
         }
@@ -2520,19 +2575,20 @@ class fkcorreiosg2 extends CarrierModule {
         }
 
         return array(
-            'status'                    => true,
-            'cepOrigem'                 => $cepOrigem,
-            'ufOrigem'                  => $ufOrigem,
-            'cepDestino'                => $cepDestino,
-            'ufDestino'                 => $ufDestino,
-            'valorPedido'               => $valorPedido,
-            'freteGratisValor'          => $freteGratisValor,
-            'transpFreteGratisValor'    => $transpFreteGratisValor
+            'status' => true,
+            'cepOrigem' => $cepOrigem,
+            'ufOrigem' => $ufOrigem,
+            'cepDestino' => $cepDestino,
+            'ufDestino' => $ufDestino,
+            'valorPedido' => $valorPedido,
+            'freteGratisValor' => $freteGratisValor,
+            'transpFreteGratisValor' => $transpFreteGratisValor,
         );
 
     }
 
-    private function processaFreteComplementos($origem, $dadosBasicos, $params) {
+    private function processaFreteComplementos($origem, $dadosBasicos, $params)
+    {
 
         // Inicializa variaveis
         $transpComplementos = array();
@@ -2545,16 +2601,16 @@ class fkcorreiosg2 extends CarrierModule {
             if ($this->verificaModuloInstalado($reg['modulo'])) {
 
                 // Cria path da classe do Complemento
-                $path = _PS_MODULE_DIR_.$reg['modulo'].'/models/'.strtoupper(substr($reg['modulo'],0,2)).substr($reg['modulo'],2).'FreteClass.php';
+                $path = _PS_MODULE_DIR_ . $reg['modulo'] . '/models/' . strtoupper(substr($reg['modulo'], 0, 2)) . substr($reg['modulo'], 2) . 'FreteClass.php';
 
                 // Verifica se a classe existe
                 if (file_exists($path)) {
 
                     // Include da classe
-                    include_once($path);
+                    include_once $path;
 
                     // Instancia a classe de frete do complemento
-                    $funcao = strtoupper(substr($reg['modulo'],0,2)).substr($reg['modulo'],2).'FreteClass';
+                    $funcao = strtoupper(substr($reg['modulo'], 0, 2)) . substr($reg['modulo'], 2) . 'FreteClass';
                     $freteClass = new $funcao;
 
                     if ($freteClass->calculaFreteSimulador($origem, $dadosBasicos, $params)) {
@@ -2571,18 +2627,19 @@ class fkcorreiosg2 extends CarrierModule {
         return $transpComplementos;
     }
 
-    private function atualizaVersaoModulo() {
+    private function atualizaVersaoModulo()
+    {
 
         try {
             $db = Db::getInstance();
 
             // Retira campo volume_max utilizado nas versões anteriores a v1.2.2
-            $sql = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '"._DB_PREFIX_."fkcorreiosg2_especificacoes_correios' AND column_name = 'volume_max' AND table_schema = '"._DB_NAME_."'";
+            $sql = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '" . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios' AND column_name = 'volume_max' AND table_schema = '" . _DB_NAME_ . "'";
             $dados = $db->getRow($sql);
 
             if ($dados) {
-                $sql = "ALTER TABLE "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios DROP COLUMN volume_max;";
-                $db-> Execute($sql);
+                $sql = "ALTER TABLE " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios DROP COLUMN volume_max;";
+                $db->Execute($sql);
             }
 
         } catch (Exception $e) {
@@ -2592,7 +2649,8 @@ class fkcorreiosg2 extends CarrierModule {
         return true;
     }
 
-    private function criaMenus() {
+    private function criaMenus()
+    {
 
         // Cria tab principal
         $main_tab = new Tab();
@@ -2611,7 +2669,8 @@ class fkcorreiosg2 extends CarrierModule {
         return true;
     }
 
-    private function excluiMenus() {
+    private function excluiMenus()
+    {
 
         $id_tab = Tab::getIdFromClassName($this->_tabClassName['principal']['className']);
 
@@ -2623,12 +2682,13 @@ class fkcorreiosg2 extends CarrierModule {
         return true;
     }
 
-    private function criaTabelas() {
+    private function criaTabelas()
+    {
 
         $db = Db::getInstance();
 
         // Cria a tabela de cadastro de cep
-        $sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'fkcorreiosg2_cadastro_cep` (
+        $sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'fkcorreiosg2_cadastro_cep` (
             	`id` 			    int(10)     NOT NULL AUTO_INCREMENT,
             	`estado` 		    varchar(2),
             	`capital` 		    varchar(50),
@@ -2637,11 +2697,11 @@ class fkcorreiosg2 extends CarrierModule {
            	 	`cep_base_capital` 	varchar(9),
            	 	`cep_base_interior`	varchar(9),
             	PRIMARY KEY  (`id`)
-            	) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
-        $db-> Execute($sql);
+            	) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
+        $db->Execute($sql);
 
         // Cria tabela de cadastro de embalagens
-        $sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'fkcorreiosg2_embalagens` (
+        $sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'fkcorreiosg2_embalagens` (
 	            `id` 			int(10) 		NOT NULL AUTO_INCREMENT,
 				`id_shop`		int(10),
 	            `descricao` 	varchar(50),
@@ -2653,11 +2713,11 @@ class fkcorreiosg2 extends CarrierModule {
 	            `custo` 		decimal(20,2),
 	            `ativo` 		tinyint(1),
 	            PRIMARY KEY (`id`)
-	            ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
-        $db-> Execute($sql);
+	            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
+        $db->Execute($sql);
 
         // Cria tabela com as Especificacoes dos Correios
-        $sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'fkcorreiosg2_especificacoes_correios` (
+        $sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'fkcorreiosg2_especificacoes_correios` (
 	            `id` 							int(10) 		NOT NULL AUTO_INCREMENT,
 	            `id_shop`		                int(10),
 	            `tabela_offline`		        tinyint(1),
@@ -2684,11 +2744,11 @@ class fkcorreiosg2 extends CarrierModule {
 				`valor_declarado_max`			decimal(20,2),
 				`seguro_automatico_valor`       decimal(20,2),
 	            PRIMARY KEY (`id`)
-	            ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
-        $db-> Execute($sql);
+	            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
+        $db->Execute($sql);
 
         // Cria tabela com os servicos dos correios
-        $sql = 'CREATE TABLE IF NOT EXISTS `' ._DB_PREFIX_. 'fkcorreiosg2_servicos` (
+        $sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'fkcorreiosg2_servicos` (
             	`id` 				    int(10) 	NOT NULL AUTO_INCREMENT,
 				`id_shop`			    int(10),
 				`id_especificacao`      int(10),
@@ -2703,11 +2763,11 @@ class fkcorreiosg2 extends CarrierModule {
             	`ativo` 			    tinyint(1),
             	PRIMARY KEY (`id`),
 				INDEX (`id_carrier`, `id_shop`)
-            	) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
-        $db-> Execute($sql);
+            	) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
+        $db->Execute($sql);
 
         // Cria tabela com as configuracoes do frete gratis
-        $sql = 'CREATE TABLE IF NOT EXISTS `' ._DB_PREFIX_. 'fkcorreiosg2_frete_gratis` (
+        $sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'fkcorreiosg2_frete_gratis` (
             	`id` 					int(10) 		NOT NULL AUTO_INCREMENT,
             	`id_shop`			    int(10),
 				`id_carrier`            int(10),
@@ -2721,11 +2781,11 @@ class fkcorreiosg2 extends CarrierModule {
 				`ativo` 			    tinyint(1),
 				INDEX (`id_carrier`),
             	PRIMARY KEY (`id`)
-            	) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
-        $db-> Execute($sql);
+            	) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
+        $db->Execute($sql);
 
         // Cria a tabela de precos offline dos correios
-        $sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'fkcorreiosg2_tabelas_offline` (
+        $sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'fkcorreiosg2_tabelas_offline` (
                 `id`                        int(10)     NOT NULL AUTO_INCREMENT,
                 `id_shop`		            int(10),
                 `id_especificacao`          int(10),
@@ -2739,11 +2799,11 @@ class fkcorreiosg2 extends CarrierModule {
                 `minha_cidade` 		        tinyint(1),
                 INDEX (`id_especificacao`),
                 PRIMARY KEY  (`id`)
-                ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
-        $db-> Execute($sql);
+                ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
+        $db->Execute($sql);
 
         // Cria tabela de controle de complementos
-        $sql = 'CREATE TABLE IF NOT EXISTS `' ._DB_PREFIX_. 'fkcorreiosg2_complementos` (
+        $sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'fkcorreiosg2_complementos` (
             	`id` 					int(10) 		NOT NULL AUTO_INCREMENT,
             	`id_shop`			    int(10),
             	`modulo`                varchar(50),
@@ -2751,11 +2811,11 @@ class fkcorreiosg2 extends CarrierModule {
             	`frete`                 tinyint(1),
             	INDEX (`modulo`),
             	PRIMARY KEY (`id`)
-            	) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
-        $db-> Execute($sql);
+            	) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
+        $db->Execute($sql);
 
         // Cria a tabela de cache
-        $sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'fkcorreiosg2_cache` (
+        $sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'fkcorreiosg2_cache` (
                 `id`            int(10)     NOT NULL AUTO_INCREMENT,
                 `hash`          varchar(32),
                 `valor_frete`   decimal(20,2),
@@ -2763,43 +2823,45 @@ class fkcorreiosg2 extends CarrierModule {
                 `msg_correios`  text,
                 INDEX (`hash`),
                 PRIMARY KEY  (`id`)
-                ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
-        $db-> Execute($sql);
+                ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
+        $db->Execute($sql);
 
         return true;
 
     }
 
-    private function excluiTabelas() {
+    private function excluiTabelas()
+    {
 
         // Exclui as tabelas
-        $sql = "DROP TABLE IF EXISTS `"._DB_PREFIX_."fkcorreiosg2_cadastro_cep`;";
+        $sql = "DROP TABLE IF EXISTS `" . _DB_PREFIX_ . "fkcorreiosg2_cadastro_cep`;";
         Db::getInstance()->execute($sql);
 
-        $sql = "DROP TABLE IF EXISTS `"._DB_PREFIX_."fkcorreiosg2_embalagens`;";
+        $sql = "DROP TABLE IF EXISTS `" . _DB_PREFIX_ . "fkcorreiosg2_embalagens`;";
         Db::getInstance()->execute($sql);
 
-        $sql = "DROP TABLE IF EXISTS `"._DB_PREFIX_."fkcorreiosg2_especificacoes_correios`;";
+        $sql = "DROP TABLE IF EXISTS `" . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios`;";
         Db::getInstance()->execute($sql);
 
-        $sql = "DROP TABLE IF EXISTS `"._DB_PREFIX_."fkcorreiosg2_servicos`;";
+        $sql = "DROP TABLE IF EXISTS `" . _DB_PREFIX_ . "fkcorreiosg2_servicos`;";
         Db::getInstance()->execute($sql);
 
-        $sql = "DROP TABLE IF EXISTS `"._DB_PREFIX_."fkcorreiosg2_frete_gratis`;";
+        $sql = "DROP TABLE IF EXISTS `" . _DB_PREFIX_ . "fkcorreiosg2_frete_gratis`;";
         Db::getInstance()->execute($sql);
 
-        $sql = "DROP TABLE IF EXISTS `"._DB_PREFIX_."fkcorreiosg2_tabelas_offline`;";
+        $sql = "DROP TABLE IF EXISTS `" . _DB_PREFIX_ . "fkcorreiosg2_tabelas_offline`;";
         Db::getInstance()->execute($sql);
 
-        $sql = "DROP TABLE IF EXISTS `"._DB_PREFIX_."fkcorreiosg2_complementos`;";
+        $sql = "DROP TABLE IF EXISTS `" . _DB_PREFIX_ . "fkcorreiosg2_complementos`;";
         Db::getInstance()->execute($sql);
 
-        $sql = "DROP TABLE IF EXISTS `"._DB_PREFIX_."fkcorreiosg2_cache`;";
+        $sql = "DROP TABLE IF EXISTS `" . _DB_PREFIX_ . "fkcorreiosg2_cache`;";
         Db::getInstance()->execute($sql);
 
     }
 
-    static function ordenaValor($a, $b) {
+    public static function ordenaValor($a, $b)
+    {
 
         if ($a['valorFrete'] == $b['valorFrete']) {
             return 0;

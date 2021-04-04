@@ -1,7 +1,7 @@
 <?php
 
-include_once(dirname(__FILE__).'/models/CorreiosClass.php');
-include_once(dirname(__FILE__).'/models/FKcorreiosg2Class.php');
+include_once dirname(__FILE__) . '/models/CorreiosClass.php';
+include_once dirname(__FILE__) . '/models/FKcorreiosg2Class.php';
 
 if (isset($_REQUEST['func'])) {
 
@@ -33,8 +33,7 @@ if (isset($_REQUEST['func'])) {
             break;
 
     }
-}else {
+} else {
     // Retorna erro caso tenha problemas no Post
     echo 'erro';
 }
-

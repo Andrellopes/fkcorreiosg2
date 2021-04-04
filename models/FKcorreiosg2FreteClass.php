@@ -1,29 +1,34 @@
 <?php
 
-include_once('FKcorreiosg2Class.php');
-include_once('CorreiosClass.php');
+include_once 'FKcorreiosg2Class.php';
+include_once 'CorreiosClass.php';
 
-class FKcorreiosg2FreteClass {
+class FKcorreiosg2FreteClass
+{
 
     // Variaveis das funcoes de retorno
     private $transportadoras = array();
     private $freteCarrier = array();
 
     // Retorno utilizado no simulador de frete
-    public function getTransportadoras() {
+    public function getTransportadoras()
+    {
         return $this->transportadoras;
     }
 
     // Retorno utilizado no getOrderShippingCost
-    public function getFreteCarrier() {
+    public function getFreteCarrier()
+    {
         return $this->freteCarrier;
     }
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->context = Context::getContext();
     }
 
-    public function calculaFreteSimulador($origem, $dadosBasicos, $params) {
+    public function calculaFreteSimulador($origem, $dadosBasicos, $params)
+    {
 
         // Inicializa variaveis gerais
         $pesoPedido = 0;
@@ -44,27 +49,27 @@ class FKcorreiosg2FreteClass {
 
         // Processa o frete
         $sql = "SELECT
-                  "._DB_PREFIX_."fkcorreiosg2_servicos.*,
-                  "._DB_PREFIX_."carrier.id_reference,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.tabela_offline,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.servico,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.cod_servico,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.cod_administrativo,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.senha,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.valor_declarado_max,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.cubagem_max_isenta,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.cubagem_base_calculo,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.mao_propria_valor,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.aviso_recebimento_valor,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.valor_declarado_percentual,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.seguro_automatico_valor
-                FROM "._DB_PREFIX_."fkcorreiosg2_servicos
-                  INNER JOIN "._DB_PREFIX_."carrier
-                    ON "._DB_PREFIX_."fkcorreiosg2_servicos.id_carrier = "._DB_PREFIX_."carrier.id_carrier
-                  INNER JOIN "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios
-                    ON "._DB_PREFIX_."fkcorreiosg2_servicos.id_especificacao = "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.id
-                WHERE "._DB_PREFIX_."fkcorreiosg2_servicos.ativo = 1 AND
-                      "._DB_PREFIX_."fkcorreiosg2_servicos.id_shop = ".(int)$this->context->shop->id;
+                  " . _DB_PREFIX_ . "fkcorreiosg2_servicos.*,
+                  " . _DB_PREFIX_ . "carrier.id_reference,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.tabela_offline,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.servico,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.cod_servico,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.cod_administrativo,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.senha,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.valor_declarado_max,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.cubagem_max_isenta,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.cubagem_base_calculo,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.mao_propria_valor,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.aviso_recebimento_valor,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.valor_declarado_percentual,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.seguro_automatico_valor
+                FROM " . _DB_PREFIX_ . "fkcorreiosg2_servicos
+                  INNER JOIN " . _DB_PREFIX_ . "carrier
+                    ON " . _DB_PREFIX_ . "fkcorreiosg2_servicos.id_carrier = " . _DB_PREFIX_ . "carrier.id_carrier
+                  INNER JOIN " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios
+                    ON " . _DB_PREFIX_ . "fkcorreiosg2_servicos.id_especificacao = " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.id
+                WHERE " . _DB_PREFIX_ . "fkcorreiosg2_servicos.ativo = 1 AND
+                      " . _DB_PREFIX_ . "fkcorreiosg2_servicos.id_shop = " . (int) $this->context->shop->id;
 
         $servicos = Db::getInstance()->executeS($sql);
 
@@ -98,17 +103,17 @@ class FKcorreiosg2FreteClass {
                 $pesoPedido = $params['product']['weight'];
 
                 $produtos[] = array(
-                    'id'                            => $params['product']['id'],
-                    'altura'                        => $params['product']['height'],
-                    'largura'                       => $params['product']['width'],
-                    'comprimento'                   => $params['product']['depth'],
-                    'peso'                          => $params['product']['weight'],
-                    'cubagem'                       => $cubagem,
-                    'valorProduto'                  => $valorProduto,
-                    'adicionalEnvio'                => $params['product']['additional_shipping_cost'],
-                    'freteGratisProduto'            => false,
+                    'id' => $params['product']['id'],
+                    'altura' => $params['product']['height'],
+                    'largura' => $params['product']['width'],
+                    'comprimento' => $params['product']['depth'],
+                    'peso' => $params['product']['weight'],
+                    'cubagem' => $cubagem,
+                    'valorProduto' => $valorProduto,
+                    'adicionalEnvio' => $params['product']['additional_shipping_cost'],
+                    'freteGratisProduto' => false,
                 );
-            }else {
+            } else {
                 foreach ($this->context->cart->getProducts() as $prod) {
 
                     // Ignora o produto se for virtual
@@ -125,15 +130,15 @@ class FKcorreiosg2FreteClass {
                         $pesoPedido += $prod['weight'];
 
                         $produtos[] = array(
-                            'id'                            => $prod['id_product'],
-                            'altura'                        => $prod['height'],
-                            'largura'                       => $prod['width'],
-                            'comprimento'                   => $prod['depth'],
-                            'peso'                          => $prod['weight'],
-                            'cubagem'                       => $cubagem,
-                            'valorProduto'                  => $prod['price_wt'],
-                            'adicionalEnvio'                => $prod['additional_shipping_cost'],
-                            'freteGratisProduto'            => false,
+                            'id' => $prod['id_product'],
+                            'altura' => $prod['height'],
+                            'largura' => $prod['width'],
+                            'comprimento' => $prod['depth'],
+                            'peso' => $prod['weight'],
+                            'cubagem' => $cubagem,
+                            'valorProduto' => $prod['price_wt'],
+                            'adicionalEnvio' => $prod['additional_shipping_cost'],
+                            'freteGratisProduto' => false,
                         );
                     }
                 }
@@ -166,7 +171,7 @@ class FKcorreiosg2FreteClass {
             }
 
             // Processa embalagens
-            switch(Configuration::get('FKCORREIOSG2_EMBALAGEM')) {
+            switch (Configuration::get('FKCORREIOSG2_EMBALAGEM')) {
 
                 case 0:
                     $embalagens = $this->processaEmbalagemIndividual($reg['id_especificacao'], $produtos, $ufOrigem, $ufDestino);
@@ -195,29 +200,29 @@ class FKcorreiosg2FreteClass {
 
             // Monta array com os dados necessarios para o calculo
             $parm = array(
-                'embalagens'                => $embalagens,
-                'cubagemMaxIsenta'          => $reg['cubagem_max_isenta'],
-                'cubagemBaseCalculo'        => $reg['cubagem_base_calculo'],
-                'maoPropriaValor'           => $reg['mao_propria_valor'],
-                'avisoRecebimentoValor'     => $reg['aviso_recebimento_valor'],
-                'valorDeclaradoPercentual'  => $reg['valor_declarado_percentual'],
-                'seguroAutomaticoValor'     => $reg['seguro_automatico_valor'],
-                'cepOrigem'                 => $cepOrigem,
-                'cepDestino'                => $cepDestino,
-                'ufDestino'                 => $ufDestino,
-                'freteGratisValor'          => $freteGratisValor,
-                'transpFreteGratisValor'    => $transpFreteGratisValor,
-                'idEspecificacao'           => $reg['id_especificacao'],
-                'idTranspAtual'             => $reg['id'],
-                'idCarrierAtual'            => $reg['id_carrier'],
-                'tempoPreparacao'           => Configuration::get('FKCORREIOSG2_TEMPO_PREPARACAO'),
-                'codServico'                => $reg['cod_servico'],
-                'codAdministrativo'         => $reg['cod_administrativo'],
-                'senha'                     => $reg['senha'],
-                'valorDeclaradoMax'         => $reg['valor_declarado_max'],
-                'valorPedido'               => $valorPedido,
-                'valorPedidoDescontoFrete'  => $reg['valor_pedido_desconto'],
-                'percentualDescontoFrete'   => $reg['percentual_desconto'],
+                'embalagens' => $embalagens,
+                'cubagemMaxIsenta' => $reg['cubagem_max_isenta'],
+                'cubagemBaseCalculo' => $reg['cubagem_base_calculo'],
+                'maoPropriaValor' => $reg['mao_propria_valor'],
+                'avisoRecebimentoValor' => $reg['aviso_recebimento_valor'],
+                'valorDeclaradoPercentual' => $reg['valor_declarado_percentual'],
+                'seguroAutomaticoValor' => $reg['seguro_automatico_valor'],
+                'cepOrigem' => $cepOrigem,
+                'cepDestino' => $cepDestino,
+                'ufDestino' => $ufDestino,
+                'freteGratisValor' => $freteGratisValor,
+                'transpFreteGratisValor' => $transpFreteGratisValor,
+                'idEspecificacao' => $reg['id_especificacao'],
+                'idTranspAtual' => $reg['id'],
+                'idCarrierAtual' => $reg['id_carrier'],
+                'tempoPreparacao' => Configuration::get('FKCORREIOSG2_TEMPO_PREPARACAO'),
+                'codServico' => $reg['cod_servico'],
+                'codAdministrativo' => $reg['cod_administrativo'],
+                'senha' => $reg['senha'],
+                'valorDeclaradoMax' => $reg['valor_declarado_max'],
+                'valorPedido' => $valorPedido,
+                'valorPedidoDescontoFrete' => $reg['valor_pedido_desconto'],
+                'percentualDescontoFrete' => $reg['percentual_desconto'],
             );
 
             // Calcula valor do frete dos Correios
@@ -228,7 +233,7 @@ class FKcorreiosg2FreteClass {
                 }
 
                 $retorno = $this->calculaValorOffline($parm);
-            }else {
+            } else {
                 $retorno = $this->calculaValorOnline($parm);
             }
 
@@ -243,32 +248,33 @@ class FKcorreiosg2FreteClass {
             if (is_numeric($retorno['prazoEntrega'])) {
                 if ($retorno['prazoEntrega'] == 0) {
                     $prazoEntrega = 'Entrega no mesmo dia';
-                }else {
+                } else {
                     if ($retorno['prazoEntrega'] > 1) {
-                        $prazoEntrega = 'Entrega em até '.$retorno['prazoEntrega'].' dias úteis';
-                    }else {
-                        $prazoEntrega = 'Entrega em '.$retorno['prazoEntrega'].' dia útil';
+                        $prazoEntrega = 'Entrega em até ' . $retorno['prazoEntrega'] . ' dias úteis';
+                    } else {
+                        $prazoEntrega = 'Entrega em ' . $retorno['prazoEntrega'] . ' dia útil';
                     }
                 }
-            }else {
+            } else {
                 $prazoEntrega = $retorno['prazoEntrega'];
             }
 
             // Grava array com as transportadoras
             $this->transportadoras[] = array(
-                'urlLogo'               => Configuration::get('FKCORREIOSG2_URL_LOGO_PS').$reg['id_carrier'].'.jpg',
-                'nomeTransportadora'    => $reg['servico'],
-                'prazoEntrega'          => $prazoEntrega,
-                'mensagem'              => (Configuration::get('FKCORREIOSG2_MSG_CORREIOS') == 'on' ? $retorno['msgCorreios'] : ''),
-                'valorFrete'            => $valorFrete,
-                'valorFreteFmt'         => Tools::displayPrice($valorFrete),
+                'urlLogo' => Configuration::get('FKCORREIOSG2_URL_LOGO_PS') . $reg['id_carrier'] . '.jpg',
+                'nomeTransportadora' => $reg['servico'],
+                'prazoEntrega' => $prazoEntrega,
+                'mensagem' => (Configuration::get('FKCORREIOSG2_MSG_CORREIOS') == 'on' ? $retorno['msgCorreios'] : ''),
+                'valorFrete' => $valorFrete,
+                'valorFreteFmt' => Tools::displayPrice($valorFrete),
             );
         }
 
         return true;
     }
 
-    public function calculaFretePS($params, $idCarrier) {
+    public function calculaFretePS($params, $idCarrier)
+    {
 
         $cepOrigem = trim(preg_replace("/[^0-9]/", "", Configuration::get('FKCORREIOSG2_MEU_CEP')));
         $cepDestino = '';
@@ -289,7 +295,7 @@ class FKcorreiosg2FreteClass {
             if ($address->postcode) {
                 $cepDestino = $address->postcode;
             }
-        }else {
+        } else {
             // Recupera CEP do cookie
             if ($this->context->cookie->fkcorreiosg2_cep_destino) {
                 $cepDestino = $this->context->cookie->fkcorreiosg2_cep_destino;
@@ -312,7 +318,7 @@ class FKcorreiosg2FreteClass {
         $cepDestino = trim(preg_replace("/[^0-9]/", "", $cepDestino));
 
         // Ignora Carrier se o CEP for invalido
-        if (strlen($cepDestino) <> 8) {
+        if (strlen($cepDestino) != 8) {
             return false;
         }
 
@@ -337,28 +343,28 @@ class FKcorreiosg2FreteClass {
 
         // Recupera dados
         $sql = "SELECT
-                  "._DB_PREFIX_."fkcorreiosg2_servicos.*,
-                  "._DB_PREFIX_."carrier.id_reference,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.tabela_offline,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.servico,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.cod_servico,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.cod_administrativo,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.senha,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.valor_declarado_max,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.cubagem_max_isenta,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.cubagem_base_calculo,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.mao_propria_valor,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.aviso_recebimento_valor,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.valor_declarado_percentual,
-                  "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.seguro_automatico_valor
-                FROM "._DB_PREFIX_."fkcorreiosg2_servicos
-                  INNER JOIN "._DB_PREFIX_."carrier
-                    ON "._DB_PREFIX_."fkcorreiosg2_servicos.id_carrier = "._DB_PREFIX_."carrier.id_carrier
-                  INNER JOIN "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios
-                    ON "._DB_PREFIX_."fkcorreiosg2_servicos.id_especificacao = "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios.id
-                WHERE "._DB_PREFIX_."fkcorreiosg2_servicos.ativo = 1 AND
-                      "._DB_PREFIX_."fkcorreiosg2_servicos.id_shop = ".(int)$this->context->shop->id. " AND
-                      "._DB_PREFIX_."fkcorreiosg2_servicos.id_carrier = ".(int)$idCarrier;
+                  " . _DB_PREFIX_ . "fkcorreiosg2_servicos.*,
+                  " . _DB_PREFIX_ . "carrier.id_reference,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.tabela_offline,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.servico,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.cod_servico,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.cod_administrativo,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.senha,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.valor_declarado_max,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.cubagem_max_isenta,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.cubagem_base_calculo,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.mao_propria_valor,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.aviso_recebimento_valor,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.valor_declarado_percentual,
+                  " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.seguro_automatico_valor
+                FROM " . _DB_PREFIX_ . "fkcorreiosg2_servicos
+                  INNER JOIN " . _DB_PREFIX_ . "carrier
+                    ON " . _DB_PREFIX_ . "fkcorreiosg2_servicos.id_carrier = " . _DB_PREFIX_ . "carrier.id_carrier
+                  INNER JOIN " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios
+                    ON " . _DB_PREFIX_ . "fkcorreiosg2_servicos.id_especificacao = " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios.id
+                WHERE " . _DB_PREFIX_ . "fkcorreiosg2_servicos.ativo = 1 AND
+                      " . _DB_PREFIX_ . "fkcorreiosg2_servicos.id_shop = " . (int) $this->context->shop->id . " AND
+                      " . _DB_PREFIX_ . "fkcorreiosg2_servicos.id_carrier = " . (int) $idCarrier;
 
         $servico = Db::getInstance()->getRow($sql);
 
@@ -380,7 +386,7 @@ class FKcorreiosg2FreteClass {
         // Recupera valor do pedido
         if (isset($this->context->cart)) {
             $valorPedido = $this->context->cart->getOrderTotal(true, Cart::BOTH_WITHOUT_SHIPPING);
-        }else {
+        } else {
             // Para pedidos efetuados via Admin
             $cart = new cart($params->id);
             $valorPedido = $cart->getOrderTotal(true, Cart::BOTH_WITHOUT_SHIPPING);
@@ -411,15 +417,15 @@ class FKcorreiosg2FreteClass {
                 $pesoPedido += $prod['weight'];
 
                 $produtos[] = array(
-                    'id'                            => $prod['id_product'],
-                    'altura'                        => $prod['height'],
-                    'largura'                       => $prod['width'],
-                    'comprimento'                   => $prod['depth'],
-                    'peso'                          => $prod['weight'],
-                    'cubagem'                       => $cubagem,
-                    'valorProduto'                  => $prod['price_wt'],
-                    'adicionalEnvio'                => $prod['additional_shipping_cost'],
-                    'freteGratisProduto'            => false,
+                    'id' => $prod['id_product'],
+                    'altura' => $prod['height'],
+                    'largura' => $prod['width'],
+                    'comprimento' => $prod['depth'],
+                    'peso' => $prod['weight'],
+                    'cubagem' => $cubagem,
+                    'valorProduto' => $prod['price_wt'],
+                    'adicionalEnvio' => $prod['additional_shipping_cost'],
+                    'freteGratisProduto' => false,
                 );
             }
         }
@@ -450,7 +456,7 @@ class FKcorreiosg2FreteClass {
         }
 
         // Processa embalagens
-        switch(Configuration::get('FKCORREIOSG2_EMBALAGEM')) {
+        switch (Configuration::get('FKCORREIOSG2_EMBALAGEM')) {
 
             case 0:
                 $embalagens = $this->processaEmbalagemIndividual($servico['id_especificacao'], $produtos, $ufOrigem, $ufDestino);
@@ -479,29 +485,29 @@ class FKcorreiosg2FreteClass {
 
         // Monta array com os dados necessarios para o calculo
         $parm = array(
-            'embalagens'                => $embalagens,
-            'cubagemMaxIsenta'          => $servico['cubagem_max_isenta'],
-            'cubagemBaseCalculo'        => $servico['cubagem_base_calculo'],
-            'maoPropriaValor'           => $servico['mao_propria_valor'],
-            'avisoRecebimentoValor'     => $servico['aviso_recebimento_valor'],
-            'valorDeclaradoPercentual'  => $servico['valor_declarado_percentual'],
-            'seguroAutomaticoValor'     => $servico['seguro_automatico_valor'],
-            'cepOrigem'                 => $cepOrigem,
-            'cepDestino'                => $cepDestino,
-            'ufDestino'                 => $ufDestino,
-            'freteGratisValor'          => $freteGratisValor,
-            'transpFreteGratisValor'    => $transpFreteGratisValor,
-            'idEspecificacao'           => $servico['id_especificacao'],
-            'idTranspAtual'             => $servico['id'],
-            'idCarrierAtual'            => $servico['id_carrier'],
-            'tempoPreparacao'           => Configuration::get('FKCORREIOSG2_TEMPO_PREPARACAO'),
-            'codServico'                => $servico['cod_servico'],
-            'codAdministrativo'         => $servico['cod_administrativo'],
-            'senha'                     => $servico['senha'],
-            'valorDeclaradoMax'         => $servico['valor_declarado_max'],
-            'valorPedido'               => $valorPedido,
-            'valorPedidoDescontoFrete'  => $servico['valor_pedido_desconto'],
-            'percentualDescontoFrete'   => $servico['percentual_desconto'],
+            'embalagens' => $embalagens,
+            'cubagemMaxIsenta' => $servico['cubagem_max_isenta'],
+            'cubagemBaseCalculo' => $servico['cubagem_base_calculo'],
+            'maoPropriaValor' => $servico['mao_propria_valor'],
+            'avisoRecebimentoValor' => $servico['aviso_recebimento_valor'],
+            'valorDeclaradoPercentual' => $servico['valor_declarado_percentual'],
+            'seguroAutomaticoValor' => $servico['seguro_automatico_valor'],
+            'cepOrigem' => $cepOrigem,
+            'cepDestino' => $cepDestino,
+            'ufDestino' => $ufDestino,
+            'freteGratisValor' => $freteGratisValor,
+            'transpFreteGratisValor' => $transpFreteGratisValor,
+            'idEspecificacao' => $servico['id_especificacao'],
+            'idTranspAtual' => $servico['id'],
+            'idCarrierAtual' => $servico['id_carrier'],
+            'tempoPreparacao' => Configuration::get('FKCORREIOSG2_TEMPO_PREPARACAO'),
+            'codServico' => $servico['cod_servico'],
+            'codAdministrativo' => $servico['cod_administrativo'],
+            'senha' => $servico['senha'],
+            'valorDeclaradoMax' => $servico['valor_declarado_max'],
+            'valorPedido' => $valorPedido,
+            'valorPedidoDescontoFrete' => $servico['valor_pedido_desconto'],
+            'percentualDescontoFrete' => $servico['percentual_desconto'],
         );
 
         // Calcula valor do frete dos Correios
@@ -512,7 +518,7 @@ class FKcorreiosg2FreteClass {
             }
 
             $retorno = $this->calculaValorOffline($parm);
-        }else {
+        } else {
             $retorno = $this->calculaValorOnline($parm);
         }
 
@@ -526,15 +532,16 @@ class FKcorreiosg2FreteClass {
 
         // Grava array com os dados de frete
         $this->freteCarrier = array(
-            'prazoEntrega'  => $prazoEntrega,
-            'valorFrete'    => $valorFrete,
+            'prazoEntrega' => $prazoEntrega,
+            'valorFrete' => $valorFrete,
             'valorFreteFmt' => Tools::displayPrice($valorFrete),
         );
 
         return true;
     }
 
-    private function processaEmbalagemIndividual($idEspecificacao, $produtos, $ufOrigem, $ufDestino) {
+    private function processaEmbalagemIndividual($idEspecificacao, $produtos, $ufOrigem, $ufDestino)
+    {
 
         $embalagens = array();
 
@@ -544,24 +551,24 @@ class FKcorreiosg2FreteClass {
         foreach ($produtos as $prod) {
 
             // Retorna vazio se as dimensoes e peso do produto estiverem fora do permitido
-            if ($prod['altura'] > $dimPesoPermitidos['altura_max'] Or $prod['largura'] > $dimPesoPermitidos['largura_max'] Or $prod['comprimento'] > $dimPesoPermitidos['comprimento_max'] Or
-                $prod['peso']  > $dimPesoPermitidos['peso_maximo'] Or
+            if ($prod['altura'] > $dimPesoPermitidos['altura_max'] or $prod['largura'] > $dimPesoPermitidos['largura_max'] or $prod['comprimento'] > $dimPesoPermitidos['comprimento_max'] or
+                $prod['peso'] > $dimPesoPermitidos['peso_maximo'] or
                 $prod['altura'] + $prod['largura'] + $prod['comprimento'] > $dimPesoPermitidos['somatoria_dimensoes_max']) {
 
                 return array();
             }
 
             $embalagens[] = array(
-                'altura'                        => ($prod['altura'] < $dimPesoPermitidos['altura_min'] ? $dimPesoPermitidos['altura_min'] : $prod['altura']),
-                'largura'                       => ($prod['largura'] < $dimPesoPermitidos['largura_min'] ? $dimPesoPermitidos['largura_min'] : $prod['largura']),
-                'comprimento'                   => ($prod['comprimento'] < $dimPesoPermitidos['comprimento_min'] ? $dimPesoPermitidos['comprimento_min'] : $prod['comprimento']),
-                'pesoEmbalagem'                 => '0',
-                'custoEmbalagem'                => '0',
-                'cubagem'                       => $prod['cubagem'],
-                'pesoProdutos'                  => $prod['peso'],
-                'valorProdutos'                 => $prod['valorProduto'],
-                'adicionalEnvio'                => $prod['adicionalEnvio'],
-                'freteGratisProduto'            => $prod['freteGratisProduto'],
+                'altura' => ($prod['altura'] < $dimPesoPermitidos['altura_min'] ? $dimPesoPermitidos['altura_min'] : $prod['altura']),
+                'largura' => ($prod['largura'] < $dimPesoPermitidos['largura_min'] ? $dimPesoPermitidos['largura_min'] : $prod['largura']),
+                'comprimento' => ($prod['comprimento'] < $dimPesoPermitidos['comprimento_min'] ? $dimPesoPermitidos['comprimento_min'] : $prod['comprimento']),
+                'pesoEmbalagem' => '0',
+                'custoEmbalagem' => '0',
+                'cubagem' => $prod['cubagem'],
+                'pesoProdutos' => $prod['peso'],
+                'valorProdutos' => $prod['valorProduto'],
+                'adicionalEnvio' => $prod['adicionalEnvio'],
+                'freteGratisProduto' => $prod['freteGratisProduto'],
             );
         }
 
@@ -569,23 +576,24 @@ class FKcorreiosg2FreteClass {
 
     }
 
-    public function processaEmbalagemPadrao($idEspecificacao, $produtos, $ufOrigem, $ufDestino) {
+    public function processaEmbalagemPadrao($idEspecificacao, $produtos, $ufOrigem, $ufDestino)
+    {
 
         // Recupera as dimensoes permitidas
         $dimPesoPermitidos = $this->recuperaDimensoes($idEspecificacao, $ufOrigem, $ufDestino);
 
         // Seleciona as embalagens validas para os Correios
         $sql = "SELECT *
-                FROM "._DB_PREFIX_."fkcorreiosg2_embalagens
+                FROM " . _DB_PREFIX_ . "fkcorreiosg2_embalagens
                 WHERE   ativo = 1 AND
-                        id_shop = ".$this->context->shop->id." AND
-                        comprimento >= ".$dimPesoPermitidos['comprimento_min']." AND
-                        comprimento <= ".$dimPesoPermitidos['comprimento_max']." AND
-                        altura >= ".$dimPesoPermitidos['altura_min']." AND
-                        altura <= ".$dimPesoPermitidos['altura_max']." AND
-                        largura >= ".$dimPesoPermitidos['largura_min']." AND
-                        largura <= ".$dimPesoPermitidos['largura_max']." AND
-                        comprimento + altura + largura <= ".$dimPesoPermitidos['somatoria_dimensoes_max']."
+                        id_shop = " . $this->context->shop->id . " AND
+                        comprimento >= " . $dimPesoPermitidos['comprimento_min'] . " AND
+                        comprimento <= " . $dimPesoPermitidos['comprimento_max'] . " AND
+                        altura >= " . $dimPesoPermitidos['altura_min'] . " AND
+                        altura <= " . $dimPesoPermitidos['altura_max'] . " AND
+                        largura >= " . $dimPesoPermitidos['largura_min'] . " AND
+                        largura <= " . $dimPesoPermitidos['largura_max'] . " AND
+                        comprimento + altura + largura <= " . $dimPesoPermitidos['somatoria_dimensoes_max'] . "
                 ORDER BY cubagem";
 
         $caixas = Db::getInstance()->executeS($sql);
@@ -614,15 +622,15 @@ class FKcorreiosg2FreteClass {
             // Se peso do produto for igual a zero assume valor minimo
             if ($prod['peso'] > 0) {
                 $pesoProduto = $prod['peso'];
-            }else {
+            } else {
                 $pesoProduto = 0.01;
             }
 
             // Retorna vazio se as dimensoes e peso do produto estiverem fora do permitido
-            if ($prod['altura'] > $dimPesoPermitidos['altura_max'] Or
-                $prod['largura'] > $dimPesoPermitidos['largura_max'] Or
-                $prod['comprimento'] > $dimPesoPermitidos['comprimento_max'] Or
-                $pesoProduto  > $dimPesoPermitidos['peso_maximo'] Or
+            if ($prod['altura'] > $dimPesoPermitidos['altura_max'] or
+                $prod['largura'] > $dimPesoPermitidos['largura_max'] or
+                $prod['comprimento'] > $dimPesoPermitidos['comprimento_max'] or
+                $pesoProduto > $dimPesoPermitidos['peso_maximo'] or
                 $prod['altura'] + $prod['largura'] + $prod['comprimento'] > $dimPesoPermitidos['somatoria_dimensoes_max']) {
 
                 return array();
@@ -643,16 +651,16 @@ class FKcorreiosg2FreteClass {
 
                 // Grava dados considerando as dimensoes minimas
                 $embalagens[] = array(
-                    'altura'                => ($prod['altura'] < $dimPesoPermitidos['altura_min'] ? $dimPesoPermitidos['altura_min'] : $prod['altura']),
-                    'largura'               => ($prod['largura'] < $dimPesoPermitidos['largura_min'] ? $dimPesoPermitidos['largura_min'] : $prod['largura']),
-                    'comprimento'           => ($prod['comprimento'] < $dimPesoPermitidos['comprimento_min'] ? $dimPesoPermitidos['comprimento_min'] : $prod['comprimento']),
-                    'pesoEmbalagem'         => 0,
-                    'custoEmbalagem'        => 0,
-                    'cubagem'               => $prod['cubagem'],
-                    'pesoProdutos'          => $pesoProduto,
-                    'valorProdutos'         => $prod['valorProduto'],
-                    'adicionalEnvio'        => $prod['adicionalEnvio'],
-                    'freteGratisProduto'    => true
+                    'altura' => ($prod['altura'] < $dimPesoPermitidos['altura_min'] ? $dimPesoPermitidos['altura_min'] : $prod['altura']),
+                    'largura' => ($prod['largura'] < $dimPesoPermitidos['largura_min'] ? $dimPesoPermitidos['largura_min'] : $prod['largura']),
+                    'comprimento' => ($prod['comprimento'] < $dimPesoPermitidos['comprimento_min'] ? $dimPesoPermitidos['comprimento_min'] : $prod['comprimento']),
+                    'pesoEmbalagem' => 0,
+                    'custoEmbalagem' => 0,
+                    'cubagem' => $prod['cubagem'],
+                    'pesoProdutos' => $pesoProduto,
+                    'valorProdutos' => $prod['valorProduto'],
+                    'adicionalEnvio' => $prod['adicionalEnvio'],
+                    'freteGratisProduto' => true,
                 );
 
                 continue;
@@ -662,16 +670,16 @@ class FKcorreiosg2FreteClass {
             if (!$embalagemSelecionada) {
 
                 $embalagens[] = array(
-                    'altura'                => ($prod['altura'] < $dimPesoPermitidos['altura_min'] ? $dimPesoPermitidos['altura_min'] : $prod['altura']),
-                    'largura'               => ($prod['largura'] < $dimPesoPermitidos['largura_min'] ? $dimPesoPermitidos['largura_min'] : $prod['largura']),
-                    'comprimento'           => ($prod['comprimento'] < $dimPesoPermitidos['comprimento_min'] ? $dimPesoPermitidos['comprimento_min'] : $prod['comprimento']),
-                    'pesoEmbalagem'         => 0,
-                    'custoEmbalagem'        => 0,
-                    'cubagem'               => $prod['cubagem'],
-                    'pesoProdutos'          => $pesoProduto,
-                    'valorProdutos'         => $prod['valorProduto'],
-                    'adicionalEnvio'        => $prod['adicionalEnvio'],
-                    'freteGratisProduto'    => false
+                    'altura' => ($prod['altura'] < $dimPesoPermitidos['altura_min'] ? $dimPesoPermitidos['altura_min'] : $prod['altura']),
+                    'largura' => ($prod['largura'] < $dimPesoPermitidos['largura_min'] ? $dimPesoPermitidos['largura_min'] : $prod['largura']),
+                    'comprimento' => ($prod['comprimento'] < $dimPesoPermitidos['comprimento_min'] ? $dimPesoPermitidos['comprimento_min'] : $prod['comprimento']),
+                    'pesoEmbalagem' => 0,
+                    'custoEmbalagem' => 0,
+                    'cubagem' => $prod['cubagem'],
+                    'pesoProdutos' => $pesoProduto,
+                    'valorProdutos' => $prod['valorProduto'],
+                    'adicionalEnvio' => $prod['adicionalEnvio'],
+                    'freteGratisProduto' => false,
                 );
 
                 continue;
@@ -681,20 +689,20 @@ class FKcorreiosg2FreteClass {
             $embalagemSelecionada = $this->selecionaEmbalagem($caixas, ($prod['cubagem'] + $cubagemAcumuladaProdutos));
 
             // Se embalagem nao localizada
-            if (!$embalagemSelecionada Or (($pesoAcumuladoProdutos + $pesoProduto + $pesoEmbalagem) > $dimPesoPermitidos['peso_maximo'] And $dimPesoPermitidos['peso_maximo'] > 0)) {
+            if (!$embalagemSelecionada or (($pesoAcumuladoProdutos + $pesoProduto + $pesoEmbalagem) > $dimPesoPermitidos['peso_maximo'] and $dimPesoPermitidos['peso_maximo'] > 0)) {
 
                 // Grava dados acumulados
                 $embalagens[] = array(
-                    'altura'                => $alturaEmbalagem,
-                    'largura'               => $larguraEmbalagem,
-                    'comprimento'           => $comprimentoEmbalagem,
-                    'pesoEmbalagem'         => $pesoEmbalagem,
-                    'custoEmbalagem'        => $custoEmbalagem,
-                    'cubagem'               => $cubagemEmbalagem,
-                    'pesoProdutos'          => $pesoAcumuladoProdutos,
-                    'valorProdutos'         => $valorAcumuladoProdutos,
-                    'adicionalEnvio'        => $valorAcumuladoAdicionalEnvio,
-                    'freteGratisProduto'    => false
+                    'altura' => $alturaEmbalagem,
+                    'largura' => $larguraEmbalagem,
+                    'comprimento' => $comprimentoEmbalagem,
+                    'pesoEmbalagem' => $pesoEmbalagem,
+                    'custoEmbalagem' => $custoEmbalagem,
+                    'cubagem' => $cubagemEmbalagem,
+                    'pesoProdutos' => $pesoAcumuladoProdutos,
+                    'valorProdutos' => $valorAcumuladoProdutos,
+                    'adicionalEnvio' => $valorAcumuladoAdicionalEnvio,
+                    'freteGratisProduto' => false,
                 );
 
                 // Seleciona embalagem para o produto
@@ -726,23 +734,24 @@ class FKcorreiosg2FreteClass {
         if ($pesoAcumuladoProdutos > 0) {
 
             $embalagens[] = array(
-                'altura'                => $alturaEmbalagem,
-                'largura'               => $larguraEmbalagem,
-                'comprimento'           => $comprimentoEmbalagem,
-                'pesoEmbalagem'         => $pesoEmbalagem,
-                'custoEmbalagem'        => $custoEmbalagem,
-                'cubagem'               => $cubagemEmbalagem,
-                'pesoProdutos'          => $pesoAcumuladoProdutos,
-                'valorProdutos'         => $valorAcumuladoProdutos,
-                'adicionalEnvio'        => $valorAcumuladoAdicionalEnvio,
-                'freteGratisProduto'    => false
+                'altura' => $alturaEmbalagem,
+                'largura' => $larguraEmbalagem,
+                'comprimento' => $comprimentoEmbalagem,
+                'pesoEmbalagem' => $pesoEmbalagem,
+                'custoEmbalagem' => $custoEmbalagem,
+                'cubagem' => $cubagemEmbalagem,
+                'pesoProdutos' => $pesoAcumuladoProdutos,
+                'valorProdutos' => $valorAcumuladoProdutos,
+                'adicionalEnvio' => $valorAcumuladoAdicionalEnvio,
+                'freteGratisProduto' => false,
             );
         }
 
         return $embalagens;
     }
 
-    public function processaPacote($idEspecificacao, $produtos, $ufOrigem, $ufDestino) {
+    public function processaPacote($idEspecificacao, $produtos, $ufOrigem, $ufDestino)
+    {
 
         // Recupera as dimensoes permitidas
         $dimPesoPermitidos = $this->recuperaDimensoes($idEspecificacao, $ufOrigem, $ufDestino);
@@ -768,15 +777,15 @@ class FKcorreiosg2FreteClass {
             // Se peso do produto for igual a zero assume valor minimo
             if ($prod['peso'] > 0) {
                 $pesoProduto = $prod['peso'];
-            }else {
+            } else {
                 $pesoProduto = 0.01;
             }
 
             // Retorna vazio se as dimensoes e peso estiverem fora do permitido
-            if ($prod['altura'] > $dimPesoPermitidos['altura_max'] Or
-                $prod['largura'] > $dimPesoPermitidos['largura_max'] Or
-                $prod['comprimento'] > $dimPesoPermitidos['comprimento_max'] Or
-                $pesoProduto  > $dimPesoPermitidos['peso_maximo'] Or
+            if ($prod['altura'] > $dimPesoPermitidos['altura_max'] or
+                $prod['largura'] > $dimPesoPermitidos['largura_max'] or
+                $prod['comprimento'] > $dimPesoPermitidos['comprimento_max'] or
+                $pesoProduto > $dimPesoPermitidos['peso_maximo'] or
                 $prod['altura'] + $prod['largura'] + $prod['comprimento'] > $dimPesoPermitidos['somatoria_dimensoes_max']) {
 
                 return array();
@@ -792,16 +801,16 @@ class FKcorreiosg2FreteClass {
                 $volumeTmp = $alturaTmp * $larguraTmp * $comprimentoTmp;
 
                 $embalagens[] = array(
-                    'altura'                => $alturaTmp,
-                    'largura'               => $larguraTmp,
-                    'comprimento'           => $comprimentoTmp,
-                    'pesoEmbalagem'         => 0,
-                    'custoEmbalagem'        => 0,
-                    'cubagem'               => $volumeTmp,
-                    'pesoProdutos'          => $pesoProduto,
-                    'valorProdutos'         => $prod['valorProduto'],
-                    'adicionalEnvio'        => $prod['adicionalEnvio'],
-                    'freteGratisProduto'    => true
+                    'altura' => $alturaTmp,
+                    'largura' => $larguraTmp,
+                    'comprimento' => $comprimentoTmp,
+                    'pesoEmbalagem' => 0,
+                    'custoEmbalagem' => 0,
+                    'cubagem' => $volumeTmp,
+                    'pesoProdutos' => $pesoProduto,
+                    'valorProdutos' => $prod['valorProduto'],
+                    'adicionalEnvio' => $prod['adicionalEnvio'],
+                    'freteGratisProduto' => true,
                 );
 
                 continue;
@@ -836,7 +845,7 @@ class FKcorreiosg2FreteClass {
             $comprimentoPacoteTmp = $comprimentoPacote;
             $volumePacoteTmp = $volumePacote;
 
-            while ($volumePacoteTmp < ($volumeAcumuladoProdutos + $prod['cubagem'])){
+            while ($volumePacoteTmp < ($volumeAcumuladoProdutos + $prod['cubagem'])) {
 
                 // Soma 1 na altura do pacote
                 if ($alturaPacoteTmp < $dimPesoPermitidos['altura_max']) {
@@ -847,7 +856,7 @@ class FKcorreiosg2FreteClass {
                 }
 
                 // Verifica se esta dentro das especificacoes dos Correios
-                if ($pesoAcumuladoProdutos + $pesoProduto > $dimPesoPermitidos['peso_maximo'] Or
+                if ($pesoAcumuladoProdutos + $pesoProduto > $dimPesoPermitidos['peso_maximo'] or
                     $alturaPacoteTmp + $larguraPacoteTmp + $comprimentoPacoteTmp > $dimPesoPermitidos['somatoria_dimensoes_max']) {
 
                     $gravarPacote = true;
@@ -863,7 +872,7 @@ class FKcorreiosg2FreteClass {
                 }
 
                 // Verifica se esta dentro das especificacoes dos Correios
-                if ($pesoAcumuladoProdutos + $pesoProduto > $dimPesoPermitidos['peso_maximo'] Or
+                if ($pesoAcumuladoProdutos + $pesoProduto > $dimPesoPermitidos['peso_maximo'] or
                     $alturaPacoteTmp + $larguraPacoteTmp + $comprimentoPacoteTmp > $dimPesoPermitidos['somatoria_dimensoes_max']) {
 
                     $gravarPacote = true;
@@ -879,7 +888,7 @@ class FKcorreiosg2FreteClass {
                 }
 
                 // Verifica se esta dentro das especificacoes dos Correios
-                if ($pesoAcumuladoProdutos + $pesoProduto > $dimPesoPermitidos['peso_maximo'] Or
+                if ($pesoAcumuladoProdutos + $pesoProduto > $dimPesoPermitidos['peso_maximo'] or
                     $alturaPacoteTmp + $larguraPacoteTmp + $comprimentoPacoteTmp > $dimPesoPermitidos['somatoria_dimensoes_max']) {
 
                     $gravarPacote = true;
@@ -897,16 +906,16 @@ class FKcorreiosg2FreteClass {
                 $volumeTmp = $alturaTmp * $larguraTmp * $comprimentoTmp;
 
                 $embalagens[] = array(
-                    'altura'                => $alturaTmp,
-                    'largura'               => $larguraTmp,
-                    'comprimento'           => $comprimentoTmp,
-                    'pesoEmbalagem'         => 0,
-                    'custoEmbalagem'        => 0,
-                    'cubagem'               => $volumeTmp,
-                    'pesoProdutos'          => $pesoAcumuladoProdutos,
-                    'valorProdutos'         => $valorAcumuladoProdutos,
-                    'adicionalEnvio'        => $valorAcumuladoAdicionalEnvio,
-                    'freteGratisProduto'    => false
+                    'altura' => $alturaTmp,
+                    'largura' => $larguraTmp,
+                    'comprimento' => $comprimentoTmp,
+                    'pesoEmbalagem' => 0,
+                    'custoEmbalagem' => 0,
+                    'cubagem' => $volumeTmp,
+                    'pesoProdutos' => $pesoAcumuladoProdutos,
+                    'valorProdutos' => $valorAcumuladoProdutos,
+                    'adicionalEnvio' => $valorAcumuladoAdicionalEnvio,
+                    'freteGratisProduto' => false,
                 );
 
                 // Reinicializa variaveis
@@ -919,7 +928,7 @@ class FKcorreiosg2FreteClass {
                 $pesoAcumuladoProdutos = $pesoProduto;
                 $volumeAcumuladoProdutos = $prod['cubagem'];
 
-            }else {
+            } else {
                 // Acumula os dados
                 $alturaPacote = $alturaPacoteTmp;
                 $larguraPacote = $larguraPacoteTmp;
@@ -942,16 +951,16 @@ class FKcorreiosg2FreteClass {
             $volumeTmp = $alturaTmp * $larguraTmp * $comprimentoTmp;
 
             $embalagens[] = array(
-                'altura'                => $alturaTmp,
-                'largura'               => $larguraTmp,
-                'comprimento'           => $comprimentoTmp,
-                'pesoEmbalagem'         => 0,
-                'custoEmbalagem'        => 0,
-                'cubagem'               => $volumeTmp,
-                'pesoProdutos'          => $pesoAcumuladoProdutos,
-                'valorProdutos'         => $valorAcumuladoProdutos,
-                'adicionalEnvio'        => $valorAcumuladoAdicionalEnvio,
-                'freteGratisProduto'    => false
+                'altura' => $alturaTmp,
+                'largura' => $larguraTmp,
+                'comprimento' => $comprimentoTmp,
+                'pesoEmbalagem' => 0,
+                'custoEmbalagem' => 0,
+                'cubagem' => $volumeTmp,
+                'pesoProdutos' => $pesoAcumuladoProdutos,
+                'valorProdutos' => $valorAcumuladoProdutos,
+                'adicionalEnvio' => $valorAcumuladoAdicionalEnvio,
+                'freteGratisProduto' => false,
             );
 
         }
@@ -959,7 +968,8 @@ class FKcorreiosg2FreteClass {
         return $embalagens;
     }
 
-    private function calculaValorOnline($parm) {
+    private function calculaValorOnline($parm)
+    {
 
         // Inicializa variaveis
         $prazoEntrega = 0;
@@ -985,7 +995,7 @@ class FKcorreiosg2FreteClass {
                 $valorFrete = $cache['valorFrete'];
                 $prazoEntrega = $cache['prazoEntrega'];
                 $msgCorreios = $cache['msgCorreios'];
-            }else {
+            } else {
                 // Verifica Servicos Adicionais
                 $maoPropria = 'N';
                 if (Configuration::get('FKCORREIOSG2_MAO_PROPRIA') == 'on') {
@@ -1001,7 +1011,7 @@ class FKcorreiosg2FreteClass {
                 if (Configuration::get('FKCORREIOSG2_VALOR_DECLARADO') == 'on') {
                     if ($embalagem['valorProdutos'] <= $parm['valorDeclaradoMax']) {
                         $valorDeclarado = $embalagem['valorProdutos'];
-                    }else {
+                    } else {
                         $valorDeclarado = $parm['valorDeclaradoMax'];
                     }
                 }
@@ -1033,7 +1043,7 @@ class FKcorreiosg2FreteClass {
 
                     // Grava cache
                     $this->gravaCache($correiosClass->getRetornoCorreios(), $parm['cepOrigem'], $parm['cepDestino'], $embalagem);
-                }else {
+                } else {
                     // Grava cache
                     $this->gravaCache($correiosClass->getRetornoCorreios(), $parm['cepOrigem'], $parm['cepDestino'], $embalagem);
 
@@ -1061,7 +1071,7 @@ class FKcorreiosg2FreteClass {
             }
 
             // Adiciona Tempo de Preparacao
-            $prazoEntrega += (int)$parm['tempoPreparacao'];
+            $prazoEntrega += (int) $parm['tempoPreparacao'];
 
             // Retorna se Frete Gratis por Valor for verdadeiro e a transportadora for a definida para o frete gratis
             if ($parm['freteGratisValor'] and $parm['transpFreteGratisValor'] == $parm['idCarrierAtual']) {
@@ -1074,7 +1084,7 @@ class FKcorreiosg2FreteClass {
             }
 
             // Soma o Adicional de Envio ao frete (cadastro de produtos)
-            $valorFrete += (float)$embalagem['adicionalEnvio'];
+            $valorFrete += (float) $embalagem['adicionalEnvio'];
 
             // Acumula Valor do Frete
             $totalFrete += $valorFrete + $embalagem['custoEmbalagem'];
@@ -1087,7 +1097,7 @@ class FKcorreiosg2FreteClass {
                 $carrier = new Carrier($parm['idCarrierAtual']);
 
                 if ($carrier->shipping_handling) {
-                    $totalFrete += (float)Configuration::get('PS_SHIPPING_HANDLING');
+                    $totalFrete += (float) Configuration::get('PS_SHIPPING_HANDLING');
                 }
             }
 
@@ -1095,14 +1105,15 @@ class FKcorreiosg2FreteClass {
             if ($parm['percentualDescontoFrete'] > 0 and $parm['valorPedido'] >= $parm['valorPedidoDescontoFrete']) {
                 $totalFrete *= (1 - ($parm['percentualDescontoFrete'] / 100));
             }
-        }else {
+        } else {
             $totalFrete = 'Grátis';
         }
 
         return array('status' => true, 'valorFrete' => $totalFrete, 'prazoEntrega' => $prazoEntrega, 'msgCorreios' => $msgCorreios);
     }
 
-    private function calculaValorOffline($parm) {
+    private function calculaValorOffline($parm)
+    {
 
         // Inicializa variaveis
         $prazoEntrega = 0;
@@ -1119,7 +1130,7 @@ class FKcorreiosg2FreteClass {
                 continue;
             }
 
-            if ($parm['cepDestino'] >= substr($intervaloCep, 0, 8) And $parm['cepDestino'] <= substr($intervaloCep, 9, 8)) {
+            if ($parm['cepDestino'] >= substr($intervaloCep, 0, 8) and $parm['cepDestino'] <= substr($intervaloCep, 9, 8)) {
                 $destino = 'cidade';
                 break;
             }
@@ -1133,7 +1144,7 @@ class FKcorreiosg2FreteClass {
 
             if ($fkclass->verificaSeCapital($parm['cepDestino'])) {
                 $destino = 'capital';
-            }else {
+            } else {
                 $destino = 'interior';
             }
         }
@@ -1142,26 +1153,26 @@ class FKcorreiosg2FreteClass {
         if ($destino == 'cidade') {
 
             $sql = "SELECT *
-                    FROM "._DB_PREFIX_."fkcorreiosg2_tabelas_offline
+                    FROM " . _DB_PREFIX_ . "fkcorreiosg2_tabelas_offline
                     WHERE minha_cidade = 1 AND
-                          id_shop = ".(int)$this->context->shop->id." AND
-                          id_especificacao = ".(int)$parm['idEspecificacao'];
-        }else {
+                          id_shop = " . (int) $this->context->shop->id . " AND
+                          id_especificacao = " . (int) $parm['idEspecificacao'];
+        } else {
             $sql = "SELECT
-                      "._DB_PREFIX_."fkcorreiosg2_tabelas_offline.*
-                    FROM "._DB_PREFIX_."fkcorreiosg2_tabelas_offline
-                      INNER JOIN "._DB_PREFIX_."fkcorreiosg2_cadastro_cep
-                        ON "._DB_PREFIX_."fkcorreiosg2_tabelas_offline.id_cadastro_cep = "._DB_PREFIX_."fkcorreiosg2_cadastro_cep.id
-                    WHERE "._DB_PREFIX_."fkcorreiosg2_tabelas_offline.minha_cidade = 0 AND
-                          "._DB_PREFIX_."fkcorreiosg2_tabelas_offline.id_shop = ".(int)$this->context->shop->id." AND
-                          "._DB_PREFIX_."fkcorreiosg2_tabelas_offline.id_especificacao = ".(int)$parm['idEspecificacao']." AND
-                          "._DB_PREFIX_."fkcorreiosg2_cadastro_cep.estado = '".$parm['ufDestino']."'";
+                      " . _DB_PREFIX_ . "fkcorreiosg2_tabelas_offline.*
+                    FROM " . _DB_PREFIX_ . "fkcorreiosg2_tabelas_offline
+                      INNER JOIN " . _DB_PREFIX_ . "fkcorreiosg2_cadastro_cep
+                        ON " . _DB_PREFIX_ . "fkcorreiosg2_tabelas_offline.id_cadastro_cep = " . _DB_PREFIX_ . "fkcorreiosg2_cadastro_cep.id
+                    WHERE " . _DB_PREFIX_ . "fkcorreiosg2_tabelas_offline.minha_cidade = 0 AND
+                          " . _DB_PREFIX_ . "fkcorreiosg2_tabelas_offline.id_shop = " . (int) $this->context->shop->id . " AND
+                          " . _DB_PREFIX_ . "fkcorreiosg2_tabelas_offline.id_especificacao = " . (int) $parm['idEspecificacao'] . " AND
+                          " . _DB_PREFIX_ . "fkcorreiosg2_cadastro_cep.estado = '" . $parm['ufDestino'] . "'";
         }
 
         $tabelasOffline = Db::getInstance()->getRow($sql);
 
         // Ignora transportadora se não localizada a tabela offline
-        if (!$tabelasOffline){
+        if (!$tabelasOffline) {
             return array('status' => false, 'valorFrete' => '', 'prazoEntrega' => '', 'msgCorreios' => '');
         }
 
@@ -1185,7 +1196,7 @@ class FKcorreiosg2FreteClass {
 
         // Adiciona Tempo de Preparacao
         if (is_numeric($prazoEntrega)) {
-            $prazoEntrega += (int)$parm['tempoPreparacao'];
+            $prazoEntrega += (int) $parm['tempoPreparacao'];
         }
 
         // Cria array da tabela de preços
@@ -1258,7 +1269,7 @@ class FKcorreiosg2FreteClass {
 
                     if ($embalagem['valorProdutos'] <= $parm['valorDeclaradoMax']) {
                         $valorDeclarado = $embalagem['valorProdutos'];
-                    }else {
+                    } else {
                         $valorDeclarado = $parm['valorDeclaradoMax'];
                     }
 
@@ -1272,7 +1283,7 @@ class FKcorreiosg2FreteClass {
             }
 
             // Soma o Adicional de Envio ao frete (cadastro de produtos)
-            $valorFrete += (float)$embalagem['adicionalEnvio'];
+            $valorFrete += (float) $embalagem['adicionalEnvio'];
 
             // Acumula Valor do Frete
             $totalFrete += $valorFrete + $embalagem['custoEmbalagem'];
@@ -1285,7 +1296,7 @@ class FKcorreiosg2FreteClass {
                 $carrier = new Carrier($parm['idCarrierAtual']);
 
                 if ($carrier->shipping_handling) {
-                    $totalFrete += (float)Configuration::get('PS_SHIPPING_HANDLING');
+                    $totalFrete += (float) Configuration::get('PS_SHIPPING_HANDLING');
                 }
             }
 
@@ -1293,55 +1304,57 @@ class FKcorreiosg2FreteClass {
             if ($parm['percentualDescontoFrete'] > 0 and $parm['valorPedido'] >= $parm['valorPedidoDescontoFrete']) {
                 $totalFrete *= (1 - ($parm['percentualDescontoFrete'] / 100));
             }
-        }else {
+        } else {
             $totalFrete = 'Grátis';
         }
 
         return array('status' => true, 'valorFrete' => $totalFrete, 'prazoEntrega' => $prazoEntrega, 'msgCorreios' => '');
     }
 
-    private function recuperaDimensoes($idEspecificacao, $ufOrigem, $ufDestino) {
+    private function recuperaDimensoes($idEspecificacao, $ufOrigem, $ufDestino)
+    {
 
         // Recupera as dimensoes mínimas/maximas e pesos permitidos para os Correios
         $sql = "SELECT  *
-                FROM "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios
-                WHERE id_shop = ".$this->context->shop->id." AND
-                      id = ".(int)$idEspecificacao;
+                FROM " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios
+                WHERE id_shop = " . $this->context->shop->id . " AND
+                      id = " . (int) $idEspecificacao;
 
         $espCorreios = Db::getInstance()->getRow($sql);
 
         if ($ufOrigem == $ufDestino) {
             $pesoMaximo = $espCorreios['peso_estadual_max'];
-        }else {
+        } else {
             $pesoMaximo = $espCorreios['peso_nacional_max'];
         }
 
         return array(
-            'comprimento_min'           => $espCorreios['comprimento_min'],
-            'comprimento_max'           => $espCorreios['comprimento_max'],
-            'largura_min'               => $espCorreios['largura_min'],
-            'largura_max'               => $espCorreios['largura_max'],
-            'altura_min'                => $espCorreios['altura_min'],
-            'altura_max'                => $espCorreios['altura_max'],
-            'somatoria_dimensoes_max'   => $espCorreios['somatoria_dimensoes_max'],
-            'peso_maximo'               => $pesoMaximo
+            'comprimento_min' => $espCorreios['comprimento_min'],
+            'comprimento_max' => $espCorreios['comprimento_max'],
+            'largura_min' => $espCorreios['largura_min'],
+            'largura_max' => $espCorreios['largura_max'],
+            'altura_min' => $espCorreios['altura_min'],
+            'altura_max' => $espCorreios['altura_max'],
+            'somatoria_dimensoes_max' => $espCorreios['somatoria_dimensoes_max'],
+            'peso_maximo' => $pesoMaximo,
         );
 
     }
 
-    private function selecionaEmbalagem($caixas, $cubagemProduto) {
+    private function selecionaEmbalagem($caixas, $cubagemProduto)
+    {
 
         foreach ($caixas as $reg) {
 
             if ($cubagemProduto <= $reg['cubagem']) {
 
                 return array(
-                    'altura'        => $reg['altura'],
-                    'largura'       => $reg['largura'],
-                    'comprimento'   => $reg['comprimento'],
-                    'peso'          => $reg['peso'],
-                    'custo'         => $reg['custo'],
-                    'cubagem'       => $reg['cubagem']
+                    'altura' => $reg['altura'],
+                    'largura' => $reg['largura'],
+                    'comprimento' => $reg['comprimento'],
+                    'peso' => $reg['peso'],
+                    'custo' => $reg['custo'],
+                    'cubagem' => $reg['cubagem'],
                 );
             }
         }
@@ -1349,27 +1362,29 @@ class FKcorreiosg2FreteClass {
         return array();
     }
 
-    private function criaHash($idTranspAtual, $cepOrigem, $cepDestino, $embalagem) {
+    private function criaHash($idTranspAtual, $cepOrigem, $cepDestino, $embalagem)
+    {
 
-        $hash = $this->context->shop->id.':'.
-                $this->context->cart->id.':'.
-                $idTranspAtual.':'.
-                $cepOrigem.':'.
-                $cepDestino.':'.
-                Configuration::get('FKCORREIOSG2_MAO_PROPRIA').':'.
-                Configuration::get('FKCORREIOSG2_VALOR_DECLARADO').':'.
-                Configuration::get('FKCORREIOSG2_AVISO_RECEBIMENTO').':'.
-                $embalagem['altura'].':'.
-                $embalagem['largura'].':'.
-                $embalagem['comprimento'].':'.
-                $embalagem['cubagem'].':'.
-                number_format($embalagem['valorProdutos'], 2).':'.
-                $embalagem['pesoProdutos'];
+        $hash = $this->context->shop->id . ':' .
+        $this->context->cart->id . ':' .
+        $idTranspAtual . ':' .
+        $cepOrigem . ':' .
+        $cepDestino . ':' .
+        Configuration::get('FKCORREIOSG2_MAO_PROPRIA') . ':' .
+        Configuration::get('FKCORREIOSG2_VALOR_DECLARADO') . ':' .
+        Configuration::get('FKCORREIOSG2_AVISO_RECEBIMENTO') . ':' .
+        $embalagem['altura'] . ':' .
+        $embalagem['largura'] . ':' .
+        $embalagem['comprimento'] . ':' .
+        $embalagem['cubagem'] . ':' .
+        number_format($embalagem['valorProdutos'], 2) . ':' .
+            $embalagem['pesoProdutos'];
 
         return md5($hash);
     }
 
-    private function gravaCache($retornoCorreios, $cepOrigem, $cepDestino, $embalagem) {
+    private function gravaCache($retornoCorreios, $cepOrigem, $cepDestino, $embalagem)
+    {
 
         foreach ($retornoCorreios as $retorno) {
 
@@ -1381,10 +1396,10 @@ class FKcorreiosg2FreteClass {
             if (!$cache['status']) {
 
                 $dados = array(
-                    'hash'          => $hash,
-                    'valor_frete'   => $retorno['valorFrete'],
+                    'hash' => $hash,
+                    'valor_frete' => $retorno['valorFrete'],
                     'prazo_entrega' => $retorno['prazoEntrega'],
-                    'msg_correios'  => $retorno['msgRetorno'],
+                    'msg_correios' => $retorno['msgRetorno'],
                 );
 
                 Db::getInstance()->insert('fkcorreiosg2_cache', $dados);
@@ -1394,28 +1409,29 @@ class FKcorreiosg2FreteClass {
 
     }
 
-    private function recuperaCache($hash) {
+    private function recuperaCache($hash)
+    {
 
         $sql = "SELECT *
-                FROM "._DB_PREFIX_."fkcorreiosg2_cache
-                WHERE hash = '".$hash."'";
+                FROM " . _DB_PREFIX_ . "fkcorreiosg2_cache
+                WHERE hash = '" . $hash . "'";
 
         $cache = Db::getInstance()->getRow($sql);
 
         if ($cache) {
             return array('status' => true, 'valorFrete' => $cache['valor_frete'], 'prazoEntrega' => $cache['prazo_entrega'], 'msgCorreios' => $cache['msg_correios']);
-        }else {
+        } else {
             return array('status' => false, 'valorFrete' => '', 'prazoEntrega' => '', 'msgCorreios' => '');
         }
     }
 
-    static function ordenaCubagem($a, $b) {
+    public static function ordenaCubagem($a, $b)
+    {
 
         if ($a['cubagem'] == $b['cubagem']) {
             return 0;
         }
         return ($a['cubagem'] < $b['cubagem']) ? -1 : 1;
     }
-
 
 }
