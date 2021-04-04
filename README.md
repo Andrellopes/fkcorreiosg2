@@ -12,13 +12,13 @@
 - Possibilita alteração de todos os parâmetros envolvidos no cálculo, permitindo desta forma adequar o módulo a qualquer alteração futura efetuada pelos Correios do Brasil;
 - Definição de regiões de atuação de cada serviço, podendo ser por Unidade da Federação (todo o Estado, somente Capitais ou somente Interior), por intervalo de CEPs e também por exclusão de CEPs;
 - Oferece três opções de embalagem para configuração do frete:
-- Embalagem individual: baseada nas dimensões do produto;
-- Embalagens padrão: baseadas em dimensões específicas de caixas cadastradas previamente;
-- Pacote: possui dimensão variável de acordo com os produtos acondicionados, aproveitando melhor o espaço entre eles e barateando o valor do frete.
+   - Embalagem individual: baseada nas dimensões do produto;
+   - Embalagens padrão: baseadas em dimensões específicas de caixas cadastradas previamente;
+   - Pacote: possui dimensão variável de acordo com os produtos acondicionados, aproveitando melhor o espaço entre eles e barateando o valor do frete.
 - Possibilita incluir o custo das embalagens no valor do frete, quando utilizado a opção Embalagens padrão;
 - O cálculo do frete pode ser efetuado Online, através de consulta ao web services dos Correios ou Offline, através de consulta às tabelas offline local, sendo:
-- Cálculo Online: disponibiliza todos os serviços e caso ocorram erros durante a consulta ao web services dos Correios, automaticamente efetua o cálculo dos serviços PAC e SEDEX baseado nas tabelas offline;
-- Cálculo Offline: disponibiliza os serviços PAC e SEDEX e todos os cálculos são efetuados localmente, sem acesso ao web services dos Correios.
+   - Cálculo Online: disponibiliza todos os serviços e caso ocorram erros durante a consulta ao web services dos Correios, automaticamente efetua o cálculo dos serviços PAC e SEDEX baseado nas tabelas offline;
+   - Cálculo Offline: disponibiliza os serviços PAC e SEDEX e todos os cálculos são efetuados localmente, sem acesso ao web services dos Correios.
 - As tabelas offline são geradas automaticamente a partir de comando manual no módulo. Não é necessário qualquer cadastramento manual e nem possuir as tabelas de preços dos Correios.
 
 ## Frete Grátis
@@ -38,11 +38,11 @@
 - Mostra ao cliente, além do valor do frete, o prazo de entrega previsto e pode ser configurado para mostrar mensagens informativas dos Correios;
 - Possibilita cadastrar um tempo adicional de preparação que será somado ao prazo de entrega;
 - Suporta as seguintes opções nativas do Prestashop:
-- Produto x Transportadora;
-- Transportadora x Grupo de Clientes;
-- Dimensões e peso máximo x Transportadora;
-- Custo de envio x Transportadora;
-- Tarifa adicional de frete (no cadastro de produtos).
+   - Produto x Transportadora;
+   - Transportadora x Grupo de Clientes;
+   - Dimensões e peso máximo x Transportadora;
+   - Custo de envio x Transportadora;
+   - Tarifa adicional de frete (no cadastro de produtos).
 - Verifica as configurações do PHP, do Prestashop e do módulo que podem gerar mau funcionamento do módulo e informa as ações a serem adotadas;
 - Help integrado ao módulo.
 
@@ -56,5 +56,3 @@ Requisito do Servidor SOAP Habilitado no PHP <br>
 
 Efetue o download do módulo:
 [Link para download do módulo ccorreios](https://github.com/Andrellopes/customerscpf/archive/refs/tags/2.0.0.zip)
-
-Esse projeto utiliza como base o https://github.com/glauberportella/fkcorreiosg2-prestashop1.7
