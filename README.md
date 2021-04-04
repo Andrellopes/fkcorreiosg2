@@ -53,3 +53,5 @@ Plataforma : PrestaShop <br>
 Compatibilidade : v1.7 <br>
 Requisito do Servidor SOAP Habilitado no PHP <br>
 </p>
+
+Esse projeto utiliza como base o https://github.com/glauberportella/fkcorreiosg2-prestashop1.7
