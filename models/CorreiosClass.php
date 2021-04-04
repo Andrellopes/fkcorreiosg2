@@ -1,9 +1,10 @@
 <?php
 
-include_once(dirname(__FILE__).'/../../../config/config.inc.php');
-include_once('FKcorreiosg2Class.php');
+include_once dirname(__FILE__) . '/../../../config/config.inc.php';
+include_once 'FKcorreiosg2Class.php';
 
-class CorreiosClass {
+class CorreiosClass
+{
 
     private $empresa;
     private $senha;
@@ -27,123 +28,144 @@ class CorreiosClass {
     private $codRetorno;
     private $msgRetorno;
 
-    public function setEmpresa($empresa) {
+    public function setEmpresa($empresa)
+    {
         $this->empresa = $empresa;
     }
 
-    public function setSenha($senha) {
+    public function setSenha($senha)
+    {
         $this->senha = $senha;
     }
 
-    public function setCodServico($codServico) {
+    public function setCodServico($codServico)
+    {
         $this->codServico = $codServico;
     }
 
-    public function setCepOrigem($cepOrigem) {
+    public function setCepOrigem($cepOrigem)
+    {
         $this->cepOrigem = preg_replace("/[^0-9]/", "", $cepOrigem);
     }
 
-    public function setCepDestino($cepDestino) {
+    public function setCepDestino($cepDestino)
+    {
         $this->cepDestino = preg_replace("/[^0-9]/", "", $cepDestino);
     }
 
-    public function setPeso($peso) {
-        $this->peso = str_replace(",",".",$peso);
+    public function setPeso($peso)
+    {
+        $this->peso = str_replace(",", ".", $peso);
     }
 
-    public function setFormato($formato) {
+    public function setFormato($formato)
+    {
         $this->formato = $formato;
     }
 
-    public function setComprimento($comprimento) {
-        $this->comprimento = str_replace(",",".",$comprimento);
+    public function setComprimento($comprimento)
+    {
+        $this->comprimento = str_replace(",", ".", $comprimento);
     }
 
-    public function setAltura($altura) {
-        $this->altura = str_replace(",",".",$altura);
+    public function setAltura($altura)
+    {
+        $this->altura = str_replace(",", ".", $altura);
     }
 
-    public function setLargura($largura) {
-        $this->largura = str_replace(",",".",$largura);
+    public function setLargura($largura)
+    {
+        $this->largura = str_replace(",", ".", $largura);
     }
 
-    public function setDiametro($diametro) {
-        $this->diametro = str_replace(",",".",$diametro);
+    public function setDiametro($diametro)
+    {
+        $this->diametro = str_replace(",", ".", $diametro);
     }
 
-    public function setCubagem($cubagem) {
-        $this->cubagem = str_replace(",",".",$cubagem);
+    public function setCubagem($cubagem)
+    {
+        $this->cubagem = str_replace(",", ".", $cubagem);
     }
 
-    public function setMaoPropria($maoPropria) {
+    public function setMaoPropria($maoPropria)
+    {
         $this->maoPropria = $maoPropria;
     }
 
-    public function setValorDeclarado($valorDeclarado) {
-        $this->valorDeclarado = str_replace(",",".",$valorDeclarado);
+    public function setValorDeclarado($valorDeclarado)
+    {
+        $this->valorDeclarado = str_replace(",", ".", $valorDeclarado);
     }
 
-    public function setAvisoRecebimento($avisoRecebimento) {
+    public function setAvisoRecebimento($avisoRecebimento)
+    {
         $this->avisoRecebimento = $avisoRecebimento;
     }
 
-    public function getRetornoCorreios() {
+    public function getRetornoCorreios()
+    {
         return $this->retornoCorreios;
     }
 
-    public function getValorFrete() {
-        return str_replace(",",".",$this->valorFrete);
+    public function getValorFrete()
+    {
+        return str_replace(",", ".", $this->valorFrete);
     }
 
-    public function getPrazoEntrega() {
+    public function getPrazoEntrega()
+    {
         return $this->prazoEntrega;
     }
 
-    public function getCodRetorno() {
+    public function getCodRetorno()
+    {
         return $this->codRetorno;
     }
 
-    public function getMsgRetorno() {
+    public function getMsgRetorno()
+    {
         return $this->msgRetorno;
     }
 
-    public function calculaPrecoPrazo() {
+    public function calculaPrecoPrazo()
+    {
 
         // Recupera e monta string com todos os serviços ativos dos Correios
         $fkclass = new FKcorreiosg2Class();
         $dados = $fkclass->recuperaServicosCorreiosAtivos();
 
         $servicos = array(
-            'pesquisaCorreios'  => '',
-            'servicos'          => array(),
+            'pesquisaCorreios' => '',
+            'servicos' => array(),
         );
 
         foreach ($dados as $reg) {
 
             if ($servicos['pesquisaCorreios'] == '') {
                 $servicos['pesquisaCorreios'] = $reg['cod_servico'];
-            }else {
-                $servicos['pesquisaCorreios'] .= ','.$reg['cod_servico'];
+            } else {
+                $servicos['pesquisaCorreios'] .= ',' . $reg['cod_servico'];
             }
 
             $servicos['servicos'][$reg['cod_servico']] = $reg['id'];
         }
 
         $parm = array(
-            'nCdEmpresa'            => $this->empresa,
-            'sDsSenha'              => $this->senha,
-            'nCdServico'            => $servicos['pesquisaCorreios'],
-            'sCepOrigem'            => $this->cepOrigem,
-            'sCepDestino'           => $this->cepDestino,
-            'nVlPeso'               => $this->peso,
-            'nCdFormato'            => $this->formato,
-            'nVlComprimento'        => $this->comprimento,
-            'nVlAltura'             => $this->altura,
-            'nVlLargura'            => $this->largura,
-            'nVlDiametro'           => $this->diametro,
-            'sCdMaoPropria'         => $this->maoPropria,
-            'nVlValorDeclarado'     => $this->valorDeclarado,
-            'sCdAvisoRecebimento'   => $this->avisoRecebimento
+            'nCdEmpresa' => $this->empresa,
+            'sDsSenha' => $this->senha,
+            'nCdServico' => $servicos['pesquisaCorreios'],
+            'sCepOrigem' => $this->cepOrigem,
+            'sCepDestino' => $this->cepDestino,
+            'nVlPeso' => $this->peso,
+            'nCdFormato' => $this->formato,
+            'nVlComprimento' => $this->comprimento,
+            'nVlAltura' => $this->altura,
+            'nVlLargura' => $this->largura,
+            'nVlDiametro' => $this->diametro,
+            'sCdMaoPropria' => $this->maoPropria,
+            'nVlValorDeclarado' => $this->valorDeclarado,
+            'sCdAvisoRecebimento' => $this->avisoRecebimento,
         );
 
         try {
@@ -154,42 +176,42 @@ class CorreiosClass {
             // Se somente 1 servico dos Correios ativo
             if (count($retornos) == 1) {
                 $retornosTmp[] = $retornos;
-            }else {
+            } else {
                 $retornosTmp = $retornos;
             }
 
             foreach ($retornosTmp as $retorno) {
 
                 if ($retorno->Valor > 0) {
-                    $this->retornoCorreios['0'.$retorno->Codigo] = array(
-                        'gravarCache'   => true,
-                        'idTranspAtual' => $servicos['servicos']['0'.$retorno->Codigo],
-                        'valorFrete'    => str_replace(",",".",$retorno->Valor),
-                        'prazoEntrega'  => $retorno->PrazoEntrega,
-                        'codRetorno'    => $retorno->Erro,
-                        'msgRetorno'    => $retorno->MsgErro
+                    $this->retornoCorreios['0' . $retorno->Codigo] = array(
+                        'gravarCache' => true,
+                        'idTranspAtual' => $servicos['servicos']['0' . $retorno->Codigo],
+                        'valorFrete' => str_replace(",", ".", $retorno->Valor),
+                        'prazoEntrega' => $retorno->PrazoEntrega,
+                        'codRetorno' => $retorno->Erro,
+                        'msgRetorno' => $retorno->MsgErro,
                     );
-                }else {
+                } else {
                     // Verifica o erro
                     $trataErro = $this->trataErro($retorno->Erro, $retorno->MsgErro);
 
                     if (!$trataErro['calculoOffline']) {
                         $this->retornoCorreios[$retorno->Codigo] = array(
-                            'gravarCache'   => true,
+                            'gravarCache' => true,
                             'idTranspAtual' => $servicos['servicos'][$retorno->Codigo],
-                            'valorFrete'    => '0',
-                            'prazoEntrega'  => '',
-                            'codRetorno'    => $retorno->Erro,
-                            'msgRetorno'    => $retorno->MsgErro
+                            'valorFrete' => '0',
+                            'prazoEntrega' => '',
+                            'codRetorno' => $retorno->Erro,
+                            'msgRetorno' => $retorno->MsgErro,
                         );
-                    }else {
+                    } else {
                         $this->retornoCorreios[$retorno->Codigo] = array(
-                            'gravarCache'   => false,
+                            'gravarCache' => false,
                             'idTranspAtual' => $servicos['servicos'][$retorno->Codigo],
-                            'valorFrete'    => '',
-                            'prazoEntrega'  => '',
-                            'codRetorno'    => $retorno->Erro,
-                            'msgRetorno'    => $retorno->MsgErro
+                            'valorFrete' => '',
+                            'prazoEntrega' => '',
+                            'codRetorno' => $retorno->Erro,
+                            'msgRetorno' => $retorno->MsgErro,
                         );
                     }
                 }
@@ -202,14 +224,14 @@ class CorreiosClass {
                 $this->prazoEntrega = $this->retornoCorreios[$this->codServico]['prazoEntrega'];
                 $this->codRetorno = $this->retornoCorreios[$this->codServico]['codRetorno'];
                 $this->msgRetorno = $this->retornoCorreios[$this->codServico]['msgRetorno'];
-            }else {
+            } else {
                 $this->valorFrete = '0';
                 $this->prazoEntrega = '';
 
                 if ($this->retornoCorreios[$this->codServico]['codRetorno'] == '0') {
                     $this->codRetorno = 'fk01';
                     $this->msgRetorno = '';
-                }else {
+                } else {
                     $this->codRetorno = $this->retornoCorreios[$this->codServico]['codRetorno'];
                     $this->msgRetorno = $this->retornoCorreios[$this->codServico]['msgRetorno'];
                 }
@@ -229,19 +251,20 @@ class CorreiosClass {
 
     }
 
-    public function calculaTabOffline($idEspCorreios, $idTabOffline, $tipo) {
+    public function calculaTabOffline($idEspCorreios, $idTabOffline, $tipo)
+    {
 
         // Recupera dados da tabela Especificacoes dos Correios
         $sql = "SELECT *
-                FROM "._DB_PREFIX_."fkcorreiosg2_especificacoes_correios
-                WHERE id = ".(int)$idEspCorreios;
+                FROM " . _DB_PREFIX_ . "fkcorreiosg2_especificacoes_correios
+                WHERE id = " . (int) $idEspCorreios;
 
         $espCorreios = Db::getInstance()->getRow($sql);
 
         // Recupera dados da tabela Tabelas Offline
         $sql = "SELECT id_cadastro_cep
-                FROM "._DB_PREFIX_."fkcorreiosg2_tabelas_offline
-                WHERE id = ".(int)$idTabOffline;
+                FROM " . _DB_PREFIX_ . "fkcorreiosg2_tabelas_offline
+                WHERE id = " . (int) $idTabOffline;
 
         $tabOffline = Db::getInstance()->getRow($sql);
 
@@ -249,17 +272,17 @@ class CorreiosClass {
         if ($tipo == 'cidade') {
             $cepDestino = Configuration::get('FKCORREIOSG2_MEU_CEP');
             $intervaloPeso = $espCorreios['intervalo_pesos_estadual'];
-        }else {
+        } else {
             // Recupera dados do Cadastro de Cep
             $sql = "SELECT *
-                    FROM "._DB_PREFIX_."fkcorreiosg2_cadastro_cep
-                    WHERE id = ".(int)$tabOffline['id_cadastro_cep'];
+                    FROM " . _DB_PREFIX_ . "fkcorreiosg2_cadastro_cep
+                    WHERE id = " . (int) $tabOffline['id_cadastro_cep'];
 
             $cadCep = Db::getInstance()->getRow($sql);
 
             if ($tipo == 'capital') {
                 $cepDestino = $cadCep['cep_base_capital'];
-            }else {
+            } else {
                 $cepDestino = $cadCep['cep_base_interior'];
             }
 
@@ -273,7 +296,7 @@ class CorreiosClass {
 
             if ($ufOrigem == $cadCep['estado']) {
                 $intervaloPeso = $espCorreios['intervalo_pesos_estadual'];
-            }else {
+            } else {
                 $intervaloPeso = $espCorreios['intervalo_pesos_nacional'];
             }
         }
@@ -293,7 +316,7 @@ class CorreiosClass {
             if ($peso > 0) {
 
                 // Tenta 3x gerar a tabela
-                for ($i=1; $i <= 3; $i++) {
+                for ($i = 1; $i <= 3; $i++) {
 
                     $this->setEmpresa($espCorreios['cod_administrativo']);
                     $this->setSenha($espCorreios['senha']);
@@ -313,12 +336,12 @@ class CorreiosClass {
                     if ($this->calculaPrecoPrazo()) {
                         // coloca o prazo de entrega no retorna
                         if ($retorno == '') {
-                            $retorno = $this->prazoEntrega.'|';
+                            $retorno = $this->prazoEntrega . '|';
                         }
 
-                        $retorno .= $peso.':'.$this->getValorFrete().'/';
+                        $retorno .= $peso . ':' . $this->getValorFrete() . '/';
                         break;
-                    }else {
+                    } else {
                         $retorno = 'erro';
                     }
 
@@ -330,9 +353,10 @@ class CorreiosClass {
 
     }
 
-    public function trataErro($codRetorno, $msgRetorno) {
+    public function trataErro($codRetorno, $msgRetorno)
+    {
 
-        switch($codRetorno) {
+        switch ($codRetorno) {
 
             case '-33':
                 return array('calculoOffline' => true, 'mensagemErro' => 'Sistema dos Correios fora do ar.');
