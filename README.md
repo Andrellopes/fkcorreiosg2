@@ -53,6 +53,3 @@ Plataforma : PrestaShop <br>
 Compatibilidade : v1.7 <br>
 Requisito do Servidor SOAP Habilitado no PHP <br>
 </p>
-
-Efetue o download do módulo:
-[Link para download do módulo correios](https://github.com/Andrellopes/fkcorreiosg2/archive/refs/tags/1.3.1.zip)
