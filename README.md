@@ -52,7 +52,9 @@ Versão : 1.3.1 <br>
 Plataforma : PrestaShop <br>
 Compatibilidade : v1.7.0.1 <br>
 Requisito do Servidor SOAP Habilitado no PHP <br>
-</p>
+
 
 Efetue o download do módulo:
 [Link para download do módulo ccorreios](https://github.com/Andrellopes/customerscpf/archive/refs/tags/2.0.0.zip)
+</p>
+
