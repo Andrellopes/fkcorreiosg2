@@ -55,4 +55,4 @@ Requisito do Servidor SOAP Habilitado no PHP <br>
 </p>
 
 Efetue o download do módulo:
-[Link para download do módulo ccorreios](https://github.com/Andrellopes/customerscpf/archive/refs/tags/2.0.0.zip)
+[Link para download do módulo correios](https://github.com/Andrellopes/customerscpf/archive/refs/tags/2.0.0.zip)
